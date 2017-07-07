@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="syntaxhighlighter/syntaxhighlighter.js"></script>
+</head>
+<body>
+
+<pre class="brush: html">&lt;!DOCTYPE HTML&gt;<br>&lt;html&gt;<br>test<br>&lt;/html&gt;</pre>
+
+<style type="text/css">
+    .tg {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    .tg td {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        padding: 10px 5px;
+        border-style: solid;
+        border-width: 1px;
+        overflow: hidden;
+        word-break: normal;
+    }
+
+    .tg th {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: normal;
+        padding: 10px 5px;
+        border-style: solid;
+        border-width: 1px;
+        overflow: hidden;
+        word-break: normal;
+    }
+
+    .tg .tg-fqys {
+        background-color: #333333;
+        color: #ffffff;
+        vertical-align: top
+    }
+
+    .tg .tg-yw4l {
+        vertical-align: top
+    }
+</style>
+<table class="tg">
+    <tr>
+        <th class="tg-fqys">Tag</th>
+        <th class="tg-fqys">inline / block</th>
+        <th class="tg-fqys">Description</th>
+        <th class="tg-fqys">Example Code</th>
+        <th class="tg-fqys">Example Output</th>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;html&gt;</td>
+        <td class="tg-yw4l">-</td>
+        <td class="tg-yw4l">tells the browser that this is an HTML document<br>represents the root of an HTML document
+        </td>
+        <td class="tg-yw4l"><pre class="brush: html">&lt;!DOCTYPE HTML&gt;<br>&lt;html&gt;<br>test<br>&lt;/html&gt;</pre></td>
+        <td class="tg-yw4l">-</td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;head&gt;</td>
+        <td class="tg-yw4l">-</td>
+        <td class="tg-yw4l">container for all the head elements<br>can include a title for the document, scripts,
+            styles, meta information, and more
+        </td>
+        <td class="tg-yw4l"><pre>&lt;head&gt;&lt;title&gt;Title of the document&lt;/title&gt;&lt;/head&gt;</pre></td>
+        <td class="tg-yw4l">-</td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;body&gt;</td>
+        <td class="tg-yw4l">block</td>
+        <td class="tg-yw4l">The body itself</td>
+        <td class="tg-yw4l"><pre>&lt;body&gt;The content&lt;/body&gt;</pre></td>
+        <td class="tg-yw4l">The content</td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;meta&gt;</td>
+        <td class="tg-yw4l">-</td>
+        <td class="tg-yw4l">provides metadata about the HTML document</td>
+        <td class="tg-yw4l"><pre>&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;/head&gt;</pre></td>
+        <td class="tg-yw4l">-</td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;title&gt;</td>
+        <td class="tg-yw4l">-</td>
+        <td class="tg-yw4l">required in all HTML documents and it defines the title of the document</td>
+        <td class="tg-yw4l"><pre>&lt;head&gt;&lt;title&gt;Title of the document&lt;/title&gt;&lt;/head&gt;</pre></td>
+        <td class="tg-yw4l">-</td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;link&gt;</td>
+        <td class="tg-yw4l">-</td>
+        <td class="tg-yw4l">defines a link between a document and an external resource<br>is used to link to external
+            style sheets
+        </td>
+        <td class="tg-yw4l"><pre>&lt;head&gt;&lt;link rel="stylesheet" type="text/css" href="styles.css"&gt;&lt;/head&gt;</pre>
+        </td>
+        <td class="tg-yw4l">-</td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;base&gt;</td>
+        <td class="tg-yw4l">-</td>
+        <td class="tg-yw4l">specifies the base URL/target for all relative URLs in a document<br>There can be at maximum
+            one &lt;base&gt; element in a document, and it must be inside the &lt;head&gt; element.
+        </td>
+        <td class="tg-yw4l"><pre>&lt;head&gt;&lt;base href="https://www.w3schools.com/images/" target="_blank"&gt;&lt;/head&gt;<br>&lt;img
+            src="stickman.gif"&gt;</pre>
+        </td>
+        <td class="tg-yw4l"><img src="https://www.w3schools.com/images/stickman.gif"></td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;h1&gt; - &lt;h6&gt;</td>
+        <td class="tg-yw4l">block</td>
+        <td class="tg-yw4l">Headings</td>
+        <td class="tg-yw4l"><pre>&lt;h1&gt;This is a title&lt;/h1&gt;<br>&lt;h2&gt;This is a subtitle&lt;/h2&gt;</pre></td>
+        <td class="tg-yw4l"><h1>This is a title</h1>
+            <h2>This is a subtitle</h2></td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;p&gt;</td>
+        <td class="tg-yw4l">block</td>
+        <td class="tg-yw4l">Paragraphs</td>
+        <td class="tg-yw4l"><pre>&lt;p&gt;This is paragraph text.&lt;/p&gt;</pre></td>
+        <td class="tg-yw4l">This is paragraph text.</td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;a&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">Anchors (hyperlinks)</td>
+        <td class="tg-yw4l"><pre>&lt;a href="http://google.ch"&gt;Google&lt;/a&gt;</pre></td>
+        <td class="tg-yw4l"><a href="http://google.ch">Google</a></td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;div&gt;</td>
+        <td class="tg-yw4l">block</td>
+        <td class="tg-yw4l">defines a division or a section in an HTML document<br>is used to group block-elements to
+            format them with CSS.
+        </td>
+        <td class="tg-yw4l"><pre>&lt;div&gt;This is a division&lt;/div&gt;</pre></td>
+        <td class="tg-yw4l">This is a division</td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;span&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">Up to you</td>
+        <td class="tg-yw4l"><pre>I'm &lt;span style="color:blue"&gt;blue&lt;/span&gt;</pre></td>
+        <td class="tg-yw4l">I'm <span style="color:blue">blue</span></td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;style&gt;</td>
+        <td class="tg-yw4l">-</td>
+        <td class="tg-yw4l">is used to define style information (CSS) for an HTML document<br>each HTML document can
+            contain multiple &lt;style&gt; tags.
+        </td>
+        <td class="tg-yw4l"><pre>&lt;head&gt;&lt;style&gt;h1 {color:blue;}&lt;/style&gt;&lt;/head&gt;</pre></td>
+        <td class="tg-yw4l">-</td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;script&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">define client-side scripts (JavaScript)</td>
+        <td class="tg-yw4l"><pre>&lt;p id="demo"&gt;&lt;/p&gt;<br>&lt;script&gt;document.getElementById("demo").innerHTML =
+            "Hello World!";&lt;/script&gt;<br><br><br>&lt;script src="myscript.js"&gt;&lt;/script&gt;</pre>
+        </td>
+        <td class="tg-yw4l"><p id="demo"></p>
+            <script>document.getElementById("demo").innerHTML = "Hello World!";</script>
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;em&gt;, &lt;i&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">Italic</td>
+        <td class="tg-yw4l"><pre>This is &lt;em&gt;italic&lt;/em&gt;</pre></td>
+        <td class="tg-yw4l">This is <em>italic</em></td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;strong&gt;, &lt;b&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">Bold</td>
+        <td class="tg-yw4l"><pre>This is &lt;b&gt;bold&lt;/b&gt;</pre></td>
+        <td class="tg-yw4l">This is <b>bold</b></td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;ins&gt;, &lt;del&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">del: text that has been removed from the document<br>ins: text that has been added to a
+            document
+        </td>
+        <td class="tg-yw4l"><pre>My favorite color is &lt;del&gt;blue&lt;/del&gt; &lt;ins&gt;red&lt;/ins&gt;</pre></td>
+        <td class="tg-yw4l">My favorite color is
+            <del>blue</del>
+            <ins>red</ins>
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;pre&gt;</td>
+        <td class="tg-yw4l">block</td>
+        <td class="tg-yw4l">Preformatted text.</td>
+        <td class="tg-yw4l"><pre>&lt;pre&gt;This is<br>an example.&lt;/pre&gt;</pre></td>
+        <td class="tg-yw4l">This is<br>an example.</td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;small&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">defines smaller text (and other side comments)</td>
+        <td class="tg-yw4l"><pre>This is &lt;small&gt;small text&lt;/small&gt;</pre></td>
+        <td class="tg-yw4l">This is
+            <small>small text</small>
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;sub&gt;, &lt;sup&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">Subscript / superscript text</td>
+        <td class="tg-yw4l"><pre>H&lt;sub&gt;2&lt;/sub&gt;O<br>x&lt;sup&gt;2&lt;/sup&gt;</pre></td>
+        <td class="tg-yw4l">
+            H<sub>2</sub>O<br>
+            x<sup>2</sup>
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;br&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">inserts a single line break</td>
+        <td class="tg-yw4l"><pre>This text contains&lt;br&gt;a line break</pre></td>
+        <td class="tg-yw4l">This text contains<br>a line break</td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;hr&gt;</td>
+        <td class="tg-yw4l">block</td>
+        <td class="tg-yw4l">Horizontal Rule (dividing line)</td>
+        <td class="tg-yw4l"><pre>Line break between here&lt;hr&gt;and here</pre></td>
+        <td class="tg-yw4l">Line break between here
+            <hr>
+            and here
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;nav&gt;, &lt;header&gt;, &lt;footer&gt;, &lt;aside&gt;, &lt;section&gt;,
+            &lt;article&gt;
+        </td>
+        <td class="tg-yw4l">block</td>
+        <td class="tg-yw4l">Organizers in HTML5, to break down body even further</td>
+        <td class="tg-yw4l"><pre>&lt;body&gt;<br>&lt;nav&gt;Test&lt;/nav&gt;<br>&lt;/body&gt;</pre></td>
+        <td class="tg-yw4l">Test</td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;menu&gt;</td>
+        <td class="tg-yw4l">-</td>
+        <td class="tg-yw4l">defines a menu of commands, can be used for context menus (only experimental support)</td>
+        <td class="tg-yw4l"><pre>-</pre></td>
+        <td class="tg-yw4l">-</td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;hgroup&gt;</td>
+        <td class="tg-yw4l">block</td>
+        <td class="tg-yw4l">HTML5 Groups header information</td>
+        <td class="tg-yw4l"><pre>&lt;hgroup id="document-title"&gt;<br>&lt;h1&gt;This is a title.&lt;/h1&gt;<br>&lt;h2&gt;This
+            is a subtitle.&lt;/h2&gt;<br>&lt;/hgroup&gt;</pre>
+        </td>
+        <td class="tg-yw4l">
+            <hgroup id="document-title">
+                <h1>This is a title.</h1>
+                <h2>This is a subtitle.</h2>
+            </hgroup>
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;main&gt;</td>
+        <td class="tg-yw4l">block</td>
+        <td class="tg-yw4l">Contains the central content unique to this document.</td>
+        <td class="tg-yw4l"><pre>&lt;main&gt;Text&lt;/main&gt;</pre></td>
+        <td class="tg-yw4l">Text</td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;time&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">defines a human-readable date/time</td>
+        <td class="tg-yw4l"><pre>I have a date on &lt;time datetime="2008-02-14 20:00"&gt;Valentines day&lt;/time&gt;</pre></td>
+        <td class="tg-yw4l">I have a date on
+            <time datetime="2008-02-14 20:00">Valentines day</time>
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;address&gt;</td>
+        <td class="tg-yw4l">block</td>
+        <td class="tg-yw4l">Contact information</td>
+        <td class="tg-yw4l"><pre>Visit us at: &lt;address&gt;Bahnhofstrasse 6, 5210 Windisch&lt;/address&gt;</pre></td>
+        <td class="tg-yw4l">Visit us at:
+            <address>Bahnhofstrasse 6, 5210 Windisch</address>
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;dfn&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">defines the first use of a term in a document</td>
+        <td class="tg-yw4l"><pre>You can use &lt;dfn title="HyperText Markup Language" id=html-def&gt;HTML&lt;/dfn&gt;<br>Learn
+            &lt;a href="#html-def"&gt;HTML&lt;/a&gt;</pre>
+        </td>
+        <td class="tg-yw4l">You can use <dfn title="HyperText Markup Language" id=html-def>HTML</dfn><br>
+            Learn <a href="#html-def">HTML</a></td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;abbr&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">defines an abbreviation</td>
+        <td class="tg-yw4l"><pre>The &lt;abbr title="World Health Organization"&gt;WHO&lt;/abbr&gt;</pre></td>
+        <td class="tg-yw4l">The <abbr title="World Health Organization">WHO</abbr></td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;details&gt;</td>
+        <td class="tg-yw4l">block</td>
+        <td class="tg-yw4l">specifies additional details that the user can view or hide on demand</td>
+        <td class="tg-yw4l"><pre>&lt;details&gt;<br>&lt;summary&gt;Click me to get more information&lt;/summary&gt;<br>&lt;p&gt;There's
+            your additional information&lt;/p&gt;<br>&lt;/details&gt;</pre>
+        </td>
+        <td class="tg-yw4l">
+            <details>
+                <summary>Click me to get more information</summary>
+                <p>There's your additional information</p>
+            </details>
+            /td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;legend&gt;</td>
+        <td class="tg-yw4l">-</td>
+        <td class="tg-yw4l">defines a caption for the &lt;fieldset&gt; element</td>
+        <td class="tg-yw4l"><pre>&lt;form&gt;<br>&lt;fieldset&gt;<br>&lt;legend&gt;Personal Information&lt;/legend&gt;<br>name:
+            &lt;input type="text"&gt;<br>&lt;/fieldset&gt;<br>&lt;/form&gt;</pre>
+        </td>
+        <td class="tg-yw4l">
+            <form>
+                <fieldset>
+                    <legend>Personal Information</legend>
+                    name: <input type="text">
+                </fieldset>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;progress&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">represents the progress of a task</td>
+        <td class="tg-yw4l"><pre>Downloading: &lt;progress value="22" max="100"&gt;&lt;/progress&gt;</pre></td>
+        <td class="tg-yw4l">Downloading:
+            <progress value="22" max="100"></progress>
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;output&gt;</td>
+        <td class="tg-yw4l">block</td>
+        <td class="tg-yw4l">HTML5 Form output</td>
+        <td class="tg-yw4l"><pre>&lt;form oninput="x.value=parseInt(a.value)+parseInt(b.value)"&gt;0<br>&lt;input
+            type="range" id="a" value="50"&gt;100<br>+&lt;input type="number" id="b" value="50"&gt;<br>=&lt;output
+            name="x" for="a b"&gt;&lt;/output&gt;<br>&lt;/form&gt;</pre>
+        </td>
+        <td class="tg-yw4l">
+            <form oninput="x.value=parseInt(a.value)+parseInt(b.value)">0
+                <input type="range" id="a" value="50">100
+                +<input type="number" id="b" value="50">
+                =
+                <output name="x" for="a b"></output>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;samp&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">defines the sample output from a computer program</td>
+        <td class="tg-yw4l"><pre>This is a &lt;samp&gt;Sample output&lt;/samp&gt;</pre></td>
+        <td class="tg-yw4l">This is a <samp>Sample output</samp></td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;ul&gt;</td>
+        <td class="tg-yw4l">block</td>
+        <td class="tg-yw4l">unordered List</td>
+        <td class="tg-yw4l"><pre>&lt;ul&gt;<br>&lt;li&gt;Coffee&lt;/li&gt;<br>&lt;li&gt;Tea&lt;/li&gt;<br>&lt;li&gt;Milk&lt;/li&gt;<br>&lt;/ul&gt;</pre>
+        </td>
+        <td class="tg-yw4l">
+            <ul>
+                <li>Coffee</li>
+                <li>Tea</li>
+                <li>Milk</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;ol&gt;</td>
+        <td class="tg-yw4l">block</td>
+        <td class="tg-yw4l">ordered List</td>
+        <td class="tg-yw4l"><pre>&lt;ol&gt;<br>&lt;li&gt;Coffee&lt;/li&gt;<br>&lt;li&gt;Tea&lt;/li&gt;<br>&lt;li&gt;Milk&lt;/li&gt;<br>&lt;/ol&gt;</pre>
+        </td>
+        <td class="tg-yw4l">
+            <ol>
+                <li>Coffee</li>
+                <li>Tea</li>
+                <li>Milk</li>
+            </ol>
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;table&gt;</td>
+        <td class="tg-yw4l">block</td>
+        <td class="tg-yw4l">Tables, with:<br>&lt;tr&gt; = Table row<br>&lt;th&gt; = Table header<br>&lt;td&gt; = Table
+            cell
+        </td>
+        <td class="tg-yw4l"><pre>&lt;table&gt;<br><br>&lt;tr&gt;<br>&lt;th&gt;Month&lt;/th&gt;<br>&lt;th&gt;Savings&lt;/th&gt;<br>&lt;/tr&gt;<br><br>&lt;tr&gt;<br>&lt;td&gt;January&lt;/td&gt;<br>&lt;td&gt;$100&lt;/td&gt;<br>&lt;/tr&gt;<br><br>&lt;tr&gt;<br>&lt;td&gt;February&lt;/td&gt;<br>&lt;td&gt;$80&lt;/td&gt;<br>&lt;/tr&gt;<br><br>&lt;/table&gt;</pre>
+        </td>
+        <td class="tg-yw4l">
+            <table>
+                <tr>
+                    <th>Month</th>
+                    <th>Savings</th>
+                </tr>
+                <tr>
+                    <td>January</td>
+                    <td>$100</td>
+                </tr>
+                <tr>
+                    <td>February</td>
+                    <td>$80</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;img&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">Image</td>
+        <td class="tg-yw4l"><pre>&lt;img src="https://www.w3schools.com/images/stickman.gif"&gt;</pre></td>
+        <td class="tg-yw4l"><img src="https://www.w3schools.com/images/stickman.gif"></td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;button&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">Button</td>
+        <td class="tg-yw4l"><pre>&lt;button type="button"&gt;Click Me!&lt;/button&gt;</pre></td>
+        <td class="tg-yw4l">
+            <button type="button">Click Me!</button>
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;input&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">Input field</td>
+        <td class="tg-yw4l"><pre>&lt;input id="input1" type="text"&gt;</pre></td>
+        <td class="tg-yw4l"><input id="input1" type="text"></td>
+    </tr>
+    <tr>
+        <td class="tg-yw4l">&lt;textarea&gt;</td>
+        <td class="tg-yw4l">inline</td>
+        <td class="tg-yw4l">Text area</td>
+        <td class="tg-yw4l"><pre>&lt;textarea&gt;This enables you to write multiline text.&lt;/textarea&gt;</pre></td>
+        <td class="tg-yw4l"><textarea>This enables you to write multiline text.</textarea></td>
+    </tr>
+</table>
+
+</body>
+</html>
