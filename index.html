@@ -7,6 +7,7 @@
     <!-- Code Editor HTML-->
     <script src="lib/codemirror.js"></script>
     <link rel="stylesheet" href="lib/codemirror.css">
+    <link rel="stylesheet" href="lib/github.css">
     <script src="mode/htmlmixed/htmlmixed.js"></script>
     <script src="mode/xml/xml.js"></script>
     <script src="mode/javascript/javascript.js"></script>
@@ -550,7 +551,7 @@ Learn &lt;a href="#html-def"&gt;HTML&lt;/a&gt;</div>
             value: $unescaped,
             mode: "application/x-ejs",
             lineNumbers: true,
-            readOnly: true,
+            readOnly: 'nocursor',
             indentUnit: 4
         });
 
