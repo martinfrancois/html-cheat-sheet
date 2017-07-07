@@ -37,6 +37,10 @@
         @import url('https://fonts.googleapis.com/css?family=Roboto');
         @import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
     </style>
+
+    <!-- Floating table header -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/floatthead/2.0.3/jquery.floatThead.min.js"></script>
+
 </head>
 <body>
 
@@ -74,6 +78,10 @@
 
     ul:not(.browser-default) {
         padding-left: 40px !important;
+    }
+
+    thead {
+        background: white;
     }
 
 </style>
@@ -560,8 +568,8 @@ Learn &lt;a href="#html-def"&gt;HTML&lt;/a&gt;</div>
 
 </div>
 
-<!-- Insert CodeMirror into code -->
 <script>
+    // Insert CodeMirror into code
     $('.code').each(function() {
 
         var $this = $(this),
@@ -580,6 +588,10 @@ Learn &lt;a href="#html-def"&gt;HTML&lt;/a&gt;</div>
         });
 
     });
+
+    // Make table header floating
+    var $table = $('table');
+    $table.floatThead();
 </script>
 
 </body>
