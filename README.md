@@ -17,7 +17,7 @@ Node.js 24 is needed only to run the test.
 ## Install
 
 ```sh
-git clone https://github.com/martinfrancois/htmlCheatSheet.git
+git clone https://github.com/martinfrancois/html-cheat-sheet.git
 ```
 
 ## Usage
@@ -25,7 +25,7 @@ git clone https://github.com/martinfrancois/htmlCheatSheet.git
 Open `index.html` in a browser, for example:
 
 ```sh
-xdg-open htmlCheatSheet/index.html
+xdg-open html-cheat-sheet/index.html
 ```
 
 On macOS use `open`, on Windows `start`. Editing a row is a matter of editing the corresponding `<tr>` in `index.html`: the `tg-code` cell holds the escaped example and the `tg-output` cell holds the same markup unescaped.
