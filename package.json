@@ -1,0 +1,21 @@
+{
+  "name": "htmlcheatsheet",
+  "version": "1.0.0",
+  "description": "Single-page HTML tag reference that shows each tag with a description, sample code and the rendered result",
+  "private": true,
+  "license": "MIT",
+  "author": "François Martin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martinfrancois/htmlCheatSheet.git"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "devDependencies": {
+    "node-html-parser": "9.0.4"
+  }
+}
