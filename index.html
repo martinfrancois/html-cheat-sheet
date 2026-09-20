@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>HTML cheat sheet</title>
 
-    <script src="lib/normalize.css"></script>
+    <link rel="stylesheet" href="lib/normalize.css">
     <script src="lib/jquery-3.2.1.min.js"></script>
 
-    <!-- Code Editor HTML-->
+    <!-- CodeMirror 5.27.4: read-only editors for the example code cells -->
     <script src="lib/codemirror.js"></script>
     <link rel="stylesheet" href="lib/codemirror.css">
     <link rel="stylesheet" href="lib/github.css">
-    <script src="mode/htmlmixed/htmlmixed.js"></script>
     <script src="mode/xml/xml.js"></script>
     <script src="mode/javascript/javascript.js"></script>
     <script src="mode/css/css.js"></script>
@@ -19,27 +18,15 @@
     <script src="addon/mode/multiplex.js"></script>
     <script src="mode/htmlembedded/htmlembedded.js"></script>
 
-    <!-- Less -->
-    <script src="lib/less.min.js"></script>
-
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <!-- materialize.css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
+    <!-- Materialize 0.99.0, with its Roboto fonts under lib/materialize/fonts -->
+    <link rel="stylesheet" href="lib/materialize/css/materialize.min.css">
+    <script src="lib/materialize/js/materialize.min.js"></script>
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <!-- Fonts -->
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Roboto');
-        @import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
-    </style>
-
     <!-- Floating table header -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/floatthead/2.0.3/jquery.floatThead.min.js"></script>
+    <script src="lib/jquery.floatThead-2.0.3.min.js"></script>
 
 </head>
 <body>
@@ -166,11 +153,11 @@ test
             one &lt;base&gt; element in a document, and it must be inside the &lt;head&gt; element.
         </td>
         <td class="tg-code"><div class="code">&lt;head&gt;
-    &lt;base href="https://www.w3schools.com/images/" target="_blank"&gt;
+    &lt;base href="images/" target="_blank"&gt;
 &lt;/head&gt;
-&lt;img src="stickman.gif"&gt;</div>
+&lt;img src="stickman.svg"&gt;</div>
         </td>
-        <td class="tg-output"><img src="https://www.w3schools.com/images/stickman.gif"></td>
+        <td class="tg-output"><img src="images/stickman.svg" alt="stick figure"></td>
     </tr>
     <tr>
         <td class="tg-tag">&lt;h1&gt; - &lt;h6&gt;</td>
@@ -537,8 +524,8 @@ Learn &lt;a href="#html-def"&gt;HTML&lt;/a&gt;</div>
         <td class="tg-tag">&lt;img&gt;</td>
         <td class="tg-inline-block">inline</td>
         <td class="tg-description">Image</td>
-        <td class="tg-code"><div class="code">&lt;img src="https://www.w3schools.com/images/stickman.gif"&gt;</div></td>
-        <td class="tg-output"><img src="https://www.w3schools.com/images/stickman.gif"></td>
+        <td class="tg-code"><div class="code">&lt;img src="images/stickman.svg" alt="stick figure"&gt;</div></td>
+        <td class="tg-output"><img src="images/stickman.svg" alt="stick figure"></td>
     </tr>
     <tr>
         <td class="tg-tag">&lt;button&gt;</td>
