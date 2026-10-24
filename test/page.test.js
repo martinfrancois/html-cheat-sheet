@@ -14,6 +14,10 @@ const page = parse(html);
 const isRemote = (url) => /^(https?:)?\/\//i.test(url);
 const isPageLocal = (url) => !isRemote(url) && !/^(#|mailto:|data:|javascript:)/i.test(url);
 
+function assertLocal(url, kind) {
+  assert.ok(!isRemote(url), `remote ${kind}: ${url}`);
+}
+
 function assertFileExists(url, from) {
   // URLs percent-encode characters such as spaces, file names on disk do not.
   const target = path.resolve(path.dirname(from), decodeURIComponent(url.split(/[?#]/)[0]));
@@ -39,14 +43,10 @@ test("every local src and href resolves to a file in the repository", () => {
 });
 
 test("no script or stylesheet is loaded from the network", () => {
-  for (const script of page.querySelectorAll("script[src]")) {
-    assert.ok(!isRemote(script.getAttribute("src")), `remote script: ${script.getAttribute("src")}`);
-  }
-  for (const link of page.querySelectorAll("link[href]")) {
-    assert.ok(!isRemote(link.getAttribute("href")), `remote link: ${link.getAttribute("href")}`);
-  }
+  for (const script of page.querySelectorAll("script[src]")) assertLocal(script.getAttribute("src"), "script");
+  for (const link of page.querySelectorAll("link[href]")) assertLocal(link.getAttribute("href"), "link");
   for (const style of page.querySelectorAll("style")) {
-    for (const url of cssUrls(style.text)) assert.ok(!isRemote(url), `remote resource in inline style: ${url}`);
+    for (const url of cssUrls(style.text)) assertLocal(url, "resource in inline style");
   }
 });
 
@@ -56,7 +56,7 @@ test("local stylesheets reference only files in the repository", () => {
   for (const href of sheets) {
     const sheet = assertFileExists(href, pageFile);
     for (const url of cssUrls(fs.readFileSync(sheet, "utf8"))) {
-      assert.ok(!isRemote(url), `remote resource in ${href}: ${url}`);
+      assertLocal(url, `resource in ${href}`);
       if (isPageLocal(url)) assertFileExists(url, sheet);
     }
   }
