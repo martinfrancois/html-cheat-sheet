@@ -15,7 +15,8 @@ const isRemote = (url) => /^(https?:)?\/\//i.test(url);
 const isPageLocal = (url) => !isRemote(url) && !/^(#|mailto:|data:|javascript:)/i.test(url);
 
 function assertFileExists(url, from) {
-  const target = path.resolve(path.dirname(from), url.split(/[?#]/)[0]);
+  // URLs percent-encode characters such as spaces, file names on disk do not.
+  const target = path.resolve(path.dirname(from), decodeURIComponent(url.split(/[?#]/)[0]));
   assert.ok(target.startsWith(root + path.sep), `${url} in ${path.relative(root, from)} leaves the repository`);
   assert.ok(fs.existsSync(target) && fs.statSync(target).isFile(), `${url} in ${path.relative(root, from)} is not a file in the repository`);
   return target;
@@ -59,4 +60,8 @@ test("local stylesheets reference only files in the repository", () => {
       if (isPageLocal(url)) assertFileExists(url, sheet);
     }
   }
+});
+
+test("a percent-encoded local reference resolves to the decoded file name", () => {
+  assertFileExists("images/stick%6Dan.svg", pageFile);
 });
