@@ -82,7 +82,8 @@
       "automerge": false,
       "addLabels": [
         "major update"
-      ]
+      ],
+      "description": "Keep major updates separate and require a manual merge."
     }
   ]
 }
