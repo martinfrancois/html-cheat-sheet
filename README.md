@@ -42,7 +42,6 @@ npm test
 ## Limitations
 
 - The table is about 1550 pixels wide, so on a narrower window the output column sits to the right of the visible area and the page scrolls sideways.
-- Code cells use the Roboto Mono font when it is installed on your machine and the next available monospace font otherwise.
 - The `<a>` example links to google.ch. Following that link needs a network connection; nothing else on the page does.
 
 ## Third-party code
