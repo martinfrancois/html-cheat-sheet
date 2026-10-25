@@ -18,3 +18,5 @@ license in the repository root.
 `lib/codemirror.js` is the build from the codemirror.net 5.27.4 zip. It
 differs from the npm build of the same version only in whitespace and
 semicolons.
+
+| `lib/RobotoMono.ttf` | Roboto Mono variable font, unmodified | SIL Open Font License 1.1, `roboto-mono-ofl.txt` | https://github.com/google/fonts/tree/main/ofl/robotomono |
