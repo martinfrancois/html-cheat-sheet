@@ -3,8 +3,8 @@
 ## Scope
 
 How the page is laid out and how it looks: spacing, grouping, controls, icons, and the visual review
-before a change is shown to anyone. These are standing rules from martinfrancois. Color
-contrast and text size numbers live in [Accessibility](accessibility.md).
+before a change is shown to anyone. These are standing rules from martinfrancois. Color contrast
+and text size numbers live in [Accessibility](accessibility.md).
 
 ## Group by the Gestalt laws
 

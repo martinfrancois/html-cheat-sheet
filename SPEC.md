@@ -2,8 +2,8 @@
 
 Status: target contract for version 2, the makeover. Every element and global attribute of the
 standard has an entry. Section 16.1 lists what isn't done yet and section 17 the decisions
-martinfrancois still has to make. Last checked
-against the code, the tests and the GitHub settings on 2026-10-29.
+martinfrancois still has to make. Last checked against the code, the tests and the GitHub settings
+on 2026-10-29.
 
 Purpose: define what the HTML cheat sheet at https://html.fmartin.ch shows and does, who it is for,
 and how it is built, tested and published.
