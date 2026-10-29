@@ -380,9 +380,6 @@ Renovate keeps these packages current, so badges and links follow the data witho
 
 Checked on 2026-10-29. Remove a line in the change that does it.
 
-- Analytics: the PostHog EU project doesn't exist yet, and the repository has no
-  `PUBLIC_POSTHOG_KEY` variable, so the deployed page sends nothing. The project needs cookieless
-  server hash mode switched on.
 - Hosting: GitHub Pages still publishes from a branch, not from the deploy workflow, and has no
   custom domain set. The DNS record for `html.fmartin.ch` exists and goes through the Cloudflare
   proxy. If GitHub can't issue its HTTPS certificate behind the proxy, martinfrancois has to switch
