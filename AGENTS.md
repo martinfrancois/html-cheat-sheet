@@ -43,7 +43,7 @@ with Astro and Tailwind and published at https://html.fmartin.ch.
 ## Agent skills
 
 - [Issue tracker](docs/agents/issue-tracker.md): GitHub Issues through the `gh` CLI
-- [Triage labels](docs/agents/triage-labels.md): the five default labels, `needs-triage` to `wontfix`
+- [Triage labels](docs/agents/triage-labels.md): the five default triage labels
 - [Domain docs](docs/agents/domain.md): single context, `CONTEXT.md` and `docs/adr/` at the root
 
 ## Detailed instructions
