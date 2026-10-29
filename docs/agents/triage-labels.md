@@ -1,15 +1,23 @@
-# Triage Labels
+# Triage labels
 
-The skills speak in terms of five canonical triage roles. This file maps those roles to the actual label strings used in this repo's issue tracker.
+## Scope
 
-| Label in mattpocock/skills | Label in our tracker | Meaning                                  |
-| -------------------------- | -------------------- | ---------------------------------------- |
-| `needs-triage`             | `needs-triage`       | Maintainer needs to evaluate this issue  |
-| `needs-info`               | `needs-info`         | Waiting on reporter for more information |
-| `ready-for-agent`          | `ready-for-agent`    | Fully specified, ready for an AFK agent  |
-| `ready-for-human`          | `ready-for-human`    | Requires human implementation            |
-| `wontfix`                  | `wontfix`            | Will not be actioned                     |
+The label strings the `triage` skill and the skills around it apply on GitHub issues.
 
-When a skill mentions a role (e.g. "apply the AFK-ready triage label"), use the corresponding label string from this table.
+## Rules
 
-Edit the right-hand column to match whatever vocabulary you actually use.
+The skills name five roles. In this repository each label has the same name as its role:
+
+| Role              | Label             | Meaning                                   |
+| ----------------- | ----------------- | ----------------------------------------- |
+| `needs-triage`    | `needs-triage`    | The owner needs to evaluate the issue     |
+| `needs-info`      | `needs-info`      | Waiting on the reporter for more details  |
+| `ready-for-agent` | `ready-for-agent` | Fully specified, an agent can do it alone |
+| `ready-for-human` | `ready-for-human` | Needs a person to do it                   |
+| `wontfix`         | `wontfix`         | Won't be done                             |
+
+`wontfix` already exists. A skill creates the other four the first time it applies them.
+
+## References
+
+- [Issue tracker](issue-tracker.md): the `gh` commands for labels and issues.

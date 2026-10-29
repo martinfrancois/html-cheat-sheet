@@ -1,51 +1,24 @@
-# Domain Docs
+# Domain docs
 
-How the engineering skills should consume this repo's domain documentation when exploring the codebase.
+## Scope
 
-## Before exploring, read these
+Where the engineering skills (`code-review`, `to-spec`, `to-tickets`, `domain-modeling` and the
+others) find this project's terms and decisions, and how they use them. The repository has one
+context: `CONTEXT.md` and `docs/adr/` at the root, and no `CONTEXT-MAP.md`.
 
-- **`CONTEXT.md`** at the repo root, or
-- **`CONTEXT-MAP.md`** at the repo root if it exists: it points at one `CONTEXT.md` per context. Read each one relevant to the topic.
-- **`docs/adr/`**: read ADRs that touch the area you're about to work in. In multi-context repos, also check `src/<context>/docs/adr/` for context-scoped decisions.
+## Rules
 
-If any of these files don't exist, **proceed silently**. Don't flag their absence; don't suggest creating them upfront. The `/domain-modeling` skill (reached via `/grill-with-docs` and `/improve-codebase-architecture`) creates them lazily when terms or decisions actually get resolved.
+- Before exploring the code, read `CONTEXT.md` and the records in `docs/adr/` that touch the area
+  you're about to change.
+- Name domain concepts with the terms in `CONTEXT.md`, as [Writing style](writing-style.md) says.
+  A concept the glossary lacks is either a word the project doesn't use, so pick another, or a gap
+  to add to `CONTEXT.md` in the same change.
+- When your output contradicts a record, say so instead of overriding it, for example: "Contradicts
+  ADR 0005 (cookieless PostHog as the only third-party request), but worth reopening because…".
+- A skill that writes a record follows [Design decisions](design-decisions.md), not its own format:
+  every record is MADR 4, and `test/adr.test.ts` fails on any other shape.
 
-## File structure
+## References
 
-Single-context repo (most repos):
-
-```
-/
-├── CONTEXT.md
-├── docs/adr/
-│   ├── 0001-event-sourced-orders.md
-│   └── 0002-postgres-for-write-model.md
-└── src/
-```
-
-Multi-context repo (presence of `CONTEXT-MAP.md` at the root):
-
-```
-/
-├── CONTEXT-MAP.md
-├── docs/adr/                          ← system-wide decisions
-└── src/
-    ├── ordering/
-    │   ├── CONTEXT.md
-    │   └── docs/adr/                  ← context-specific decisions
-    └── billing/
-        ├── CONTEXT.md
-        └── docs/adr/
-```
-
-## Use the glossary's vocabulary
-
-When your output names a domain concept (in an issue title, a refactor proposal, a hypothesis, a test name), use the term as defined in `CONTEXT.md`. Don't drift to synonyms the glossary explicitly avoids.
-
-If the concept you need isn't in the glossary yet, that's a signal: either you're inventing language the project doesn't use (reconsider) or there's a real gap (note it for `/domain-modeling`).
-
-## Flag ADR conflicts
-
-If your output contradicts an existing ADR, surface it explicitly rather than silently overriding:
-
-> _Contradicts ADR-0007 (event-sourced orders), but worth reopening because…_
+- [Design decisions](design-decisions.md): when to write a record and its format.
+- [Writing style](writing-style.md): wording, including the glossary terms.
