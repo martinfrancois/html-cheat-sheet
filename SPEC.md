@@ -62,7 +62,8 @@ Goals:
 - Work on every screen size, in light and dark mode, offline after the first visit.
 - Score 100 in every Lighthouse category on desktop and as close to 100 as possible on mobile,
   without a change a reader would notice, such as hiding part of the page from find in page.
-  [ADR 0012](docs/adr/0012-create-live-output-frames-near-the-screen.md) has the numbers.
+  [ADR 0012](docs/adr/0012-create-live-output-frames-near-the-screen.md) and
+  [ADR 0018](docs/adr/0018-skip-rendering-entries-off-screen.md) have the numbers.
 - Meet the accessibility rule in section 10.
 - Keep dependencies current without manual review, with tests as the gate.
 

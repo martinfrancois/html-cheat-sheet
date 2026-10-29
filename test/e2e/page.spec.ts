@@ -2,7 +2,7 @@ import { gunzipSync } from "node:zlib";
 import { expect, type Page, test } from "@playwright/test";
 import { CHIP_ROW } from "../../src/lib/chips.ts";
 import { THEME_KEY } from "../../src/lib/theme-key.ts";
-import { entry, liveOutput } from "./helpers.ts";
+import { entry, layOutEveryEntry, liveOutput } from "./helpers.ts";
 
 test.describe("the cheat sheet", () => {
   test("loads without console errors or failed requests", async ({ page }) => {
@@ -22,7 +22,49 @@ test.describe("the cheat sheet", () => {
   test("links every entry from the index", async ({ page }) => {
     await page.goto("/");
     const ids = await page.locator("article[data-entry]").evaluateAll((articles) => articles.map((article) => article.id));
-    for (const id of ids) await expect(page.locator(`nav a[href="#${id}"]`).first()).toBeAttached();
+    // One read of all links: WebKit answers each Playwright call slowly once entries skip rendering
+    // with content-visibility, and a call per entry ran past the timeout.
+    const linked = await page.locator('nav a[href^="#"]').evaluateAll((links) => links.map((link) => link.getAttribute("href")!.slice(1)));
+    expect(ids.filter((id) => !linked.includes(id))).toEqual([]);
+  });
+
+  // Entries off screen have only an estimated height until drawn, so a jump far down the page must
+  // still end on the entry, not where the estimate put it.
+  for (const how of ["from the index", "from the address"] as const) {
+    test(`a link to an entry far down lands on it, ${how}`, async ({ page }) => {
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await page.goto("/");
+      const ids = await page.locator("article[data-entry]").evaluateAll((articles) => articles.map((article) => article.id));
+      for (const id of [ids[Math.floor(ids.length / 2)]!, ids.at(-1)!]) {
+        if (how === "from the index") {
+          await page.evaluate(() => scrollTo(0, 0));
+          await page.locator(`nav a[href="#${id}"]`).first().click();
+        } else {
+          await page.goto(`/#${id}`);
+        }
+        const heading = page.locator(`article#${id} h3`).first();
+        await expect(heading).toBeInViewport({ ratio: 1 });
+        // Entries drawn around it get their real height; the heading must stay in place.
+        await page.evaluate(() => new Promise((resolve) => setTimeout(resolve, 500)));
+        await expect(heading).toBeInViewport({ ratio: 1 });
+      }
+    });
+  }
+
+  // SPEC.md section 3: nothing may hide part of the page from find in page, including entries that
+  // content-visibility hasn't drawn yet.
+  test("find in page reaches the last entry", async ({ page }) => {
+    await page.goto("/");
+    const last = page.locator("article[data-entry]").last();
+    // Words from the entry's longest paragraph. Find starts at the top, so an earlier entry with the
+    // same words would stop it there and fail the test.
+    const phrase = await last.evaluate((article) => {
+      const paragraphs = [...article.querySelectorAll("p")].map((paragraph) => paragraph.textContent!.trim());
+      const longest = paragraphs.reduce((a, b) => (b.length > a.length ? b : a));
+      return longest.split(/\s+/).slice(2, 7).join(" ");
+    });
+    expect(await page.evaluate((text) => (window as unknown as { find: (text: string) => boolean }).find(text), phrase)).toBe(true);
+    await expect(last).toBeInViewport();
   });
 
   test("renders an example's markup as live output", async ({ page }) => {
@@ -96,6 +138,7 @@ test.describe("the cheat sheet", () => {
   test("a wrapped code line never starts with a row of only indentation", async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 800 });
     await page.goto("/");
+    await layOutEveryEntry(page);
     // The first character that isn't a space sits in the line's first row.
     const split = await page.evaluate(() =>
       [...document.querySelectorAll(".astro-code .line")]
@@ -137,6 +180,7 @@ test.describe("the cheat sheet", () => {
     // At this width a usage note of <menu> puts one chip right above another.
     await page.setViewportSize({ width: 752, height: 701 });
     await page.goto("/");
+    await layOutEveryEntry(page);
     const touching = await page.evaluate(() =>
       // A long chip can wrap, so each row it covers is a box of its own.
       [...document.querySelectorAll(":is(p, li, dd) code")].flatMap((chip) =>
@@ -157,6 +201,7 @@ test.describe("the cheat sheet", () => {
     const step = browserName === "chromium" ? 8 : 40;
     test.slow();
     await page.goto("/");
+    await layOutEveryEntry(page);
     const orphans: string[] = [];
     for (let width = 320; width <= 1000; width += step) {
       await page.setViewportSize({ width, height: 800 });
@@ -193,6 +238,7 @@ test.describe("the cheat sheet", () => {
     test(`no code line wraps at ${width} pixels`, async ({ page }) => {
       await page.setViewportSize({ width, height: 800 });
       await page.goto("/");
+      await layOutEveryEntry(page);
       const wrapped = await page.evaluate(() =>
         [...document.querySelectorAll(".astro-code .line")]
           .filter((line) => line.textContent?.trim() && line.getBoundingClientRect().height > parseFloat(getComputedStyle(line).lineHeight) * 1.5)
@@ -205,6 +251,7 @@ test.describe("the cheat sheet", () => {
   test("a wrapped code line continues further in than it starts", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 800 });
     await page.goto("/");
+    await layOutEveryEntry(page);
     const problems = await page.evaluate(() =>
       [...document.querySelectorAll(".astro-code .line")].flatMap((line) => {
         // The left edge of each row's first character.
@@ -231,6 +278,7 @@ test.describe("the cheat sheet", () => {
   test("a short attribute with spaces never wraps in the middle", async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 800 });
     await page.goto("/");
+    await layOutEveryEntry(page);
     const split = await page.evaluate(() =>
       [...document.querySelectorAll(".astro-code .attribute")]
         // Chromium returns a box per token inside; a wrap shows as boxes on different rows.
@@ -243,6 +291,7 @@ test.describe("the cheat sheet", () => {
   test("a code line on a phone never wraps inside a word, a name or a closing tag", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 800 });
     await page.goto("/");
+    await layOutEveryEntry(page);
     const split = await page.evaluate(() =>
       [...document.querySelectorAll(".astro-code .line")].flatMap((line) => {
         // Each character with the row it sits on, in reading order.
@@ -281,6 +330,7 @@ test.describe("the cheat sheet", () => {
   test("a short code chip or word never breaks", async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 800 });
     await page.goto("/");
+    await layOutEveryEntry(page);
     const broken = await page.evaluate((row) =>
       [...document.querySelectorAll("main code:not(.astro-code code, [data-facts] code)")].flatMap((chip) => {
         const text = chip.textContent!;
@@ -316,6 +366,7 @@ test.describe("the cheat sheet", () => {
   test("every code line fits inside its block on a narrow phone", async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 800 });
     await page.goto("/");
+    await layOutEveryEntry(page);
     const overflowing = await page.evaluate(() =>
       [...document.querySelectorAll<HTMLElement>(".astro-code")].filter((code) => code.scrollWidth > code.clientWidth).map((code) => code.textContent!.slice(0, 80)),
     );
@@ -383,6 +434,7 @@ test.describe("the cheat sheet", () => {
   test("never scrolls sideways on a 320 pixel wide screen", async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 800 });
     await page.goto("/");
+    await layOutEveryEntry(page);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow).toBe(0);
   });
