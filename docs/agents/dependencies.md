@@ -24,7 +24,7 @@ container image. Renovate does the updates; `renovate.json` holds its configurat
   [Libraries](libraries.md).
 - Whatever the page loads at runtime is bundled into the build. The only third-party request the
   page makes is analytics, see
-  [ADR 0005](../adr/0005-cookieless-posthog-analytics-as-the-only-third-party-request.md).
+  [ADR 0013](../adr/0013-measure-usage-and-web-vitals-with-cookieless-posthog.md).
 - The Playwright container tag and the `@playwright/test` version move together, in one pull
   request. Visual snapshots depend on that match, see [Testing](testing.md).
 - The `.nvmrc` Node version and the `engines` field in `package.json` describe the same Node major.

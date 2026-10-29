@@ -1,6 +1,6 @@
 // Cookieless PostHog, the page's only third-party request: no cookies, no storage, no session
 // replay, so no consent banner. Without a key at build time (local builds, previews) nothing loads.
-// Why and what is measured: docs/adr/0005-cookieless-posthog-analytics-as-the-only-third-party-request.md.
+// Why and what is measured: docs/adr/0013-measure-usage-and-web-vitals-with-cookieless-posthog.md.
 import type { PostHog } from "posthog-js";
 
 let client: Promise<PostHog | undefined> | undefined;
@@ -8,7 +8,8 @@ let client: Promise<PostHog | undefined> | undefined;
 function load(): Promise<PostHog | undefined> {
   const key = document.body.dataset.posthogKey;
   if (!key) return Promise.resolve(undefined);
-  client ??= import("posthog-js").then(({ default: posthog }) => {
+  // PostHog may not fetch code from its servers, so the web-vitals code it needs comes bundled.
+  client ??= Promise.all([import("posthog-js"), import("posthog-js/dist/web-vitals")]).then(([{ default: posthog }]) => {
     posthog.init(key, {
       api_host: "https://eu.i.posthog.com",
       // Needs "Cookieless server hash mode" switched on in the PostHog project settings.
@@ -19,7 +20,9 @@ function load(): Promise<PostHog | undefined> {
       capture_pageleave: false,
       capture_dead_clicks: false,
       capture_heatmaps: false,
-      capture_performance: false,
+      // Without attribution, which is the web-vitals build bundled above; the default asks for the
+      // attribution build, which can't load here, and then nothing is measured.
+      capture_performance: { web_vitals: true, web_vitals_attribution: false, network_timing: false },
       rageclick: false,
       disable_session_recording: true,
       disable_surveys: true,
