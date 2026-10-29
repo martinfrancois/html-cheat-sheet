@@ -68,7 +68,7 @@ frame would show from the site's origin, so relative image paths load, then chec
 
 ## Performance
 
-The owner wants Lighthouse scores of 100 in every category, as long as reaching them costs the
+martinfrancois wants Lighthouse scores of 100 in every category, as long as reaching them costs the
 reader nothing. Keep a performance change only when a measurement shows it helps, and record what
 you measured; [ADR 0012](../adr/0012-create-live-output-frames-near-the-screen.md) has the current
 numbers and the changes that were tried and dropped.

@@ -14,7 +14,7 @@ Every example shows its live output in a sandboxed `<iframe>`
 ([ADR 0003](0003-render-live-output-in-sandboxed-iframes.md)). With every entry written, the page
 had about 220 of them in its HTML. They started empty and got their document from a script only
 near the screen, but the browser still gives each `<iframe>` element a browsing context, with its
-own window and `about:blank` document, while it parses the HTML. The owner asked for Lighthouse
+own window and `about:blank` document, while it parses the HTML. martinfrancois asked for Lighthouse
 scores of 100 where the reading experience doesn't suffer. How should the page hold its frames?
 
 ## Decision Drivers

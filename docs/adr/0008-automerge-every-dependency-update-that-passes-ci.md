@@ -13,7 +13,7 @@ informed: [Future maintainers and agents working on this repository]
 The rebuild ([ADR 0002](0002-build-the-cheat-sheet-with-astro-and-tailwind.md)) brings Astro,
 Tailwind, CodeMirror, Playwright, `web-features`, fonts, Node, and GitHub Actions, and Renovate opens
 a pull request for each update. The earlier `renovate.json` merged minor and patch updates on its own
-but held every major update and every Node update for a manual merge. The owner usually decides
+but held every major update and every Node update for a manual merge. martinfrancois usually decides
 breaking dependency updates himself. For this repository he wants to stop: "we should be confident
 enough to merge any dependency update automatically that passes tests on CI no matter if major minor
 or patch without worrying we break it." Should updates merge on their own, and what has to be true of
@@ -104,12 +104,12 @@ to merge. This is what `renovate.json` did before this decision.
 Renovate opens pull requests and a person merges each one.
 
 * Good, because nothing reaches the site unseen.
-* Bad, because it costs the owner time on every update, including the many that change nothing
+* Bad, because it costs martinfrancois time on every update, including the many that change nothing
   visible.
 
 ## More Information
 
-The owner made this decision on 2026-10-28, after the design interview. It is a deliberate exception
-to his usual practice of deciding breaking dependency updates himself: in this repository the tests
-are the gate. If an update breaks the live site despite passing CI, add the test that would have
-caught it, then fix the update.
+martinfrancois made this decision on 2026-10-28, after the design interview. It is a deliberate
+exception to his usual practice of deciding breaking dependency updates himself: in this repository
+the tests are the gate. If an update breaks the live site despite passing CI, add the test that
+would have caught it, then fix the update.

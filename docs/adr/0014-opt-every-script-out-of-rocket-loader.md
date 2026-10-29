@@ -15,14 +15,14 @@ the zone. Rocket Loader rewrites every script so it runs after the first paint. 
 broke two scripts that must run before it: the theme script, so a saved dark theme flashed light
 first, and the script that opens the index, so the index pushed the entries down. It also held back
 the main module. With Rocket Loader, Lighthouse scored the live page 79 on desktop (CLS 0.461) and
-94 to 95 on mobile, where the same build served without Cloudflare scores 100 and 99. The owner
+94 to 95 on mobile, where the same build served without Cloudflare scores 100 and 99. martinfrancois
 wants Rocket Loader to stay on for the rest of the zone. How should this page keep its scripts
 running when they're written to run?
 
 ## Decision Drivers
 
 * No theme flash and no layout shift while the page loads.
-* Rocket Loader stays on for the zone, which the owner's other sites use.
+* Rocket Loader stays on for the zone, which martinfrancois's other sites use.
 * The rule holds for any script added later, without anyone having to remember Cloudflare.
 * No setting outside the repository that a reader of the code can't see.
 
@@ -49,7 +49,7 @@ if Astro changed how it writes the tag.
 ### Consequences
 
 * Good, because the page runs its scripts as written, behind Cloudflare or not.
-* Good, because the owner's other sites keep Rocket Loader.
+* Good, because martinfrancois's other sites keep Rocket Loader.
 * Bad, because the build edits its own output with a string replacement that depends on Astro
   writing `<script type="module" src=`. The build fails loudly when that changes.
 * Bad, because Cloudflare still adds its own Rocket Loader script to the page, which then finds
@@ -86,11 +86,11 @@ A rule in the Cloudflare dashboard matches the hostname and switches Rocket Load
 The Speed settings of the fmartin.ch zone switch Rocket Loader off for every site in it.
 
 * Good, because it needs no code and no rule.
-* Bad, because the owner wants Rocket Loader for the zone's other sites.
+* Bad, because martinfrancois wants Rocket Loader for the zone's other sites.
 
 ## More Information
 
-The owner asked on 2026-10-29 whether `data-cfasync="false"` would let Rocket Loader stay on.
+martinfrancois asked on 2026-10-29 whether `data-cfasync="false"` would let Rocket Loader stay on.
 Cloudflare's documentation:
 [Ignore JavaScripts](https://developers.cloudflare.com/speed/optimization/content/rocket-loader/ignore-javascripts/).
 The change and its measurements are in

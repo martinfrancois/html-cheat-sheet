@@ -10,7 +10,7 @@ The skills name five roles. In this repository each label has the same name as i
 
 | Role              | Label             | Meaning                                   |
 | ----------------- | ----------------- | ----------------------------------------- |
-| `needs-triage`    | `needs-triage`    | The owner needs to evaluate the issue     |
+| `needs-triage`    | `needs-triage`    | martinfrancois needs to evaluate the issue     |
 | `needs-info`      | `needs-info`      | Waiting on the reporter for more details  |
 | `ready-for-agent` | `ready-for-agent` | Fully specified, an agent can do it alone |
 | `ready-for-human` | `ready-for-human` | Needs a person to do it                   |

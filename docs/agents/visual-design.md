@@ -3,7 +3,7 @@
 ## Scope
 
 How the page is laid out and how it looks: spacing, grouping, controls, icons, and the visual review
-before a change is shown to anyone. These are standing rules from the owner, martinfrancois. Color
+before a change is shown to anyone. These are standing rules from martinfrancois. Color
 contrast and text size numbers live in [Accessibility](accessibility.md).
 
 ## Group by the Gestalt laws
@@ -22,7 +22,7 @@ purpose, and check every screen for it.
     the same row and a thin line under it. The buttons take no space beside the code.
   - An example title keeps its last two words together, so when it wraps it never leaves one word
     alone on its last line, and otherwise fills its lines as usual. Balancing the lines instead
-    split titles in the middle of a phrase, which the owner found strange. `text-wrap: pretty`
+    split titles in the middle of a phrase, which martinfrancois found strange. `text-wrap: pretty`
     would do this in CSS but isn't Baseline (no Firefox).
 - **Similarity.** Things of the same kind look the same everywhere: every piece of inline code is a
   chip, every section label inside an entry ("Key attributes", "Good to know") has the same small
@@ -40,8 +40,8 @@ purpose, and check every screen for it.
   flowing to the right. No sidebar.
 - Usage notes are short separate points, never a paragraph. [Content entries](content-entries.md)
   has the length limit and the rule for how many examples an entry gets.
-- Example code doesn't wrap where the owner reads it. On wide screens the code takes three fifths
-  of an example's width and the live output two fifths, and the code is 15 px with 12 px of
+- Example code doesn't wrap where martinfrancois reads it. On wide screens the code takes three
+  fifths of an example's width and the live output two fifths, and the code is 15 px with 12 px of
   padding, so a 70-character line fits on one row at a foldable's 752 px and on a desktop.
   Narrower screens wrap a long line, and the rest of it continues further indented than the line
   started. It wraps at a seam of the code (before or after a tag, after a slash in a path, before
@@ -62,7 +62,7 @@ purpose, and check every screen for it.
 
 ## Color
 
-The owner wants colors that pop, never muddy.
+martinfrancois wants colors that pop, never muddy.
 
 - Keep the greys clean: backgrounds and text barely tinted. Color comes from saturated accents,
   not from tinting everything.
@@ -73,12 +73,12 @@ The owner wants colors that pop, never muddy.
   element names and the rule under each chapter title, where 3:1 is enough. Contrast rules still
   apply to it; see [Accessibility](accessibility.md).
 - Code chips may take a light tint of the highlight, with dark text on them.
-- The owner chose the "Cyan and pink" theme on 2026-10-29, after comparing neon pink, neon cyan,
-  lime and yellow with a panel of reviewers. Cyan marks what you read and click (links, the index,
-  code tags); pink marks structure (the rule under chapter titles, the brackets in headings, the
-  code chips).
+- martinfrancois chose the "Cyan and pink" theme on 2026-10-29, after comparing neon pink, neon
+  cyan, lime and yellow with a panel of reviewers. Cyan marks what you read and click (links, the
+  index, code tags); pink marks structure (the rule under chapter titles, the brackets in headings,
+  the code chips).
 - Dark mode shows both at full neon strength on near-black.
-- Light mode keeps only shades that look good on white. The owner found the alternatives ugly.
+- Light mode keeps only shades that look good on white. martinfrancois found the alternatives ugly.
   - Backgrounds are plain white and grey, never tinted with the theme color.
   - Cyan becomes a strong blue: darkened to 7:1 on white, cyan itself turns a muddy petrol.
   - Pink becomes deep magenta for chips (white text on them) and bright pink for lines.
@@ -109,7 +109,7 @@ reads as one without hovering.
 - The back-to-top link is the one round icon button, after the one on fmartin.ch, because it floats
   over the entries instead of sitting in a row. It has its own fill, a `--muted` border and a ring
   in the page color, so the border keeps 7:1 over chips and code blocks. It jumps without a smooth
-  scroll, which the owner asked for: on a page this long, an animation takes seconds.
+  scroll, which martinfrancois asked for: on a page this long, an animation takes seconds.
 - Never show a hint that most readers can't decode, such as a bare `/` next to the search box.
   Declare keyboard shortcuts with `aria-keyshortcuts` instead.
 - Visible text must fit the narrowest screen it appears on. A placeholder such as "Search elements"

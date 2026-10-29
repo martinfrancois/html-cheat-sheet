@@ -3,7 +3,7 @@
 ## Scope
 
 The accessibility rule for the page chrome: layout, navigation, search, cards, buttons, code blocks,
-and both color themes. It is a standing rule from the owner, martinfrancois, and applies to every
+and both color themes. It is a standing rule from martinfrancois, and applies to every
 change. Why the rule exists is in
 [ADR 0007](../adr/0007-wcag-2-2-aa-with-aaa-contrast-and-text-presentation.md).
 
@@ -14,10 +14,10 @@ Follow WCAG 2.2 level AA everywhere, and level AAA for colors and font sizes. In
 | What | Minimum | WCAG criterion |
 | --- | --- | --- |
 | Text contrast | 7:1 | 1.4.6 Contrast (Enhanced), AAA |
-| Large text contrast (24px, or 18.66px bold, bold meaning weight 700) | 3:1 | 1.4.3, AA, owner rule |
+| Large text contrast (24px, or 18.66px bold, bold meaning weight 700) | 3:1 | 1.4.3, AA, martinfrancois's rule |
 | Non-text UI parts and focus indicators | 3:1 against what is next to them | 1.4.11 Non-text Contrast, AA |
-| Body text size | 16px | owner rule |
-| Smallest text anywhere | 15px (the owner's floor is 14px) | owner rule, checked at 15px |
+| Body text size | 16px | martinfrancois's rule |
+| Smallest text anywhere | 15px (martinfrancois's floor is 14px) | martinfrancois's rule, checked at 15px |
 | Line height | 1.5 | 1.4.8 Visual Presentation, AAA |
 | Space between paragraphs | 1.5 times the line height | 1.4.8, AAA |
 | Line length | 80 characters at most | 1.4.8, AAA |

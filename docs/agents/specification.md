@@ -20,17 +20,17 @@ requirement in `SPEC.md` and link the page instead of copying it.
 ## Rules
 
 - Before changing the page, read the `SPEC.md` sections the change touches.
-- When the owner adds or changes a requirement, update `SPEC.md` in the same change as the code. A
-  requirement that lives only in chat, a pull request or a commit message is lost for the next
-  person.
-- The owner's latest explicit decision wins. Rewrite the old wording instead of keeping both. When
-  it's unclear how far a decision reaches, ask the owner.
-- A requirement the owner asked for that isn't built yet goes under "Not done yet", never into the
-  text as if it worked. Remove its line in the change that builds it.
-- A temporary tool, such as a preview control that helps the owner choose something, is not a
+- When martinfrancois adds or changes a requirement, update `SPEC.md` in the same change as the
+  code. A requirement that lives only in chat, a pull request or a commit message is lost for the
+  next person.
+- martinfrancois's latest explicit decision wins. Rewrite the old wording instead of keeping both.
+  When it's unclear how far a decision reaches, ask martinfrancois.
+- A requirement martinfrancois asked for that isn't built yet goes under "Not done yet", never into
+  the text as if it worked. Remove its line in the change that builds it.
+- A temporary tool, such as a preview control that helps martinfrancois choose something, is not a
   feature. List the pending choice under "Open decisions" instead.
-- When the code disagrees with `SPEC.md` and the owner hasn't changed the requirement, fix the code
-  or open an issue. Don't edit `SPEC.md` to match the code.
+- When the code disagrees with `SPEC.md` and martinfrancois hasn't changed the requirement, fix the
+  code or open an issue. Don't edit `SPEC.md` to match the code.
 - When `SPEC.md` and an ADR disagree, `SPEC.md` wins for what the page does. Supersede the ADR as
   [Design decisions](design-decisions.md) describes.
 - Use `MUST`, `MUST NOT`, `SHOULD` and `MAY` in capitals only with their RFC 2119 meaning.

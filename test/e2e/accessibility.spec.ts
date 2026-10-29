@@ -7,8 +7,8 @@ import { renderAllFrames } from "./helpers.ts";
 // text size, in both themes, at desktop and phone width.
 const WCAG = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "wcag2aaa"];
 
-// The owner's rule holds large text to AA (3:1) and small text to AAA (7:1). axe's enhanced check
-// wants 4.5:1 for large text, so its large-text findings are dropped here; the AA rule
+// martinfrancois's rule holds large text to AA (3:1) and small text to AAA (7:1). axe's enhanced
+// check wants 4.5:1 for large text, so its large-text findings are dropped here; the AA rule
 // (color-contrast) still fails any large text under 3:1.
 function withLargeTextAtAA(violations: Result[]): Result[] {
   return violations

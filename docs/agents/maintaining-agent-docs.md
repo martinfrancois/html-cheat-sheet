@@ -53,8 +53,8 @@ A new topic that fits none of these gets a new page, linked from `AGENTS.md` and
   to it from elsewhere.
 - Delete or rewrite vague rules such as "write clean code" or "be careful". A rule must change a
   concrete decision or a verification step.
-- If a new rule conflicts with an existing one and it's not clear which should win, ask the owner.
-  Don't keep both.
+- If a new rule conflicts with an existing one and it's not clear which should win, ask
+  martinfrancois. Don't keep both.
 - Write for any person on any machine with any agent: no local paths, no host names, no first names.
   [Writing style](writing-style.md#naming-people) says how to name people.
 - Follow [Writing style](writing-style.md).

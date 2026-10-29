@@ -1,15 +1,15 @@
 # HTML cheat sheet specification
 
 Status: target contract for version 2, the makeover. Every element and global attribute of the
-standard has an entry. Section 16.1 lists what isn't done yet and section 17 the decisions the owner
-still has to make. Last checked
+standard has an entry. Section 16.1 lists what isn't done yet and section 17 the decisions
+martinfrancois still has to make. Last checked
 against the code, the tests and the GitHub settings on 2026-10-29.
 
 Purpose: define what the HTML cheat sheet at https://html.fmartin.ch shows and does, who it is for,
 and how it is built, tested and published.
 
 This document is the contract for the page. The implementation, the tests and the docs MUST match
-it. It records the decisions of the owner, martinfrancois. A later explicit decision by the owner
+it. It records the decisions of martinfrancois. A later explicit decision by martinfrancois
 replaces an earlier one about the same thing.
 
 ## Normative language
@@ -188,7 +188,7 @@ A sentence that only says there is a difference is not enough.
   or that nothing matches. Clearing the box shows everything again.
 - The `/` key focuses the search box when the reader isn't typing somewhere else. The page declares
   it with `aria-keyshortcuts` and shows no `/` hint next to the box.
-- Search uses uFuzzy, the library the owner's website uses.
+- Search uses uFuzzy, the library martinfrancois's website uses.
   [ADR 0010](docs/adr/0010-search-with-ufuzzy.md) records the choice.
 
 ### 9.2 Theme
@@ -257,8 +257,8 @@ A sentence that only says there is a difference is not enough.
 
 - The page sends usage data to its own PostHog project in the EU: page views, searches that find
   nothing (sent once typing pauses), and clicks on Edit and Copy. It also sends the Core Web Vitals
-  each reader's browser measures (LCP, INP and CLS), plus FCP, so the owner sees how fast the page
-  is for real readers. Only Chromium-based browsers measure CLS.
+  each reader's browser measures (LCP, INP and CLS), plus FCP, so martinfrancois sees how fast the
+  page is for real readers. Only Chromium-based browsers measure CLS.
 - It sets no cookies, stores nothing on the reader's device and records no sessions, so it needs no
   consent banner.
 - The PostHog script loads two seconds after the page, and only when the build had a PostHog key. It
@@ -373,8 +373,8 @@ Checked on 2026-10-29. Remove a line in the change that does it.
   server hash mode switched on.
 - Hosting: GitHub Pages still publishes from a branch, not from the deploy workflow, and has no
   custom domain set. The DNS record for `html.fmartin.ch` exists and goes through the Cloudflare
-  proxy. If GitHub can't issue its HTTPS certificate behind the proxy, the owner has to switch that
-  record to DNS only.
+  proxy. If GitHub can't issue its HTTPS certificate behind the proxy, martinfrancois has to switch
+  that record to DNS only.
 
 ## 17. Open decisions
 

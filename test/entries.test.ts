@@ -74,7 +74,8 @@ test(`example code lines are at most ${CODE_LINE} characters`, () => {
   }
 });
 
-// The owner found a short <img> split over four lines wasteful: what fits on one line stays there.
+// martinfrancois found a short <img> split over four lines wasteful: what fits on one line stays
+// there.
 test("example code keeps a tag or a line of text on one line when it fits", () => {
   for (const entry of entries) {
     for (const example of entry.examples) {
@@ -137,7 +138,7 @@ test("entry text puts every tag in backticks, so Markdown never turns it into HT
   }
 });
 
-// The page talks like a person: "doesn't", never "does not". A standing rule from the owner.
+// The page talks like a person: "doesn't", never "does not". A standing rule from martinfrancois.
 const LONG_FORMS = /\b(do|does|did|is|are|was|were|has|have|had|will|would|should|could|must) not\b|\bcannot\b|\b(it|that|there|you|they|we) (is|are|will)\b/i;
 
 test("entry text uses contractions, never the long form", () => {
