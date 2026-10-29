@@ -44,6 +44,11 @@ test.describe("the cheat sheet", () => {
     });
   }
 
+  test("shows no browser notice in a current browser", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByText(/is too old for parts of this page/)).toBeHidden();
+  });
+
   test("links every entry from the index", async ({ page }) => {
     await page.goto("/");
     const ids = await page.locator("article[data-entry]").evaluateAll((articles) => articles.map((article) => article.id));
@@ -649,15 +654,38 @@ test.describe("analytics", () => {
   const posthog = "https://eu.i.posthog.com/**";
   // PostHog drops events from a browser that says it's automated, through navigator.webdriver or,
   // in headless Chromium, a "HeadlessChrome" brand.
+  // The key goes on <body> as soon as it exists, before the page's script runs, as a real build has it.
   const withKey = (page: Page) =>
     page.addInitScript(() => {
       Object.defineProperty(navigator, "webdriver", { get: () => false });
       Object.defineProperty(navigator, "userAgentData", { get: () => undefined });
-      addEventListener("DOMContentLoaded", () => (document.body.dataset.posthogKey = "phc_test"));
+      new MutationObserver((_, observer) => {
+        if (!document.body) return;
+        document.body.dataset.posthogKey = "phc_test";
+        observer.disconnect();
+      }).observe(document, { childList: true, subtree: true });
     });
 
-  async function useThePage(page: Page): Promise<void> {
-    await page.goto("/");
+  type Sent = { event: string; properties: Record<string, unknown> };
+  // Every event the page sends PostHog, unpacked from its gzipped batches; PostHog itself isn't reached.
+  async function collectEvents(page: Page): Promise<Sent[]> {
+    const events: Sent[] = [];
+    await page.route(posthog, async (route) => {
+      const body = route.request().postDataBuffer();
+      try {
+        if (body) {
+          const text = (body[0] === 0x1f && body[1] === 0x8b ? gunzipSync(body) : body).toString();
+          events.push(...[JSON.parse(text)].flat().flatMap((data) => data.batch ?? [data]));
+        }
+      } finally {
+        await route.fulfill({ json: { status: 1 } });
+      }
+    });
+    return events;
+  }
+
+  async function useThePage(page: Page, { reload = true } = {}): Promise<void> {
+    if (reload) await page.goto("/");
     await liveOutput(page, "strong-b-example-1");
     await page.getByLabel("Search elements and attributes").fill("dialog");
     await expect(entry(page, "dialog")).toBeVisible();
@@ -684,22 +712,12 @@ test.describe("analytics", () => {
   test("reports the reader's web vitals once the page is hidden", async ({ page, browserName }) => {
     // https://github.com/martinfrancois/html-cheat-sheet/issues/13
     test.skip(browserName === "webkit", "PostHog sends the page view but no $web_vitals in Playwright's WebKit, cause not found yet");
-    const events: { event: string; properties: Record<string, unknown> }[] = [];
     await withKey(page);
-    await page.route(posthog, async (route) => {
-      const body = route.request().postDataBuffer();
-      try {
-        if (body) {
-          const text = (body[0] === 0x1f && body[1] === 0x8b ? gunzipSync(body) : body).toString();
-          events.push(...[JSON.parse(text)].flat().flatMap((data) => data.batch ?? [data]));
-        }
-      } finally {
-        await route.fulfill({ json: { status: 1 } });
-      }
-    });
-    await useThePage(page);
-    // PostHog has to be running before the page hides, or nothing is listening.
+    const events = await collectEvents(page);
+    await page.goto("/");
+    // A click before PostHog starts loses LCP: https://github.com/martinfrancois/html-cheat-sheet/issues/24
     await expect.poll(() => events.some((event) => event.event === "$pageview")).toBe(true);
+    await useThePage(page, { reload: false });
     // Leaving the page hides it, which is when the browser settles CLS and INP.
     await page.evaluate(() => {
       Object.defineProperty(document, "visibilityState", { get: () => "hidden", configurable: true });
@@ -714,6 +732,59 @@ test.describe("analytics", () => {
     const expected = ["$web_vitals_FCP_value", "$web_vitals_INP_value", "$web_vitals_LCP_value"];
     if (browserName === "chromium") expected.unshift("$web_vitals_CLS_value");
     await expect.poll(vitals, { timeout: 15_000 }).toEqual(expected);
+  });
+
+  // docs/adr/0021: a reader whose browser lacks a feature the page needs learns which browsers work,
+  // and PostHog learns which features were missing.
+  test("tells a reader whose browser is too old, and reports what it lacks", async ({ page }) => {
+    await withKey(page);
+    await page.addInitScript(() => delete (Set.prototype as { intersection?: unknown }).intersection);
+    const events = await collectEvents(page);
+    await page.goto("/");
+    await expect(page.getByText(/is too old for parts of this page/)).toHaveText(/^Your browser, \S.* \d+(\.\d+)?, is too old for parts of this page\. It works in .+ or newer\.$/);
+    await expect
+      .poll(() => events.find((event) => event.event === "unsupported_browser")?.properties.missing)
+      .toBe("javascript.builtins.Set.intersection");
+  });
+
+  test("sends nothing without a PostHog key, also for a browser that's too old", async ({ page }) => {
+    const sent: string[] = [];
+    page.on("request", (request) => request.url().startsWith("https://eu.i.posthog.com/") && sent.push(request.url()));
+    await page.clock.install();
+    await page.addInitScript(() => delete (Set.prototype as { intersection?: unknown }).intersection);
+    await page.goto("/");
+    await expect(page.getByText(/is too old for parts of this page/)).toBeVisible();
+    // Past the two seconds at which PostHog would start.
+    await page.clock.runFor(2_000);
+    await page.waitForLoadState("networkidle");
+    expect(sent).toEqual([]);
+  });
+
+  test("reports script errors, also ones from before PostHog started", async ({ page }) => {
+    await withKey(page);
+    // Thrown by a script in the page just after its own has run, two seconds before PostHog starts.
+    // WebKit reports an error from an init script itself only as "Script error.".
+    await page.addInitScript(() =>
+      addEventListener("DOMContentLoaded", () => {
+        const script = document.createElement("script");
+        script.textContent = 'throw new Error("thrown before PostHog")';
+        document.head.append(script);
+      }),
+    );
+    const events = await collectEvents(page);
+    await page.goto("/");
+    await expect.poll(() => events.some((event) => event.event === "$pageview")).toBe(true);
+    await page.evaluate(() => {
+      const script = document.createElement("script");
+      script.textContent = 'throw new Error("thrown after PostHog")';
+      document.head.append(script);
+    });
+    const messages = () =>
+      events
+        .filter((event) => event.event === "$exception")
+        .flatMap((event) => (event.properties.$exception_list as { value: string }[]).map((exception) => exception.value))
+        .sort();
+    await expect.poll(messages).toEqual(["thrown after PostHog", "thrown before PostHog"]);
   });
 
   test("leaves the page working when PostHog can't be reached", async ({ page }) => {

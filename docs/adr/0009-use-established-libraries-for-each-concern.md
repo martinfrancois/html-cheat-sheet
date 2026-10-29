@@ -72,6 +72,9 @@ The choices, as of 2026-10-28:
   because its peer range, as of version 1.2.0, stops at Astro 5 and the project is on Astro 7.
 * **Analytics.** `posthog-js`, see
   [ADR 0013](0013-measure-usage-and-web-vitals-with-cookieless-posthog.md).
+* **Naming the reader's browser.** `bowser`, for the notice to a reader whose browser is too old,
+  see [ADR 0021](0021-tell-readers-when-their-browser-is-too-old.md). `ua-parser-js` is AGPL from
+  version 2, and `detect-browser`'s latest release is from 2022.
 * **Markdown in entry text.** `marked`, with `parseInline` for the inline code, emphasis, and links
   that entry fields allow.
 * **HTML parsing in scripts.** `node-html-parser`, which the old link check already used.

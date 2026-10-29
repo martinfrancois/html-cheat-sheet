@@ -5,6 +5,7 @@ import Moon from "@lucide/astro/icons/moon";
 import Sun from "@lucide/astro/icons/sun";
 import Entry from "../components/Entry.astro";
 import { loadChapters } from "../lib/entries.ts";
+import { listOf, supportedBrowsers } from "../lib/supported-browsers.ts";
 import "../styles/global.css";
 // The Latin files of the three fonts, which every visitor needs. Preloading them lets the text
 // render in its own font at the first paint instead of shifting the page when the font arrives.
@@ -15,6 +16,7 @@ import atkinsonNext from "@fontsource-variable/atkinson-hyperlegible-next/files/
 const chapters = await loadChapters();
 const description = `Every HTML element and global attribute, with what it's for, its key attributes, browser support, and a live example you can edit.`;
 const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
+const supported = listOf(supportedBrowsers());
 ---
 
 <!doctype html>
@@ -73,6 +75,10 @@ const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
     </header>
 
     <div id="top" class="gutter mx-auto grid max-w-7xl gap-y-8 pt-8 pb-36">
+      {/* src/scripts/browser-support.ts shows it in a browser that lacks a feature the page needs. */}
+      <p id="browser-notice" class="rounded-md border border-limited bg-limited-bg px-4 py-3 text-limited" hidden>
+        <span data-browser>Your browser</span> is too old for parts of this page. It works in {supported} or newer.
+      </p>
       <nav aria-label="Index">
         {/* On a phone the index starts folded, so the entries come first. From Tailwind's sm
              breakpoint its toggle hides and its content shows, open or not: docs/adr/0019. */}

@@ -5,23 +5,15 @@
 // key the code relies on, such as css.selectors.popover-open rather than the whole popover feature.
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { features } from "web-features";
-import type { CompatStatus } from "../src/lib/baseline.ts";
+import { compatStatus } from "../src/lib/baseline.ts";
 import { usableSince } from "./page-features.ts";
 
 const workarounds: { compatKey: string; where: string; remove: string }[] = [];
 
-function status(compatKey: string): CompatStatus | undefined {
-  for (const feature of Object.values(features)) {
-    const byKey = "status" in feature ? (feature.status?.by_compat_key as Record<string, CompatStatus> | undefined) : undefined;
-    if (byKey?.[compatKey]) return byKey[compatKey];
-  }
-  return undefined;
-}
 
 for (const { compatKey, where, remove } of workarounds) {
   test(`${compatKey} can't be used on the page yet`, () => {
-    const found = status(compatKey);
+    const found = compatStatus(compatKey);
     assert.notEqual(found, undefined, `web-features no longer knows ${compatKey}`);
     const since = usableSince(found!);
     assert.ok(since === undefined || since > new Date(), `${compatKey} can be used since ${since?.toISOString().slice(0, 10)}. Remove the workaround in ${where}: ${remove}`);

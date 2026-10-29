@@ -261,6 +261,13 @@ A sentence that only says there is a difference is not enough.
   nothing (sent once typing pauses), and clicks on Edit and Copy. It also sends the Core Web Vitals
   each reader's browser measures (LCP, INP and CLS), plus FCP, so martinfrancois sees how fast the
   page is for real readers. Only Chromium-based browsers measure CLS.
+- It also sends the page's script errors, including ones from before PostHog started, and an
+  `unsupported_browser` event naming the features a reader's browser lacks, so martinfrancois sees
+  when readers' browsers break the page.
+- A reader whose browser lacks a feature the page needs sees a notice at the top of the page naming
+  their browser and version, and the oldest versions of Chrome, Edge, Firefox and Safari that have
+  every feature it needs, on desktop and phone separately where they differ. [ADR 0021](docs/adr/0021-tell-readers-when-their-browser-is-too-old.md) records
+  the choice.
 - It sets no cookies, stores nothing on the reader's device and records no sessions, so it needs no
   consent banner.
 - The PostHog script loads two seconds after the page, and only when the build had a PostHog key. It

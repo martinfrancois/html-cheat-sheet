@@ -56,6 +56,18 @@ test("the back-to-top link meets WCAG 2.2 AA in both themes", async ({ page }) =
   }
 });
 
+// The notice shows only in a browser that lacks a feature the page needs.
+test("the browser notice meets WCAG 2.2 AA and AAA contrast in both themes", async ({ page }) => {
+  await page.addInitScript(() => delete (Set.prototype as { intersection?: unknown }).intersection);
+  await page.goto("/");
+  await expect(page.getByText(/is too old for parts of this page/)).toBeVisible();
+  for (const colorScheme of ["light", "dark"] as const) {
+    await page.emulateMedia({ colorScheme });
+    const results = await new AxeBuilder({ page }).withTags(WCAG).include("#browser-notice").analyze();
+    expect(withLargeTextAtAA(results.violations)).toEqual([]);
+  }
+});
+
 test("no text is smaller than 15 pixels and running text has a line height of at least 1.5", async ({ page }) => {
   await page.goto("/");
   const problems = await page.evaluate(() => {

@@ -15,24 +15,29 @@ export interface BaselineStatus {
   support?: Support;
 }
 
-// The status web-features gives one compat key.
-export type CompatStatus = { baseline: BaselineLevel; baseline_low_date?: string; baseline_high_date?: string };
+// The status web-features gives one compat key, with the first browser version of each core browser
+// that supports it.
+export type CompatStatus = { baseline: BaselineLevel; baseline_low_date?: string; baseline_high_date?: string; support?: Record<string, string> };
 
 // web-features dates everything older than its first tracked browser release to this day, so <b>
 // would otherwise read "Widely available since 2018".
 const BASELINE_START = "2015-07-29";
 
+const rawByCompatKey = new Map<string, CompatStatus>();
 const byCompatKey = new Map<string, BaselineStatus>();
 for (const [id, feature] of Object.entries(features)) {
   if (!("status" in feature) || !feature.status) continue;
   const perKey = (feature.status as { by_compat_key?: Record<string, CompatStatus> }).by_compat_key ?? {};
   for (const [key, status] of Object.entries(perKey)) {
     if (byCompatKey.has(key)) continue;
+    rawByCompatKey.set(key, status);
     const date = status.baseline === "high" ? status.baseline_high_date : status.baseline === "low" ? status.baseline_low_date : undefined;
     const predates = withoutOrEarlier(status.baseline_low_date) === BASELINE_START;
     byCompatKey.set(key, { level: status.baseline, since: predates ? undefined : withoutOrEarlier(date)?.slice(0, 4), predates, feature: id });
   }
 }
+
+export const compatStatus = (compatKey: string): CompatStatus | undefined => rawByCompatKey.get(compatKey);
 
 export function baseline(compatKey: string): BaselineStatus | undefined {
   const status = byCompatKey.get(compatKey);
