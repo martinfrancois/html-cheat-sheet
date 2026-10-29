@@ -61,8 +61,10 @@ The choices, as of 2026-10-28:
   feature's page on webstatus.dev, which shows each browser's support.
 * **Search.** `@leeoniya/ufuzzy`, see [ADR 0010](0010-search-with-ufuzzy.md).
 * **Syntax highlighting.** Shiki through Astro's `<Code>` component, at build time, with one custom
-  theme whose colors are CSS variables shared with the editor. Shiki is built into Astro, so it adds
-  no package and ships no JavaScript to the page.
+  theme whose colors are CSS variables shared with the editor. Shiki comes with Astro and ships no
+  JavaScript to the page. It is also a direct dev dependency, at the version Astro uses, for the
+  transformer types in `src/lib/code-theme.ts`, and `axe-core` is one for the result type the
+  accessibility test reads.
 * **Editor.** CodeMirror 6, see [ADR 0004](0004-edit-examples-with-codemirror-6-loaded-on-demand.md).
 * **Offline.** `workbox-build` (`generateSW`, run by `scripts/build-service-worker.ts` after
   `astro build`) writes the service worker, and `workbox-window` registers it and drives the update
