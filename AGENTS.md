@@ -37,6 +37,9 @@ with Astro and Tailwind and published at https://html.fmartin.ch.
   update `SPEC.md` in the same change; list what isn't built yet under "Not done yet". Before
   finishing, check that every changed requirement is built and tested or listed there, and that
   every changed behavior is in `SPEC.md`. See [Specification](docs/agents/specification.md).
+- A decision made in chat, in an issue, or in a dashboard gets an ADR before the task ends,
+  including a decision to leave something as it is. See
+  [Design decisions](docs/agents/design-decisions.md).
 - When a user corrects a repeatable mistake or states a useful repository preference, update the
   relevant page under `docs/agents/` in the same change. Keep this file short.
 

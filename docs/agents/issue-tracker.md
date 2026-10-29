@@ -15,7 +15,9 @@ issues in this repository, handled with the `gh` CLI, which finds the repository
 - Comment: `gh issue comment <number> --body "..."`.
 - Labels: `gh issue edit <number> --add-label "..."` or `--remove-label "..."`. The label names
   are in [Triage labels](triage-labels.md).
-- Close: `gh issue close <number> --comment "..."`.
+- Close: `gh issue close <number> --comment "..."`. If the reason for closing is a decision, such as
+  keeping something the issue reports, write its ADR first, see
+  [Design decisions](design-decisions.md).
 - When a skill says "publish to the issue tracker", create a GitHub issue. When it says "fetch the
   relevant ticket", run `gh issue view <number> --comments`.
 - GitHub numbers issues and pull requests in one sequence, so `#42` may be either. Try
