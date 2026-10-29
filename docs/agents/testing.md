@@ -37,6 +37,9 @@ image will not match.
   machine, and set `PLAYWRIGHT_WORKERS` higher only when it is idle.
 - Every change runs in Chromium, Firefox and WebKit. `pnpm run test:e2e --project=chromium` is
   fine for quick feedback while you work, but run all three before a pull request.
+- Entries off screen skip layout (`content-visibility: auto`, ADR 0018) and measure zero until
+  drawn. A test that measures or checks every entry calls `layOutEveryEntry` from
+  `test/e2e/helpers.ts` first, or it passes without looking at them.
 - The examples spec and the visual snapshots run in Chromium only: the example markup is the same
   in every browser, and snapshots of three engines would triple the images to review.
 - The layout shift tests in `test/e2e/page.spec.ts` run in Chromium only, the one engine that

@@ -3,7 +3,9 @@ import { expect, type FrameLocator, type Locator, type Page } from "@playwright/
 // Live output frames render only near the screen; scroll one into view and wait until its
 // document has loaded and reported its height.
 export async function liveOutput(page: Page, exampleId: string): Promise<FrameLocator> {
-  await page.locator(`#${exampleId} [data-live-output]`).scrollIntoViewIfNeeded();
+  // The page's own scrollIntoView, because Playwright's scroll leaves WebKit at the top when the box
+  // is inside an entry that content-visibility hasn't drawn yet.
+  await page.locator(`#${exampleId} [data-live-output]`).evaluate((box) => box.scrollIntoView({ block: "center" }));
   const frame = page.locator(`#${exampleId} [data-live-output] > iframe`);
   await expect(frame).toHaveAttribute("data-rendered", "true");
   await expect(frame.contentFrame().locator("body")).toBeAttached();
@@ -27,6 +29,12 @@ export async function renderAllFrames(page: Page): Promise<void> {
   // The page's own frames only: an <iframe> example has a frame inside its live output.
   await expect.poll(() => page.mainFrame().childFrames().filter((frame) => frame.url() === "about:srcdoc").length).toBe(count);
   for (const frame of page.frames().filter((candidate) => candidate !== page.mainFrame())) await frame.waitForLoadState("load");
+}
+
+// Entries off screen skip layout (content-visibility: auto), so their boxes measure zero and axe
+// can't see their colours. A check that looks at every entry lays them all out first.
+export async function layOutEveryEntry(page: Page): Promise<void> {
+  await page.addStyleTag({ content: "[data-entry] { content-visibility: visible !important; }" });
 }
 
 // Waits until web fonts have loaded, so screenshots never catch a fallback font.

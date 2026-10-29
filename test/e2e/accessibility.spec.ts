@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import type { Result } from "axe-core";
-import { renderAllFrames } from "./helpers.ts";
+import { layOutEveryEntry, renderAllFrames } from "./helpers.ts";
 
 // The rules in docs/agents/accessibility.md: WCAG 2.2 AA everywhere, AAA for contrast (7:1) and
 // text size, in both themes, at desktop and phone width.
@@ -34,6 +34,7 @@ for (const colorScheme of ["light", "dark"] as const) {
       test("the page meets WCAG 2.2 AA and AAA contrast", async ({ page }) => {
         await page.goto("/");
         await renderAllFrames(page);
+        await layOutEveryEntry(page);
         // Live output is the browser's own default rendering of an example, the subject being
         // shown, so test/e2e/examples.spec.ts checks it without the contrast rules.
         const results = await new AxeBuilder({ page }).withTags(WCAG).exclude("iframe").analyze();

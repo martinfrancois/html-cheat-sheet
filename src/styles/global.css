@@ -162,6 +162,14 @@
 }
 
 @layer components {
+  /* An entry off screen skips style and layout until it comes near the screen. The estimate is an
+     entry's average height on a phone; once drawn, the browser keeps an entry's real height:
+     docs/adr/0018. */
+  [data-entry] {
+    content-visibility: auto;
+    contain-intrinsic-block-size: auto 1300px;
+  }
+
   .gutter {
     padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
