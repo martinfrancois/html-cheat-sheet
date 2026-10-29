@@ -1,0 +1,16 @@
+elements:
+  - name: pre
+    summary: A block of text whose layout is part of its meaning, such as code, a plain-text email or ASCII art. Browsers keep every space and line break and use a monospace font.
+notes:
+  - 'Write `<` as `&lt;` inside it: `<pre>` keeps spaces, but the browser still reads `<li>` as a tag, not as text.'
+  - '`<pre>` only keeps the layout. Wrap code in `<code>` and program output in `<samp>`, so the markup says what the text is.'
+  - Add a text description next to ASCII art, because a screen reader reads the characters out one by one.
+  - The browser drops a line break right after `<pre>`, so you can start the content on the next line.
+examples:
+  - title: HTML code shown as text, with each `<` written as `&lt;`
+    code: |
+      <p>To make a bulleted list, write:</p>
+      <pre><code>&lt;ul>
+        &lt;li>Milk&lt;/li>
+        &lt;li>Bread&lt;/li>
+      &lt;/ul></code></pre>

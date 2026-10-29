@@ -1,0 +1,28 @@
+elements:
+  - name: menuitem
+    summary: A command in a right-click menu made with `<menu type="context">`, which browsers no longer support.
+replacement: >-
+  A script that listens for the `contextmenu` event and shows your own menu, such as a popover with
+  buttons.
+notes:
+  - Also open the menu from a visible button, because Safari on iPhone and iPad doesn't fire `contextmenu`.
+examples:
+  - title: A menu that opens on right-click or from a button
+    compat:
+      - api.Element.contextmenu_event
+      - html.global_attributes.popover
+    code: |
+      <p id="note">Buy milk on the way home.</p>
+      <button popovertarget="note-menu">Note options</button>
+      <div id="note-menu" popover>
+        <button type="button">Copy</button>
+        <button type="button">Delete</button>
+      </div>
+      <script>
+        const note = document.querySelector("#note");
+        const menu = document.querySelector("#note-menu");
+        note.addEventListener("contextmenu", (event) => {
+          event.preventDefault();
+          menu.showPopover();
+        });
+      </script>

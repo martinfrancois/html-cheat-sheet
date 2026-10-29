@@ -1,0 +1,21 @@
+elements:
+  - name: fieldset
+    summary: A group of related controls, such as the parts of an address or a set of radio buttons. Browsers draw a border around it.
+  - name: legend
+    summary: The caption of a `<fieldset>`, drawn in the gap of its border. Screen readers use it as the name of the group.
+attributes:
+  - name: disabled
+    on: fieldset
+    summary: Disables every control inside at once, except the ones in its `<legend>`.
+notes:
+  - Group radio buttons or checkboxes that answer one question, so screen readers read the question along with each choice.
+  - Keep the legend short, because some screen readers read it again before every control in the group.
+examples:
+  - title: Radio buttons that answer one question
+    code: |
+      <fieldset>
+        <legend>Send replies by</legend>
+        <label><input type="radio" name="reply" value="email"> Email</label>
+        <label><input type="radio" name="reply" value="phone"> Phone</label>
+        <label><input type="radio" name="reply" value="post"> Post</label>
+      </fieldset>

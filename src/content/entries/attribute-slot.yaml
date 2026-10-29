@@ -1,0 +1,19 @@
+attribute:
+  name: slot
+  summary: Puts the element into the `<slot>` with the same `name` in its parent's shadow DOM, the hidden markup a component uses to lay out what you put in it.
+notes:
+  - It only works on direct children of the element that has the shadow DOM.
+  - Children without a `slot` attribute go into the `<slot>` that has no `name`.
+examples:
+  - title: A card whose shadow DOM puts the date above the title
+    code: |
+      <article>
+        <template shadowrootmode="open">
+          <p>Posted on <slot name="date"></slot></p>
+          <slot name="title"></slot>
+          <slot></slot>
+        </template>
+        <h2 slot="title">New opening hours</h2>
+        <time slot="date" datetime="2026-11-02">2 November</time>
+        <p>From Monday, we open at 8 am.</p>
+      </article>

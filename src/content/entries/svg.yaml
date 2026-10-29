@@ -1,0 +1,33 @@
+elements:
+  - name: svg
+    summary: A vector drawing written right in the HTML, such as an icon or a chart. The shapes inside, such as `<circle>` and `<path>`, are SVG elements, not HTML.
+    # SVG-AAM gives graphics-document; HTML-AAM, where spec.json takes roles from, doesn't cover SVG.
+    role: graphics-document
+attributes:
+  - name: viewBox
+    summary: The drawing's own coordinates, such as `0 0 32 32`. With it, the drawing scales to any `width` and `height`.
+  - name: width, height
+    summary: The size on the page, in CSS pixels.
+  - name: role, aria-label
+    summary: '`role="img"` and a name, so screen readers treat the drawing as one image.'
+notes:
+  - Give a drawing that means something `role="img"` and an `aria-label`, so screen readers say its name, not each shape.
+  - Hide an icon that repeats the text next to it with `aria-hidden="true"`, so screen readers don't say the same thing twice.
+  - Leave out `xmlns` in HTML, because the browser already treats `<svg>` and its shapes as SVG.
+  - 'For an SVG file you only show, `<img src>` is enough: write the drawing inline only when CSS or a script has to reach its shapes.'
+examples:
+  - title: A weather icon with a name for screen readers
+    code: |
+      <p>
+        Tomorrow:
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 32 32"
+          role="img"
+          aria-label="Sunny">
+          <circle cx="16" cy="16" r="7" fill="#d97000" />
+          <path d="M16 1v6M16 25v6M1 16h6M25 16h6" stroke="#d97000" />
+        </svg>
+        22 °C
+      </p>

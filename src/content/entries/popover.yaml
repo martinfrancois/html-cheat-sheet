@@ -1,0 +1,26 @@
+attribute:
+  name: popover
+  summary: Turns any element into a popover. It stays hidden until a button opens it, then shows above everything else and closes on Esc or a click outside, without JavaScript.
+attributes:
+  - name: popover
+    summary: "`auto` (or an empty value) closes other popovers and closes on Esc or a click outside. `manual` stays open until a button or a script closes it. `hint` is for tooltips and doesn't close `auto` popovers."
+  - name: popovertarget
+    on: button
+    summary: The `id` of the popover this button opens and closes.
+  - name: popovertargetaction
+    on: button
+    default: toggle
+    summary: "What the button does to the popover: `toggle`, `show` or `hide`."
+notes:
+  - It doesn't block the page. For something that needs an answer first, use a modal `<dialog>`.
+  - It shows in the top layer, above everything else on the page, so it needs no `z-index`.
+  - By default it opens in the middle of the screen, not next to its button.
+examples:
+  - title: A button that opens an explanation
+    code: |
+      <button popovertarget="tip">What's a popover?</button>
+      <div id="tip" popover>
+        <p>
+          It sits above the page. Press Esc or click outside to close it.
+        </p>
+      </div>

@@ -1,0 +1,14 @@
+attribute:
+  name: title
+  summary: Extra information about the element, which browsers show as a tooltip when the mouse rests on it, such as the full form of an abbreviation.
+notes:
+  - Don't put anything important only in it, because most browsers show the tooltip only on mouse hover, as the standard warns.
+  - It's not a label. Name a form field with `<label>`, which everyone sees.
+  - Elements inside inherit it, and a line break in the value shows as a line break in the tooltip.
+examples:
+  - title: Rest the mouse on the abbreviation to see its full form
+    code: |
+      <p>
+        The <abbr title="World Health Organization">WHO</abbr> was founded
+        in 1948.
+      </p>

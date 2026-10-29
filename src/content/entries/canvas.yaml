@@ -1,0 +1,27 @@
+elements:
+  - name: canvas
+    summary: A drawing area for scripts, for charts, games or photo editing. It stays empty until a script draws on it.
+attributes:
+  - name: width
+    default: "300"
+    summary: The width of the drawing in pixels.
+  - name: height
+    default: "150"
+    summary: The height of the drawing in pixels.
+notes:
+  - Put the same information inside it as HTML, such as the numbers behind a chart, because screen readers can't read the drawing.
+  - Set the size with `width` and `height`, not only with CSS, because CSS stretches the drawing and can blur it.
+  - Use an element instead when one fits, such as a heading for a title, because people can't select or search text drawn on a canvas.
+examples:
+  - title: A bar chart drawn by a script, with the numbers inside as text
+    code: |
+      <canvas id="visits" width="240" height="120">
+        <p>Visitors this week: Monday 40, Tuesday 90, Wednesday 65.</p>
+      </canvas>
+      <script>
+        const context = document.querySelector("#visits").getContext("2d");
+        context.fillStyle = "steelblue";
+        [40, 90, 65].forEach((visitors, day) => {
+          context.fillRect(20 + day * 80, 120 - visitors, 40, visitors);
+        });
+      </script>

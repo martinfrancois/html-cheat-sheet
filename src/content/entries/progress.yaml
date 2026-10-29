@@ -1,0 +1,50 @@
+elements:
+  - name: progress
+    summary: How far a task has got, such as a file upload. Without `value`, it shows that work is going on, but not how much is left.
+  - name: meter
+    summary: A measurement within a known range, such as the disk space used or the strength of a password.
+attributes:
+  - name: value
+    on: progress
+    summary: How much is done, out of `max`. Leave it out while nobody knows how much is left.
+  - name: max
+    on: progress
+    default: "1"
+    summary: The amount of work in total.
+  - name: value
+    on: meter
+    required: true
+    summary: The measurement, between `min` and `max`.
+  - name: min, max
+    on: meter
+    summary: The ends of the range. Without them, the range runs from `0` to `1`.
+  - name: low, high, optimum
+    on: meter
+    summary: >-
+      Where the low part of the range ends, where the high part starts, and the best value. Browsers color the
+      bar by whether the value sits in the same part as `optimum`.
+notes:
+  - 'Pick by what the number does: `<progress>` for work that ends when it reaches `max`, `<meter>` for a level that goes up and down.'
+  - Give each one a `<label>`, because without one, screen readers read the number but not what it measures.
+  - Don't use `<meter>` for a value with no upper limit, such as a weight, because without `max` it shows 1 as full.
+examples:
+  - title: "`<progress>` for an upload and for a wait of unknown length, `<meter>` for disk space"
+    code: |
+      <p>
+        <label for="upload">Uploading photos.zip</label>
+        <progress id="upload" max="100" value="70"></progress>
+      </p>
+      <p>
+        <label for="updates">Checking for updates</label>
+        <progress id="updates"></progress>
+      </p>
+      <p>
+        <label for="disk">Disk space used</label>
+        <meter
+          id="disk"
+          max="500"
+          low="300"
+          high="450"
+          optimum="0"
+          value="470"></meter>
+      </p>

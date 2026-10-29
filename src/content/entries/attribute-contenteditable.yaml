@@ -1,0 +1,18 @@
+attribute:
+  name: contenteditable
+  summary: Lets the reader edit the element's content right on the page. Everything inside becomes editable too.
+attributes:
+  - name: contenteditable
+    summary: "`true` (or an empty value) edits text and formatting, `plaintext-only` edits only the text, `false` keeps a part inside an editable area fixed."
+notes:
+  - A form doesn't send the edited text. On each `input` event, copy the element's `innerHTML` into a hidden `<textarea>` in the form.
+  - For a single value in a form, use `<input>` or `<textarea>` instead, because the form sends them and `<label>` names them.
+examples:
+  - title: A list that keeps formatting, and a note that takes plain text only
+    compat: [html.global_attributes.contenteditable.plaintext-only]
+    code: |
+      <ul contenteditable="true" aria-label="Shopping list">
+        <li>Milk</li>
+        <li><b>Fresh</b> bread</li>
+      </ul>
+      <p contenteditable="plaintext-only">The shop closes at 6 pm.</p>

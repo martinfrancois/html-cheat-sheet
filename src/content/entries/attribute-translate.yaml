@@ -1,0 +1,13 @@
+attribute:
+  name: translate
+  summary: "`no` asks translation tools, such as a browser's Translate button, to leave the element's text and attributes unchanged. `yes` turns translation back on inside. Elements inside inherit it."
+notes:
+  - Use `translate="no"` for brand names, people's names and code, which stay the same in every language.
+  - It covers attributes such as `alt`, `title` and `placeholder` too, not only the text.
+examples:
+  - title: The product name stays the same when the page is translated
+    code: |
+      <p>
+        Our app <span translate="no">Quick Notes</span> saves every change
+        on its own.
+      </p>

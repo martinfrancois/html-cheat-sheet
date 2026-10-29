@@ -1,0 +1,17 @@
+attribute:
+  name: itemtype
+  summary: The URL of a microdata item's type, such as `https://schema.org/Recipe`, which tells programs what its `itemprop` names mean. It goes only on an element with `itemscope`.
+notes:
+  - Google and other search engines read [schema.org](https://schema.org/) types, so pick one from there when it fits.
+  - Browsers never load the URL. It's only a name.
+  - Several types, separated by spaces, are allowed only when they use the same vocabulary.
+examples:
+  - title: A recipe typed with schema.org
+    code: |
+      <article itemscope itemtype="https://schema.org/Recipe">
+        <h2 itemprop="name">Mint tea</h2>
+        <p>
+          Ready in
+          <time itemprop="totalTime" datetime="PT5M">5 minutes</time>.
+        </p>
+      </article>

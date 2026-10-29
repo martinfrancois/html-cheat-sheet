@@ -1,0 +1,31 @@
+elements:
+  - name: meta
+    summary: Information about the page that has no element of its own, such as its character encoding, a description for search results, or how wide phones lay it out.
+attributes:
+  - name: charset
+    summary: The character encoding of the file. The only allowed value is `utf-8`.
+  - name: name
+    summary: What the information is about, such as `description`, `viewport` or `color-scheme` ([all values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name#value)).
+  - name: content
+    summary: The value that goes with `name` or `http-equiv`.
+  - name: http-equiv
+    summary: Works like the HTTP header of the same name, such as `content-security-policy` ([all values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#value)).
+notes:
+  - Put `<meta charset="utf-8">` first in `<head>`, because it must be in the first 1024 bytes of the file, where browsers look for it.
+  - Add `<meta name="viewport" content="width=device-width">`, because without it phones lay the page out about 980px wide and shrink it.
+  - Never add `user-scalable=no` or a low `maximum-scale` to the viewport, because people with low vision need to zoom in.
+examples:
+  - title: The encoding, the layout width on phones, and a description for search results
+    code: |
+      <!doctype html>
+      <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Opening hours | Rosa's Bakery</title>
+        <meta name="description" content="Opening hours of Rosa's Bakery">
+      </head>
+      <body>
+        <p>We're open Monday to Saturday, from 7:00 to 18:00.</p>
+      </body>
+      </html>

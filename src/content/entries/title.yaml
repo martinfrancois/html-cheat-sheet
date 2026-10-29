@@ -1,0 +1,20 @@
+elements:
+  - name: title
+    summary: The name of the page, shown in the browser tab, in bookmarks and history, and in search results. Each page has one, in `<head>`.
+notes:
+  - People see it away from the page, such as in a list of bookmarks, so name the site too, as in `Returns | Northwind Shop`.
+  - Put the page's own name first and the site name last, so screen reader users don't hear the site name first on every page.
+  - It doesn't show on the page itself, so give the page a visible `<h1>` as well.
+examples:
+  - title: The title names the page in the tab and in bookmarks; only the heading shows on the page
+    code: |
+      <!doctype html>
+      <html lang="en">
+      <head>
+        <title>Returns and refunds | Northwind Shop</title>
+      </head>
+      <body>
+        <h1>Returns and refunds</h1>
+        <p>You can send back anything you bought within 30 days.</p>
+      </body>
+      </html>

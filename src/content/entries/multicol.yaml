@@ -1,0 +1,17 @@
+elements:
+  - name: multicol
+    summary: Set its text in columns. Only Netscape Navigator 3 and 4 supported it, and browsers now treat it as an unknown element, so its text stays in one column.
+replacement: "The CSS `columns` property on an ordinary element, such as `columns: 2` on a `<div>`."
+examples:
+  - title: Two columns with the CSS `columns` property
+    code: |
+      <div style="columns: 2">
+        <p>
+          The garden club meets every first Saturday of the month. Bring
+          gloves; we have tools for everyone.
+        </p>
+        <p>
+          In spring we plant the herb beds by the school. In autumn we pick
+          apples and press juice together.
+        </p>
+      </div>

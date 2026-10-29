@@ -1,0 +1,40 @@
+elements:
+  - name: ol
+    summary: A list where the order matters, so changing it changes the meaning, such as the steps of a recipe. Browsers number the items.
+  - name: ul
+    summary: A list where the order doesn't matter, such as the ingredients of a recipe. Browsers put a bullet before each item.
+  - name: li
+    summary: One item of an `<ol>`, `<ul>` or `<menu>`. It can hold any content, including a nested list.
+attributes:
+  - name: reversed
+    on: ol
+    summary: Counts down instead of up, such as 3, 2, 1 for a top three.
+  - name: start
+    on: ol
+    summary: The number of the first item, such as `4` to go on after a paragraph that splits a list. Always a number, even when `type` shows letters.
+  - name: type
+    on: ol
+    default: "1"
+    summary: 'Numbers, letters or Roman numerals: `1`, `a`, `A`, `i` or `I`. Set it when the text refers to items by letter, such as "step b"; for looks, use CSS `list-style-type`.'
+  - name: value
+    on: li
+    summary: The number of this item in an `<ol>`. The items after it count on from there.
+notes:
+  - 'Pick by meaning: if moving the items around changes what the list says, use `<ol>`. If it doesn''t, use `<ul>`.'
+  - Put a nested list inside an `<li>`, because an `<ol>` or `<ul>` can't hold another list directly.
+  - 'For a list of commands, such as toolbar buttons, use `<menu>`: it works like `<ul>` and says the items are actions.'
+examples:
+  - title: "`<ul>` for ingredients in any order, `<ol>` for steps that must follow each other"
+    code: |
+      <p>You'll need:</p>
+      <ul>
+        <li>2 eggs</li>
+        <li>250 ml milk</li>
+        <li>120 g flour</li>
+      </ul>
+      <p>Then:</p>
+      <ol>
+        <li>Whisk the eggs and the milk.</li>
+        <li>Stir in the flour until the batter is smooth.</li>
+        <li>Let the batter rest for 30 minutes.</li>
+      </ol>

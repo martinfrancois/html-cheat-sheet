@@ -1,0 +1,18 @@
+attribute:
+  name: itemref
+  summary: Adds properties from elsewhere in the page to a microdata item. It lists the `id` values of elements whose `itemprop` attributes belong to the item.
+notes:
+  - Use it when the data isn't inside one element, such as a table where each column is an item.
+  - It takes `id` values, not `itemid` values, and goes only on an element with `itemscope`.
+examples:
+  - title: The job title comes from a paragraph outside the item
+    code: |
+      <section
+        itemscope
+        itemtype="https://schema.org/Person"
+        itemref="ada-job">
+        <h2 itemprop="name">Ada Brook</h2>
+      </section>
+      <p id="ada-job">
+        Ada is our <span itemprop="jobTitle">head librarian</span>.
+      </p>

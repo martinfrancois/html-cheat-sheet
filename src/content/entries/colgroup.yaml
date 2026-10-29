@@ -1,0 +1,42 @@
+elements:
+  - name: colgroup
+    summary: A group of columns in a table, so you can style them together. It comes after the `<caption>` and before the first row.
+  - name: col
+    summary: One column, or several next to each other, inside a `<colgroup>`. It holds no cells. It only lets CSS reach the column.
+attributes:
+  - name: span
+    on: col
+    default: "1"
+    summary: How many columns this `<col>` covers. `<colgroup>` takes it too, when it has no `<col>` inside.
+notes:
+  - Only a few CSS properties work on a column, such as `background` and `width`, because the cells aren't inside the `<col>`.
+  - Use `span` for neighboring columns that look the same, instead of writing the same `<col>` several times.
+  - Columns mean nothing to screen readers, so still label each column with a `<th>`.
+examples:
+  - title: The weekend columns get a background, set once on a `<col>`
+    code: |
+      <table>
+        <caption>Pool opening hours</caption>
+        <colgroup>
+          <col span="2">
+          <col span="2" style="background: rgb(255 200 0 / 30%)">
+        </colgroup>
+        <tr>
+          <td></td>
+          <th>Weekdays</th>
+          <th>Saturday</th>
+          <th>Sunday</th>
+        </tr>
+        <tr>
+          <th>Opens</th>
+          <td>7:00</td>
+          <td>9:00</td>
+          <td>9:00</td>
+        </tr>
+        <tr>
+          <th>Closes</th>
+          <td>21:00</td>
+          <td>18:00</td>
+          <td>18:00</td>
+        </tr>
+      </table>

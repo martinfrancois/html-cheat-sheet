@@ -1,0 +1,23 @@
+attribute:
+  name: tabindex
+  summary: Makes an element focusable and sets whether the Tab key reaches it.
+attributes:
+  - name: tabindex
+    summary: "`0` puts the element in the Tab order, in page order. `-1` lets only a script or a click focus it. A positive number moves it ahead of the rest."
+notes:
+  - Use only `0` and `-1`, because positive values make the Tab order jump around the page.
+  - Don't make a `<div>` act as a button with `tabindex="0"`. Use `<button>`, which also works with Enter, Space and screen readers.
+  - Use `-1` for something a script focuses, such as an error summary after a failed submit.
+  - It can't stop an element from being focusable. Use `disabled` or `inert` for that.
+examples:
+  - title: An error summary that a script can focus, but Tab skips
+    code: |
+      <div id="errors" tabindex="-1">
+        <p>Please fix 1 error: the email address is missing an @.</p>
+      </div>
+      <button type="button" id="check">Check form</button>
+      <script>
+        const errors = document.querySelector("#errors");
+        const check = document.querySelector("#check");
+        check.addEventListener("click", () => errors.focus());
+      </script>

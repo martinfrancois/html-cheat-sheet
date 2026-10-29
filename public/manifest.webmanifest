@@ -1,0 +1,10 @@
+{
+  "name": "HTML cheat sheet",
+  "short_name": "HTML",
+  "description": "Every HTML element and global attribute with live examples you can edit.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fcfcfc",
+  "theme_color": "#fcfcfc",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

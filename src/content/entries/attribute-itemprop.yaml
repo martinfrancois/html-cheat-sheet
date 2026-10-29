@@ -1,0 +1,19 @@
+attribute:
+  name: itemprop
+  summary: Names a property of the microdata item around it, such as `name` or `startDate`. The element's text is the value, except on elements that hold it in an attribute.
+notes:
+  - Some elements take the value from an attribute, such as `href` on `<a>`, `src` on `<img>`, `datetime` on `<time>` and `value` on `<data>`.
+  - Use the names that the item's `itemtype` defines, such as `startDate` for a schema.org event.
+  - Several names separated by spaces give the same value to several properties.
+examples:
+  - title: An event with a name and a start time that programs can read
+    code: |
+      <article itemscope itemtype="https://schema.org/Event">
+        <h2 itemprop="name">Night at the museum</h2>
+        <p>
+          Starts
+          <time itemprop="startDate" datetime="2026-11-14T19:00">
+            14 November at 7 pm
+          </time>
+        </p>
+      </article>

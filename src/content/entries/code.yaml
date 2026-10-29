@@ -1,0 +1,24 @@
+elements:
+  - name: code
+    summary: A piece of computer code, such as a function name, a file name or an HTML element name.
+  - name: var
+    summary: A variable, in math or in code, or a placeholder in a sentence that stands for a value.
+  - name: samp
+    summary: Output from a program or a computer, such as an error message.
+  - name: kbd
+    summary: What the user types, presses or says, such as a command or a key. A `<kbd>` inside another `<kbd>` is one single key.
+notes:
+  - "Pick by who wrote the text: `<code>` for code, `<kbd>` for what the user enters, `<samp>` for what the computer answers."
+  - "For a shortcut, wrap each key in its own `<kbd>` inside an outer `<kbd>`: the inner ones are single keys, the outer one the whole input."
+  - "To name the language of a `<code>`, add a class such as `language-js`: HTML has no attribute for it, and highlighters read the class."
+  - For more than a simple formula, use MathML in `<math>`, because `<var>` marks a variable but can't lay out an equation.
+examples:
+  - title: "`<kbd>` for keys and a command, `<samp>` for the reply, `<code>` for code, `<var>` for variables"
+    code: |
+      <p>To copy, press <kbd><kbd>Ctrl</kbd>+<kbd>C</kbd></kbd>.</p>
+      <p>
+        Type <kbd>ping example.com</kbd>. If it prints
+        <samp>Request timed out</samp>, check the network cable.
+      </p>
+      <p>The <code>Math.max()</code> function returns the larger number.</p>
+      <p>The area of a rectangle is <var>w</var> × <var>h</var>.</p>

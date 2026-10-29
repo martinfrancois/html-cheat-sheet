@@ -1,0 +1,17 @@
+elements:
+  - name: dfn
+    summary: The term being defined, at the place where it's defined. The paragraph, `<dl>` group or section around it must hold the definition.
+attributes:
+  - name: title
+    summary: The term being defined, when the text shows another form of it. It holds only the term, nothing else.
+notes:
+  - Use it once per term, where the term is defined. Give it an `id` and link later uses to it, so readers can jump back.
+  - For an abbreviation, put `<abbr title>` inside it, as in the example. The `title` then names the full term.
+examples:
+  - title: A term defined once, and a later use that links back to it
+    code: |
+      <p>
+        <dfn id="ram"><abbr title="random-access memory">RAM</abbr></dfn>
+        is the memory a computer uses for running programs.
+      </p>
+      <p>This laptop has 16 GB of <a href="#ram">RAM</a>.</p>

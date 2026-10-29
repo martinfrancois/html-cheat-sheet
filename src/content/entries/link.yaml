@@ -1,0 +1,31 @@
+elements:
+  - name: link
+    summary: Connects the page to another file or page, such as a style sheet, an icon or a version in another language. It usually goes in `<head>` and shows nothing.
+attributes:
+  - name: rel
+    summary: What the file is to the page, such as `stylesheet`, `icon`, `alternate` or `preload` ([all values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#value)).
+  - name: href
+    summary: The URL of the file or page.
+  - name: media
+    summary: "A media query, such as `print` or `(prefers-color-scheme: dark)`. The file only applies when it matches."
+  - name: as
+    summary: With `rel="preload"`, the kind of file, such as `image`, `style` or `script` ([all values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/link#as)), so the browser can give it the right priority and reuse it when the page asks for it.
+notes:
+  - 'For a link people can click, use `<a>`: a `<link>` never shows on the page.'
+  - Use `rel="preload"` for a file the browser finds late, such as a background image named in the CSS, so it starts loading early.
+  - Link your own style sheet after any it overrides, because when two rules match equally, the later one wins.
+examples:
+  - title: A style sheet that sets the font, an icon, and a German version that doesn't show on the page
+    code: |
+      <!doctype html>
+      <html lang="en">
+      <head>
+        <title>Opening hours | Rosa's Bakery</title>
+        <link rel="stylesheet" href="media/bakery.css">
+        <link rel="icon" href="images/stickman.svg" type="image/svg+xml">
+        <link rel="alternate" href="https://example.com/de/" hreflang="de">
+      </head>
+      <body>
+        <p>We're open Monday to Saturday, from 7:00 to 18:00.</p>
+      </body>
+      </html>

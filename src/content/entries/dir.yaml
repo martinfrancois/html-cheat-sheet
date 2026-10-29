@@ -1,0 +1,12 @@
+elements:
+  - name: dir
+    summary: A list of short items, such as file names. Browsers show it and announce it exactly like `<ul>`.
+replacement: "`<ul>`."
+examples:
+  - title: A list of files with `<ul>`
+    code: |
+      <ul>
+        <li>index.html</li>
+        <li>styles.css</li>
+        <li>script.js</li>
+      </ul>

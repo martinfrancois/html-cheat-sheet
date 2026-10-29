@@ -1,0 +1,20 @@
+elements:
+  - name: applet
+    summary: Ran a Java applet, a small program, inside the page. Browsers now treat it as an unknown element, so nothing runs.
+  - name: noembed
+    summary: Held content to show when the browser couldn't show an `<embed>`. Browsers hide it.
+  - name: param
+    summary: Passed a setting, as a `name` and a `value`, to the program in an `<applet>` or `<object>`. Browsers hide it.
+replacement: >-
+  `<object>`. Give it the file's URL in its `data` attribute instead of in a `<param>`, and put the
+  fallback inside it instead of in `<noembed>`. When you need no fallback, `<embed>` works too.
+examples:
+  - title: An SVG image in `<object>`, with a description as fallback
+    code: |
+      <!-- Instead of <applet>, <param> and <noembed>: -->
+      <object
+        data="images/scene-wide.svg"
+        type="image/svg+xml"
+        title="A stick figure on a meadow">
+        A stick figure waving on a meadow, next to a tree.
+      </object>

@@ -1,0 +1,39 @@
+elements:
+  - name: details
+    summary: A section that people open and close. Only its `<summary>` shows until someone opens it, with no JavaScript needed.
+  - name: summary
+    summary: The label of a `<details>` that always shows. Clicking it opens and closes the rest. Without one, browsers show "Details".
+attributes:
+  - name: open
+    on: details
+    summary: Shows it open. Browsers add and remove the attribute as people open and close it.
+  - name: name
+    on: details
+    summary: Details with the same `name` form a group where opening one closes the others, like an accordion.
+notes:
+  - Screen readers announce `<summary>` as a button that's expanded or collapsed. Some then ignore a heading you put inside it.
+  - "Don't build tabs or menus with it: the standard says it's only for content that shows and hides."
+  - Think twice before `name`, because people who want to compare two answers can't keep both open.
+examples:
+  - title: Extra information that opens on click
+    code: |
+      <details>
+        <summary>System requirements</summary>
+        <p>Windows 11 or macOS 14, 8 GB of memory, 2 GB of disk space.</p>
+      </details>
+  - title: Questions where opening one answer closes the others
+    compat: [html.elements.details.name]
+    code: |
+      <h2>Shipping</h2>
+      <details name="shipping" open>
+        <summary>How long does delivery take?</summary>
+        <p>Two to four working days.</p>
+      </details>
+      <details name="shipping">
+        <summary>Can I change the address?</summary>
+        <p>Yes, until the parcel leaves our warehouse.</p>
+      </details>
+      <details name="shipping">
+        <summary>Do you ship abroad?</summary>
+        <p>Yes, to most countries in Europe.</p>
+      </details>

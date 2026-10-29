@@ -1,0 +1,29 @@
+elements:
+  - name: img
+    summary: An image. `src` names the file, and `alt` gives the text that stands in for it when someone can't see it.
+    roleContext: 'for an image with a text alternative, and `none` with `alt=""`, so screen readers skip it'
+attributes:
+  - name: src
+    required: true
+    summary: The URL of the image file.
+  - name: alt
+    summary: What the image tells the reader, in words. Screen readers read it out, and browsers show it when the file doesn't load.
+  - name: width, height
+    summary: The image's size in CSS pixels. The browser keeps that space free while the file loads.
+  - name: srcset, sizes
+    summary: The same image in several sizes, so a phone can download a smaller file. `<picture>` has the details.
+  - name: loading
+    default: eager
+    summary: With `lazy`, the image loads only when it's about to scroll into view, which saves data for images far down the page.
+notes:
+  - Write in `alt` what the image means in this place, such as "Order sent" for a check mark, because that's what screen readers say.
+  - Give an image that's only decoration `alt=""`, so screen readers skip it. With no `alt` at all, some read out the file name.
+  - Set `width` and `height` to the file's size even when CSS resizes it, so the text below doesn't jump when the image arrives.
+examples:
+  - title: An image with a text alternative and its size
+    code: |
+      <img
+        src="images/scene-wide.svg"
+        alt="A person waving next to a tree on a sunny day"
+        width="320"
+        height="140">

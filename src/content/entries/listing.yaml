@@ -1,0 +1,16 @@
+elements:
+  - name: listing
+    summary: Showed text in a monospace font, keeping its spaces and line breaks. Browsers treat it exactly like `<pre>`.
+  - name: plaintext
+    summary: Showed everything after its start tag as plain text, to the end of the file. Nothing closes it, not even `</plaintext>`. Browsers still do this.
+  - name: xmp
+    summary: Like `<listing>`, but tags inside it show as text instead of being read as HTML. Browsers still do that.
+replacement: >-
+  `<pre>` with `<code>` inside, writing `<` as `&lt;` and `&` as `&amp;`. To show a whole file as
+  plain text, serve it as `text/plain` instead of HTML.
+examples:
+  - title: HTML shown as text, with each `<` written as `&lt;`
+    code: |
+      <!-- Instead of <listing>, <plaintext> and <xmp>: -->
+      <p>To link to another page, write:</p>
+      <pre><code>&lt;a href="/contact">Contact us&lt;/a></code></pre>

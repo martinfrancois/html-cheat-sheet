@@ -1,0 +1,11 @@
+elements:
+  - name: acronym
+    summary: Marked an acronym, such as NASA. Browsers treat it exactly like `<abbr>`.
+replacement: "`<abbr>`, which covers acronyms and every other abbreviation."
+examples:
+  - title: An acronym marked with `<abbr>`, its full name in `title`
+    code: |
+      <p>
+        Enter your <abbr title="personal identification number">PIN</abbr>
+        to unlock the phone.
+      </p>

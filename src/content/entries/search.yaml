@@ -1,0 +1,16 @@
+elements:
+  - name: search
+    summary: The part of a page that holds a search or a filter, such as the site search in the header or the filters above a product list.
+notes:
+  - 'It gives screen readers a search landmark, so you don''t need `<form role="search">`: wrap the form in `<search>` instead.'
+  - Don't put the search results in it, because they belong in the main content. `<search>` holds only the controls that search.
+  - With two searches, name each one with `aria-label`, or `aria-labelledby` pointing at a heading inside, so screen readers tell them apart.
+examples:
+  - title: A search form for the whole site
+    code: |
+      <search>
+        <form action="https://example.com/search">
+          <label>Search the recipes <input type="search" name="q"></label>
+          <button>Search</button>
+        </form>
+      </search>

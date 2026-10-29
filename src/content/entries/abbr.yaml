@@ -1,0 +1,18 @@
+elements:
+  - name: abbr
+    summary: An abbreviation or acronym, such as "CSV" or "WHO". Its `title` attribute can give the full form.
+attributes:
+  - name: title
+    summary: The full form of the abbreviation, and nothing else. Many browsers show it as a tooltip when the mouse rests on the word.
+notes:
+  - "Prefer the full form in the text the first time, such as \"World Health Organization (WHO)\": touch and keyboard users can't see a tooltip."
+  - Each `<abbr>` stands alone, so a `title` on the first one doesn't explain the ones after it.
+  - You don't have to mark every abbreviation. Use `<abbr>` when you give the full form or want to style abbreviations.
+examples:
+  - title: An abbreviation explained in `title`, and one spelled out in the text
+    code: |
+      <p>
+        Download the table as
+        <abbr title="comma-separated values">CSV</abbr>.
+      </p>
+      <p>The World Health Organization (<abbr>WHO</abbr>) is in Geneva.</p>

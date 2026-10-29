@@ -1,0 +1,9 @@
+elements:
+  - name: strike
+    summary: Drew a line through text. Browsers still do.
+replacement: "`<del>` for text removed in an edit, `<s>` for text that's no longer accurate, such as an old price."
+examples:
+  - title: "`<s>` for an old price, `<del>` and `<ins>` for an edit"
+    code: |
+      <p>Desk lamp: <s>CHF 49</s> CHF 35 this week.</p>
+      <p>The meeting is on <del>Tuesday</del> <ins>Thursday</ins>.</p>

@@ -1,0 +1,82 @@
+elements:
+  - name: select
+    summary: A control for picking one option from a list, or several with `multiple`. The form sends the `value` of each chosen option.
+    # HTML-AAM gives combobox for a drop-down and listbox with multiple or a size above 1;
+    # the drop-down is the common case.
+    role: combobox
+    roleContext: 'for a drop-down, and `listbox` with `multiple` or a `size` above 1'
+  - name: option
+    summary: One choice in a `<select>` or a `<datalist>`. People see its text; the form sends its `value`, or the text when it has no `value`.
+  - name: optgroup
+    summary: A labeled group of options in a `<select>`. People pick the options in it, never the group itself.
+  - name: selectedcontent
+    summary: "In a customizable select, one styled with the CSS `appearance: base-select`, it shows a copy of the chosen option's content inside the select's `<button>`."
+attributes:
+  - name: multiple
+    on: select
+    summary: Lets people pick several options instead of one.
+  - name: required
+    on: select
+    summary: The form can't be submitted while the first option, the one with an empty `value`, is still chosen.
+  - name: value
+    on: option
+    summary: What the form sends when this option is chosen.
+  - name: selected
+    on: option
+    summary: Chooses the option when the page loads. Without it, a drop-down starts on the first option.
+  - name: label
+    on: optgroup
+    summary: The group's heading in the list. Leave it out only when a `<legend>` inside the group gives the heading.
+notes:
+  - With `required`, start with an option such as "Choose a flavor" with `value=""`, so nobody sends the first real choice by accident.
+  - In a `multiple` list, people hold Ctrl (Cmd on a Mac) or Shift while clicking to pick more than one.
+  - "In browsers that support the CSS `appearance: base-select`, you can style every part of a select. Others show a normal select instead."
+examples:
+  - title: A drop-down with groups and a placeholder option
+    code: |
+      <p>
+        <label for="flavor">Ice cream</label>
+        <select id="flavor" name="flavor" required>
+          <option value="">Choose a flavor</option>
+          <optgroup label="Fruit">
+            <option value="strawberry">Strawberry</option>
+            <option value="mango">Mango</option>
+          </optgroup>
+          <optgroup label="Classic">
+            <option value="vanilla">Vanilla</option>
+            <option value="chocolate">Chocolate</option>
+          </optgroup>
+        </select>
+      </p>
+  - title: Icons in the options, copied into the button by `<selectedcontent>`
+    compat: [html.elements.selectedcontent]
+    code: |
+      <!doctype html>
+      <html lang="en">
+      <head>
+        <title>Ice cream order</title>
+        <style>
+          select,
+          ::picker(select) {
+            appearance: base-select;
+          }
+        </style>
+      </head>
+      <body>
+        <p>
+          <label for="scoop">Ice cream</label>
+          <select id="scoop" name="flavor">
+            <button><selectedcontent></selectedcontent></button>
+            <option value="strawberry">
+              <span aria-hidden="true">🍓</span> Strawberry
+            </option>
+            <option value="mango">
+              <span aria-hidden="true">🥭</span> Mango
+            </option>
+            <option value="vanilla">
+              <span aria-hidden="true">🍦</span> Vanilla
+            </option>
+          </select>
+        </p>
+      </body>
+      </html>

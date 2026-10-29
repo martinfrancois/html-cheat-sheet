@@ -1,0 +1,20 @@
+elements:
+  - name: aside
+    summary: Content that's related to what's around it but separate from it, such as a sidebar, a pull quote, a box that explains a term, or ads.
+    roleContext: 'at page level and in `<main>`, but inside `<article>`, `<aside>`, `<nav>` or `<section>` only when it has a name, and `generic` otherwise'
+notes:
+  - It doesn't move to the side by itself. Browsers show it as a plain block in its place in the text, until CSS moves it.
+  - 'Leave a remark in brackets in its paragraph, because it''s part of the text: an `<aside>` is something a reader could skip.'
+  - Inside `<article>` or `<section>`, screen readers only offer it as a place to jump to when it has a name, such as from `aria-labelledby`.
+examples:
+  - title: A box that explains a term used in a recipe
+    code: |
+      <article>
+        <h2>Weekend sourdough</h2>
+        <p>Mix the flour, water and starter, then let the dough rest.</p>
+        <aside aria-labelledby="starter">
+          <h3 id="starter">What's a starter?</h3>
+          <p>Flour and water that wild yeast has turned sour.</p>
+        </aside>
+        <p>Fold the dough every half hour for two hours.</p>
+      </article>

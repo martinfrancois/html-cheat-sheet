@@ -1,0 +1,20 @@
+attribute:
+  name: writingsuggestions
+  summary: "`false` stops the browser from offering to finish words or sentences while someone types, usually as grey text after the cursor. `true` allows it. Without it, an element follows its parent, and the browser offers suggestions unless a parent says `false`."
+notes:
+  - Turn it off where the page offers its own suggestions, so the reader doesn't see two at once.
+  - Set it on a parent, such as `<form>` or `<body>`, to turn suggestions off for every field inside.
+examples:
+  - title: No browser suggestions in a field that has its own list
+    code: |
+      <p>
+        <label>
+          City
+          <input name="city" list="cities" writingsuggestions="false">
+        </label>
+      </p>
+      <datalist id="cities">
+        <option value="Amsterdam"></option>
+        <option value="Athens"></option>
+        <option value="Berlin"></option>
+      </datalist>

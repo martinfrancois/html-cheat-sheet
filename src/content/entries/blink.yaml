@@ -1,0 +1,10 @@
+elements:
+  - name: blink
+    summary: Made text blink on and off. Browsers now treat it as an unknown element, so the text stays still.
+replacement: "`<strong>` or `<mark>` to make text stand out, without blinking."
+notes:
+  - If text blinks for more than 5 seconds, add a way to pause or stop it, because blinking distracts people from the rest of the page.
+examples:
+  - title: "`<strong>` to make news stand out"
+    code: |
+      <p><strong>New:</strong> the library now opens on Sundays.</p>

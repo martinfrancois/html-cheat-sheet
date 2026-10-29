@@ -1,0 +1,18 @@
+attribute:
+  name: itemid
+  summary: A global identifier for a microdata item, written as a URL, such as `urn:isbn:0-330-34032-8` for a book. It goes only on an element with `itemscope` and `itemtype`.
+notes:
+  - It lets programs tell that items on different pages describe the same thing.
+  - The `itemtype` vocabulary decides what the identifier means, so use it only where the vocabulary allows one.
+examples:
+  - title: A book identified by its ISBN
+    code: |
+      <dl
+        itemscope
+        itemtype="https://schema.org/Book"
+        itemid="urn:isbn:0-330-34032-8">
+        <dt>Title</dt>
+        <dd itemprop="name">The Reality Dysfunction</dd>
+        <dt>Author</dt>
+        <dd itemprop="author">Peter F. Hamilton</dd>
+      </dl>

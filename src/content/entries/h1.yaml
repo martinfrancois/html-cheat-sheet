@@ -1,0 +1,30 @@
+elements:
+  - name: h1
+    summary: A heading of level 1, the top level. It usually names the whole page.
+  - name: h2
+    summary: A heading of level 2, for a main part of the page.
+  - name: h3
+    summary: A heading of level 3, for a part inside an `<h2>` part.
+  - name: h4
+    summary: A heading of level 4, for a part inside an `<h3>` part.
+  - name: h5
+    summary: A heading of level 5, for a part inside an `<h4>` part. Browsers show it smaller than normal text.
+  - name: h6
+    summary: A heading of level 6, the lowest, for a part inside an `<h5>` part. Browsers show it smaller still.
+notes:
+  - Go down one level at a time, such as `<h2>` then `<h3>`, because people who jump between headings would look for a skipped level.
+  - Going back up any number of levels is fine, such as from `<h6>` to `<h2>` when a new main part starts.
+  - Pick the level by the structure, not the size, because screen readers say the level. Change the size with CSS `font-size`.
+  - 'For a subtitle, use `<hgroup>` with a `<p>`, not a lower heading: the lower heading would start a part of its own.'
+examples:
+  - title: Each level for a part inside the one before, then back up to `<h2>`
+    code: |
+      <h1>Garden handbook</h1>
+      <h2>Vegetables</h2>
+      <h3>Tomatoes</h3>
+      <h4>Growing from seed</h4>
+      <h5>Sowing indoors</h5>
+      <h6>Choosing the soil</h6>
+      <p>Use a fine, light seed mix that drains well.</p>
+      <h2>Herbs</h2>
+      <p>Basil, parsley and chives grow well in pots on a windowsill.</p>

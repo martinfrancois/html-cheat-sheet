@@ -1,0 +1,40 @@
+elements:
+  - name: picture
+    summary: Lets the browser pick one image out of several, by screen width, color scheme or file format. It needs an `<img>` inside, which is what actually shows.
+  - name: source
+    summary: One candidate inside `<picture>`, `<video>` or `<audio>`. The browser takes the first one whose `media` and `type` it accepts. In `<picture>`, it falls back to the `<img>` when none fits.
+attributes:
+  - name: srcset
+    on: source
+    summary: The image URL, or several with their width (`480w`) or pixel density (`2x`). A `<source>` inside `<picture>` needs it.
+  - name: media
+    on: source
+    summary: "A media query, such as `(min-width: 30em)`. Use it when the crop changes with the screen."
+  - name: type
+    on: source
+    summary: The file format, such as `image/avif`. Browsers skip formats they can't decode.
+  - name: sizes
+    on: source
+    summary: How wide the image is shown, so the browser can pick from `w` candidates.
+  - name: alt
+    on: img
+    summary: The text alternative. It goes on the `<img>`, never on `<picture>`.
+notes:
+  - For the same image at different resolutions, `<img srcset sizes>` is enough.
+  - Use `<picture>` when the crop changes, or to offer a newer format with a fallback.
+  - 'Size and style the `<img>`, not the `<picture>`: the `<img>` shows the image, `<picture>` only picks its source.'
+examples:
+  - title: A wide scene on wide screens, a tall crop on narrow ones
+    code: |
+      <picture>
+        <source
+          media="(min-width: 30em)"
+          srcset="images/scene-wide.svg"
+          width="320"
+          height="140">
+        <img
+          src="images/scene-tall.svg"
+          alt="A stick figure waving on a meadow"
+          width="140"
+          height="200">
+      </picture>

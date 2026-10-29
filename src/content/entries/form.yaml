@@ -1,0 +1,31 @@
+elements:
+  - name: form
+    summary: A set of controls whose values the browser sends to a URL when someone submits it, such as a sign-up or a search.
+attributes:
+  - name: action
+    summary: The URL that receives the values. Without it, the form sends them to the page's own URL.
+  - name: method
+    default: get
+    summary: "How the form sends its values: `get` adds them to the URL, `post` sends them in the request body, and `dialog` closes the `<dialog>` the form is in."
+  - name: enctype
+    default: application/x-www-form-urlencoded
+    summary: Set it to `multipart/form-data` when the form has a file field, or the form sends only the file names.
+  - name: novalidate
+    summary: Sends the form without checking `required`, `type="email"` and the other checks first.
+notes:
+  - Use `method="post"` for passwords and personal data, because `get` puts every value in the URL, which shows in the address bar.
+  - 'A form can''t contain another form. A control outside it can still join it: give the control a `form` attribute with the form''s `id`.'
+  - Give a main form a name with `aria-labelledby`, because screen readers list a form as a region to jump to only once it has a name.
+examples:
+  - title: A sign-up form that sends its values with `post`
+    code: |
+      <form action="https://example.com/subscribe" method="post">
+        <p><label>Name <input name="name" autocomplete="name"></label></p>
+        <p>
+          <label>
+            Email
+            <input type="email" name="email" autocomplete="email" required>
+          </label>
+        </p>
+        <p><button>Subscribe</button></p>
+      </form>

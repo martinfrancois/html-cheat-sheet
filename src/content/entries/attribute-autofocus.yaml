@@ -1,0 +1,18 @@
+attribute:
+  name: autofocus
+  summary: Focuses the element when the page loads, or when the `<dialog>` or popover it's in opens, so the reader can start typing right away.
+notes:
+  - It works best in a dialog or popover. On page load, screen readers jump to the field and skip everything before it.
+  - Put it on one element per page, dialog or popover, because only one element can have the focus.
+  - On a phone, focusing a text field opens the keyboard, which can cover part of the page.
+examples:
+  - title: The search field gets the focus when its popover opens
+    compat: [html.global_attributes.popover]
+    code: |
+      <button popovertarget="search">Search</button>
+      <div id="search" popover>
+        <label>
+          Search the shop
+          <input type="search" name="q" autofocus>
+        </label>
+      </div>

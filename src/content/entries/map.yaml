@@ -1,0 +1,49 @@
+elements:
+  - name: map
+    summary: Turns parts of an image into links, called an image map. The `<img>` points at it with `usemap`, and each `<area>` inside is one link.
+  - name: area
+    summary: One link in an image map, shaped as a rectangle, a circle or a polygon on the image. Its `alt` is the link's text.
+    roleContext: 'with `href`, and `generic` without it'
+attributes:
+  - name: name
+    on: map
+    required: true
+    summary: The map's name. The image points at it with `usemap="#name"`.
+  - name: usemap
+    on: img
+    summary: Links the image to the map, such as `usemap="#park"` for `<map name="park">`.
+  - name: shape
+    on: area
+    default: rect
+    summary: "The shape of the area: `rect`, `circle`, `poly`, or `default` for the whole image."
+  - name: coords
+    on: area
+    summary: "Where the shape is: left, top, right, bottom for `rect`; center and radius for `circle`; each corner for `poly`."
+  - name: href, alt
+    on: area
+    summary: Where the link goes, and its text. An area with `href` needs `alt`.
+notes:
+  - Give every `<area>` with `href` an `alt`, because screen readers can't see the shape and read the `alt` as the link's text.
+  - Coordinates count CSS pixels from the image's top-left corner. When CSS resizes the image, the areas keep their size and no longer match it.
+  - For a drawing that has to scale, put `<a>` elements inside an inline `<svg>`, because its links grow and shrink with it.
+examples:
+  - title: A circle around the sun and a rectangle around the person, each a link
+    code: |
+      <img
+        src="images/scene-wide.svg"
+        alt="A park with a guide waving next to a tree"
+        width="320"
+        height="140"
+        usemap="#park">
+      <map name="park">
+        <area
+          shape="circle"
+          coords="270,34,16"
+          href="https://example.com"
+          alt="Weather forecast">
+        <area
+          shape="rect"
+          coords="70,34,110,112"
+          href="https://example.com"
+          alt="Meet the guides">
+      </map>

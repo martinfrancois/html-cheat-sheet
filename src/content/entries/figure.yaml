@@ -1,0 +1,21 @@
+elements:
+  - name: figure
+    summary: Content that the text refers to as one unit, such as an image, a chart or a code listing, with an optional caption. It could move to an appendix without breaking the text.
+  - name: figcaption
+    summary: The caption of its `<figure>`. It goes first or last inside the `<figure>`.
+notes:
+  - Refer to a figure by its caption, such as "figure 1", not "the image above", so the text still works when the layout moves it.
+  - 'An image that''s part of a sentence stays a plain `<img>`: it can''t move away from its sentence, so it isn''t a figure.'
+  - 'For a pull quote or a side note, use `<aside>`: a `<figure>` is part of the main text, an `<aside>` only relates to it.'
+examples:
+  - title: An image with a caption that the text refers to by number
+    code: |
+      <p>Figure 1 shows the west meadow, which gets sun all afternoon.</p>
+      <figure>
+        <img
+          src="images/scene-wide.svg"
+          alt="A person waving next to a tree on a sunny meadow"
+          width="240"
+          height="105">
+        <figcaption>Figure 1. The west meadow in spring.</figcaption>
+      </figure>

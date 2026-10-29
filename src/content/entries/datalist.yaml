@@ -1,0 +1,26 @@
+elements:
+  - name: datalist
+    summary: A list of suggested values for an `<input>`. People can pick one or type something else; the list never limits what they enter.
+attributes:
+  - name: list
+    on: input
+    summary: The `id` of the `<datalist>` with suggestions for this field.
+  - name: value
+    on: option
+    summary: One suggestion, filled into the field when someone picks it.
+notes:
+  - For a fixed set of choices, use `<select>`, because a datalist lets people type values that aren't in the list.
+  - Firefox for Android shows no list of suggestions, so the field must also work as a plain text box.
+examples:
+  - title: Suggestions for a text field that still takes any browser name
+    code: |
+      <p>
+        <label for="browser">Browser</label>
+        <input id="browser" name="browser" list="browsers">
+      </p>
+      <datalist id="browsers">
+        <option value="Chrome"></option>
+        <option value="Edge"></option>
+        <option value="Firefox"></option>
+        <option value="Safari"></option>
+      </datalist>

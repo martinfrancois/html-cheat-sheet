@@ -1,0 +1,6 @@
+/* The style sheet the <link> example in src/content/entries/link.yaml loads. A sans-serif font
+   shows the change on every device: the frame's default is serif, and Georgia, a serif font,
+   isn't installed on Android. */
+body {
+  font-family: system-ui, sans-serif;
+}

@@ -1,53 +1,65 @@
 # HTML cheat sheet
 
-One HTML page that lists common tags with a short description, the example code and the rendered result side by side.
+One page that lists every HTML element and global attribute with a short description, the example code and the rendered result side by side. It is live at [html.fmartin.ch](https://html.fmartin.ch).
 
 ## What it does
 
-`index.html` is a table with one row per tag or tag group, from `<html>` and `<head>` down to `<table>`, `<details>` and form elements. Each row shows the tag, whether it is inline or block, what it is for, the example markup in a read-only CodeMirror editor with syntax colouring, and that same markup rendered by the browser. The table header stays visible while you scroll.
+The page has one entry per element or global attribute in the [WHATWG HTML standard](https://html.spec.whatwg.org/multipage/), grouped by the standard's chapters, plus a chapter of obsolete elements that names what to use instead. Each entry shows:
 
-![The cheat sheet opened in a browser, showing the first rows of the table](docs/screenshot.png)
+- what the element is for, its default CSS `display` and its accessibility role;
+- the attributes you will reach for most;
+- whether every major browser supports it, as a [Baseline](https://web.dev/baseline) badge;
+- a usage note where one matters, such as when to pick `<strong>` over `<b>`;
+- example code next to what your browser renders for it. **Edit** turns the code into an editor, and the output follows as you type;
+- links to MDN and to the section of the standard.
+
+A search box filters the entries and tolerates typos. The page follows your light or dark system setting, or the choice you make in the header, and works offline after the first visit.
+
+![The top of the cheat sheet: the search box and the theme button, a short introduction, an index with one row per chapter of the HTML standard listing its elements, and the start of the entry for the base element](docs/screenshot.png)
 
 ## Requirements
 
-A browser. Every script, stylesheet, font and image is in the repository, so the page also opens without a network connection.
+A browser to use the page.
 
-Node.js 24 is needed only to run the test.
+Node.js 24 and [pnpm](https://pnpm.io) to build it; `package.json` names the pnpm version. The end-to-end tests also need Docker or Podman.
 
 ## Install
 
 ```sh
 git clone https://github.com/martinfrancois/html-cheat-sheet.git
+cd html-cheat-sheet
+pnpm install
 ```
 
 ## Usage
 
-Open `index.html` in a browser, for example:
-
 ```sh
-xdg-open html-cheat-sheet/index.html
+pnpm run dev       # development server with reload on save
+pnpm run build     # static site in dist/
+pnpm run preview   # serve dist/
 ```
 
-On macOS use `open`, on Windows `start`. Editing a row is a matter of editing the corresponding `<tr>` in `index.html`: the `tg-code` cell holds the escaped example and the `tg-output` cell holds the same markup unescaped.
+Each entry is a YAML file under `src/content/entries/`, with the example written once; the page shows it both as code and as live output. `docs/agents/content-entries.md` says where each fact in an entry comes from. `pnpm run sync-spec` refreshes `src/data/spec.json`, the list of elements, chapters, default display values and roles taken from the standard and from HTML-AAM.
 
 ## Test
 
-The test parses `index.html`, checks that every local `src` and `href` points at a file in the repository, that no script or stylesheet is loaded over `http(s)`, and that every `url()` inside the local stylesheets resolves as well.
-
 ```sh
-npm ci
-npm test
+pnpm run check     # TypeScript and Astro type check
+pnpm test          # unit tests: entry data, styles, decision records
+pnpm run test:e2e  # Playwright in the official container: behaviour, accessibility, screenshots
 ```
+
+`docs/agents/testing.md` explains what each layer catches and how to update screenshots.
 
 ## Limitations
 
-- The table is about 1550 pixels wide, so on a narrower window the output column sits to the right of the visible area and the page scrolls sideways.
-- The `<a>` example links to google.ch. Following that link needs a network connection; nothing else on the page does.
+- The coverage test stays a to-do until every element and global attribute has its entry.
+- A few examples link to other sites. Following those links needs a network connection; nothing else on the page does once it has been opened.
 
 ## Third-party code
 
-CodeMirror, jQuery, Materialize, normalize.css, floatThead, the GitHub Light theme and the Roboto fonts are vendored under `lib/`, `mode/` and `addon/`. Their versions and licenses are listed in [licenses/README.md](licenses/README.md).
+Libraries and fonts come from npm and keep their own licenses: Astro, Tailwind CSS, CodeMirror, Shiki, uFuzzy, Workbox, PostHog, marked, and the Atkinson Hyperlegible and Martian Mono fonts (SIL Open Font License). `docs/adr/0009-use-established-libraries-for-each-concern.md` lists which library covers which concern.
 
 ## License
 
-MIT, see [LICENSE](LICENSE). The third-party files keep their own licenses as listed above.
+MIT, see [LICENSE](LICENSE). The third-party packages keep their own licenses as listed above.

@@ -1,0 +1,12 @@
+elements:
+  - name: nextid
+    summary: Told an HTML editor which name to give the next `<a>` element it added, such as `z27`. Browsers now treat it as an unknown element, which does nothing.
+replacement: A GUID, a random ID that needs no counter to stay unique, such as one from `crypto.randomUUID()`.
+examples:
+  - title: A unique ID from `crypto.randomUUID()`
+    code: |
+      <p>New note ID: <code id="note-id"></code></p>
+      <script>
+        const id = document.querySelector("#note-id");
+        id.textContent = crypto.randomUUID();
+      </script>

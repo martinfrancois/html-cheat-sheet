@@ -1,0 +1,21 @@
+attribute:
+  name: inputmode
+  summary: Picks the on-screen keyboard for a field or editable element, such as a number pad. It doesn't limit what people can type.
+attributes:
+  - name: inputmode
+    summary: "`text`, `numeric`, `decimal`, `tel`, `email`, `url`, `search`, or `none` for no keyboard, when the page draws its own."
+notes:
+  - In a form, prefer an `<input>` `type` such as `email`, because it picks the keyboard too and the browser checks the value.
+  - For a PIN or a code, use `inputmode="numeric"` on a text field. `type="number"` adds up and down arrows, which only make sense for amounts.
+examples:
+  - title: A number pad for a verification code on phones
+    code: |
+      <p>
+        <label>
+          Verification code
+          <input
+            name="code"
+            inputmode="numeric"
+            autocomplete="one-time-code">
+        </label>
+      </p>

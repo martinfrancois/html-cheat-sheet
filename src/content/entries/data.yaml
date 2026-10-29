@@ -1,0 +1,23 @@
+elements:
+  - name: data
+    summary: Content together with a machine-readable value in its `value` attribute, such as a number written out in words, or a product code behind a product name.
+  - name: time
+    summary: A date, a time or a duration, with a machine-readable form in its `datetime` attribute, so scripts and tools can read it.
+attributes:
+  - name: value
+    on: data
+    required: true
+    summary: The machine-readable value.
+  - name: datetime
+    on: time
+    summary: The value in a fixed format, such as `2026-06-12`, `19:30`, `2026-06-12T19:30` or `PT2H` for two hours ([all values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/time#valid_datetime_values)). Without it, the text must be in that format.
+notes:
+  - "Use `<time>` for dates, times and durations, because the standard fixes their formats. With `<data>`, your script picks the format."
+  - Neither changes how the text looks. Only scripts and tools read the machine-readable value.
+examples:
+  - title: "`<time>` for when doors open, `<data>` for a number written in words"
+    code: |
+      <p>
+        Doors open <time datetime="2026-06-12T19:30">Fri 7:30 pm</time>.
+        Only <data value="8">eight</data> seats are left.
+      </p>

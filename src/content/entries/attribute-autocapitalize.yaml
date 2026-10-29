@@ -1,0 +1,22 @@
+attribute:
+  name: autocapitalize
+  summary: Tells on-screen keyboards and voice input which letters to type as capitals. Typing on a physical keyboard isn't affected.
+attributes:
+  - name: autocapitalize
+    summary: "`none` (or `off`), `sentences` (or `on`) for the first letter of each sentence, `words` for each word, `characters` for every letter."
+notes:
+  - Don't count on it for the stored value, because people can switch the keyboard back to lowercase or change the text afterwards.
+  - It never turns on capitals in `type="email"`, `url` or `password` fields.
+  - Set it on a `<form>` to give every field in the form the same default.
+examples:
+  - title: Capital initials for a name, all capitals for a booking code
+    code: |
+      <p>
+        <label>Full name <input name="name" autocapitalize="words"></label>
+      </p>
+      <p>
+        <label>
+          Booking code
+          <input name="booking" autocapitalize="characters">
+        </label>
+      </p>

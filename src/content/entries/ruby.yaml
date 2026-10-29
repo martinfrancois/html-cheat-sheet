@@ -1,0 +1,20 @@
+elements:
+  - name: ruby
+    summary: Small notes shown above some text, or next to it in vertical text, mostly to show how East Asian characters are read. In Japanese they're called furigana.
+  - name: rt
+    summary: The note itself. It comes right after the text it belongs to, inside `<ruby>`.
+  - name: rp
+    summary: Parentheses around an `<rt>`, for browsers that can't show ruby. Browsers that can show it hide them.
+notes:
+  - "You can leave out `<rp>`: every current browser supports ruby and hides `<rp>`, so only browsers without ruby support show it."
+  - Give an `<rt>` in another language a `lang` attribute, such as an English meaning over Japanese, so screen readers pronounce it right.
+examples:
+  - title: The reading of a Japanese word, and an English meaning over another
+    code: |
+      <p lang="ja">
+        庭に<ruby>紫陽花<rp>(</rp><rt>あじさい</rt><rp>)</rp></ruby>が咲いています。
+      </p>
+      <p>
+        At the station, follow the signs that say
+        <ruby lang="ja">出口<rt lang="en">exit</rt></ruby>.
+      </p>

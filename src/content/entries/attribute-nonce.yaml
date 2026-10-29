@@ -1,0 +1,16 @@
+attribute:
+  name: nonce
+  summary: A random value that lets one `<script>` or `<style>` run under a Content Security Policy, a header that tells the browser which code may run. The policy names the same value.
+notes:
+  - Make a new random value for each response, because an attacker who knows the value can add it to their own script.
+  - When the policy comes in a header, browsers empty the attribute, so CSS selectors can't read the value.
+  - For a script that never changes, the policy can list its hash instead, which needs no new value per response.
+examples:
+  - title: A script allowed by the nonce that the server's policy names
+    code: |
+      <!-- The server sends this header with the page:
+      Content-Security-Policy: script-src 'nonce-8IBTHwOdqNKAWeKl7plt8g' -->
+      <p id="status">The script didn't run.</p>
+      <script nonce="8IBTHwOdqNKAWeKl7plt8g">
+        document.querySelector("#status").textContent = "The script ran.";
+      </script>

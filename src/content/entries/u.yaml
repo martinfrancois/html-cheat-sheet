@@ -1,0 +1,11 @@
+elements:
+  - name: u
+    summary: Text marked with a line instead of words, such as a misspelled word a spell checker flags, or a proper name in Chinese text. Browsers underline it.
+notes:
+  - "Another element usually fits better: `<em>` for stress, `<cite>` for titles, `<mark>` for highlights, `<b>` for keywords."
+  - Give it a style that differs from links, such as a wavy red line, because underlined text looks like a link.
+  - "To only underline text, use the CSS `text-decoration` property: `<u>` says the text carries such a mark."
+examples:
+  - title: A misspelled word, with the browser's default underline
+    code: |
+      <p>We swam in the <u>see</u> all afternoon.</p>

@@ -1,0 +1,21 @@
+elements:
+  - name: noscript
+    summary: Content that shows only when scripting is turned off. When scripts can run, browsers ignore it.
+notes:
+  - It doesn't help when scripts can run but your script fails to load or crashes, because its content stays hidden then.
+  - Prefer a page that works without scripts and a script that improves it, because that also covers a script that fails.
+  - Inside `<head>`, it can only hold `<link>`, `<style>` and `<meta>` elements.
+examples:
+  - title: A fallback link for the chat. Scripts run here, so the output shows only the script's text
+    code: |
+      <p id="chat">Live chat</p>
+      <noscript>
+        <p>
+          The chat needs JavaScript.
+          <a href="https://example.com/contact">Email us</a> instead.
+        </p>
+      </noscript>
+      <script>
+        const chat = document.querySelector("#chat");
+        chat.textContent = "Chat is online. We answer within minutes.";
+      </script>

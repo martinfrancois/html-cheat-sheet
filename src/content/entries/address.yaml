@@ -1,0 +1,21 @@
+elements:
+  - name: address
+    summary: How to contact the people behind the page, or behind the `<article>` it's in. Browsers show it in italics.
+notes:
+  - Use a `<p>` for any other address, such as a venue in a news story, because `<address>` means "contact us here".
+  - Leave out what isn't contact information, such as the date of a post, because everything inside counts as a way to reach someone.
+  - It's usually in a `<footer>`, next to who wrote the page or the post.
+examples:
+  - title: The author's contact details in the footer of a post
+    code: |
+      <article>
+        <h2>Rye sourdough is back</h2>
+        <p>We bake it fresh every Friday morning.</p>
+        <footer>
+          <address>
+            Questions? Write to
+            <a href="https://example.com/contact">Rosa Keller</a>
+            or call +41 31 555 01 23.
+          </address>
+        </footer>
+      </article>

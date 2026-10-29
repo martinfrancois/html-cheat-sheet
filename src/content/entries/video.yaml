@@ -1,0 +1,41 @@
+elements:
+  - name: video
+    summary: Plays a video, or a sound file that comes with captions. With `controls`, the browser adds its own play button, timeline, volume and fullscreen buttons.
+  - name: track
+    summary: A file of timed text for a `<video>` or `<audio>`, such as captions, subtitles or chapter titles, in the WebVTT format. It goes inside, after any `<source>`.
+attributes:
+  - name: controls
+    on: video
+    summary: Shows the browser's playback controls. Without it there's no button to start the video, unless a script adds one.
+  - name: poster
+    on: video
+    summary: An image to show until the video starts.
+  - name: kind
+    on: track
+    default: subtitles
+    summary: "What the track holds: `captions` for what's said and heard, `subtitles` for a translation, and more, such as `descriptions` or `chapters` ([all values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/track#kind))."
+  - name: srclang, label
+    on: track
+    summary: The track's language, and its name in the captions menu. A `subtitles` track needs `srclang`.
+  - name: default
+    on: track
+    summary: Turns this track on without the viewer picking it.
+notes:
+  - Add captions with `<track kind="captions">`, so people who can't hear the sound can read what's said and heard.
+  - 'List a WebM and an MP4 file in `<source>` elements: the browser plays the first one it can, so every browser gets a file.'
+  - Text inside `<video>` only shows in browsers that can't play video, so put a link to a transcript next to the video instead.
+  - Browsers block `autoplay` with sound, so add `muted` when a video has to start by itself.
+  - Captions from another site need `crossorigin` on the `<video>`, and that site has to allow it with an `Access-Control-Allow-Origin` header.
+examples:
+  - title: A clip in two formats, with English captions
+    code: |
+      <video controls width="320" height="180">
+        <source src="media/start-lights.webm" type="video/webm">
+        <source src="media/start-lights.mp4" type="video/mp4">
+        <track
+          kind="captions"
+          src="media/start-lights.vtt"
+          srclang="en"
+          label="English"
+          default>
+      </video>

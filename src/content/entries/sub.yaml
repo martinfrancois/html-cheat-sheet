@@ -1,0 +1,13 @@
+elements:
+  - name: sub
+    summary: A subscript, set lower and smaller, where the convention changes the meaning, such as the 2 in H₂O.
+  - name: sup
+    summary: A superscript, set higher and smaller, where the convention changes the meaning, such as an exponent, a footnote number or "1st".
+notes:
+  - "Use them only where the raised or lowered text changes the meaning. For a logo that only looks that way, use CSS `vertical-align`."
+  - For more than simple formulas, use MathML in `<math>`, because it can lay out fractions, roots and the like.
+examples:
+  - title: A chemical formula and a unit with an exponent
+    code: |
+      <p>Water is H<sub>2</sub>O.</p>
+      <p>A square room 3 m wide has a floor of 9 m<sup>2</sup>.</p>

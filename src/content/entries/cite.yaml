@@ -1,0 +1,14 @@
+elements:
+  - name: cite
+    summary: The title of a work, such as a book, a film, a song, a game, a paper or a web page. Use it whether you quote the work or only mention it.
+notes:
+  - "Mark only the title, never the author: a person's name isn't the title of a work, so the standard forbids `<cite>` there."
+  - Leave quotation marks around a title outside the element, because they aren't part of the title.
+  - The source URL of a `<q>` or `<blockquote>` goes in their `cite` attribute. The `<cite>` element is for a title readers see.
+examples:
+  - title: The title of a book, and of an essay in quotation marks
+    code: |
+      <p>
+        We read <cite>The Left Hand of Darkness</cite> by Ursula K. Le Guin,
+        then her essay "<cite>Is Gender Necessary?</cite>" about it.
+      </p>

@@ -1,0 +1,26 @@
+elements:
+  - name: audio
+    summary: Plays a sound, such as music or a podcast. With `controls`, the browser shows a player with play, a timeline and volume. Without it, nothing shows.
+attributes:
+  - name: controls
+    summary: Shows the browser's player. Without it the element stays hidden, even if CSS tries to show it.
+  - name: src
+    summary: The URL of the sound file, for when there's only one format. Use `<source>` elements inside for several.
+  - name: preload
+    summary: "How much to download before someone presses play: `none`, `metadata` (such as the length) or `auto`. Without it, the browser picks."
+  - name: loop
+    summary: Starts again from the beginning when it ends.
+notes:
+  - Put a link to a transcript next to the player, so people who can't hear it can read what's said.
+  - 'For a sound with captions, use `<video>`: `<audio>` has no picture area to show captions in.'
+  - 'List a WebM (Opus) and an MP3 file in `<source>` elements: the browser plays the first one it can, so every browser gets a file.'
+examples:
+  - title: A sound in two formats, named by a caption
+    code: |
+      <figure>
+        <figcaption>Our new doorbell</figcaption>
+        <audio controls>
+          <source src="media/doorbell.webm" type="audio/webm">
+          <source src="media/doorbell.mp3" type="audio/mpeg">
+        </audio>
+      </figure>

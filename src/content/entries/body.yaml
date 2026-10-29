@@ -1,0 +1,27 @@
+elements:
+  - name: body
+    summary: The content of the page, everything the reader sees. It comes right after `<head>`, and a page has only one.
+attributes:
+  - name: onload, ononline, onoffline
+    summary: Run a script when the page has loaded, or when the device goes online or offline. On `<body>`, they react to the whole window, not just the body.
+notes:
+  - "Browsers give it an 8px margin, which is why text doesn't touch the edge of the window. Set `margin: 0` in CSS to remove it."
+  - Set colors and margins with CSS, because `bgcolor`, `text`, `link` and `marginwidth` on `<body>` are obsolete.
+examples:
+  - title: Attributes on `<body>` that show whether the device is online
+    code: |
+      <!doctype html>
+      <html lang="en">
+      <head>
+        <title>Connection status</title>
+      </head>
+      <body onload="update()" ononline="update()" onoffline="update()">
+        <p>Your device is <strong id="status">unknown</strong>.</p>
+        <script>
+          function update() {
+            const status = document.querySelector("#status");
+            status.textContent = navigator.onLine ? "online" : "offline";
+          }
+        </script>
+      </body>
+      </html>

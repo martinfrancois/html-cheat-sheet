@@ -1,0 +1,11 @@
+elements:
+  - name: s
+    summary: Text that's no longer accurate or relevant, such as an old price next to the new one. Browsers draw a line through it.
+notes:
+  - "For an edit to the document, such as a removed sentence, use `<del>`: it can record when and why the text changed."
+  - Always show what's true now next to it, because the struck text alone doesn't tell readers the new value.
+  - "For a line through text that's only decoration, use the CSS `text-decoration` property: `<s>` says the text is out of date."
+examples:
+  - title: An old price next to the sale price
+    code: |
+      <p>Iced tea, 1 liter: <s>3.99 €</s> now 2.99 €</p>

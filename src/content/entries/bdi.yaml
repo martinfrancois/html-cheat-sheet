@@ -1,0 +1,25 @@
+elements:
+  - name: bdi
+    summary: Text isolated from the writing direction around it, such as a user name that may be in Arabic or English. The browser works out its direction from its own letters.
+  - name: bdo
+    summary: Text forced to run in the direction its `dir` attribute names, even against the direction of its own letters.
+attributes:
+  - name: dir
+    on: bdo
+    required: true
+    summary: "`ltr` for left to right or `rtl` for right to left; `auto` isn't allowed."
+notes:
+  - "Use `<bdi>` around text from users or a database: without it, an Arabic name can move the colon and number after it to the wrong side."
+  - "You rarely need `<bdo>`: it overrides the browser's choice of direction, which is right for almost all text."
+examples:
+  - title: "`<bdi>` keeps names apart from the text around them, `<bdo>` shows letters in typing order"
+    code: |
+      <ul>
+        <li>User <bdi>anna_k</bdi>: 12 posts</li>
+        <li>User <bdi lang="ar">إيان</bdi>: 3 posts</li>
+      </ul>
+      <p>
+        The letters of <span lang="he">שלום</span> in the order they're
+        typed:
+        <bdo dir="ltr" lang="he">שלום</bdo>
+      </p>

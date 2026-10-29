@@ -1,0 +1,23 @@
+elements:
+  - name: html
+    summary: The root of the page. Every other element sits inside it, one `<head>` followed by one `<body>`.
+attributes:
+  - name: lang
+    summary: The main language of the page, such as `en` or `pt-BR`. Screen readers pick their pronunciation by it, and translation tools read it too.
+notes:
+  - Always set `lang`, because without it screen readers use the reader's system language and can mispronounce the words.
+  - Start the file with `<!doctype html>`, because without it browsers switch to an old rendering mode where some CSS works differently.
+  - 'Browsers add the `<html>` tags when you leave them out, but write the start tag anyway: it''s where `lang` goes.'
+examples:
+  - title: The smallest complete page
+    code: |
+      <!doctype html>
+      <html lang="en">
+      <head>
+        <title>Swapping songs | Ana's music blog</title>
+      </head>
+      <body>
+        <h1>Swapping songs</h1>
+        <p>Tonight I swapped some of my songs with friends.</p>
+      </body>
+      </html>
