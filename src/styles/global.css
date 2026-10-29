@@ -167,6 +167,10 @@
   [data-entry] {
     content-visibility: auto;
     contain-intrinsic-block-size: auto 1300px;
+    /* content-visibility already clips an entry to its box, but axe, which Lighthouse runs, only
+       knows overflow: hidden. Without it, an entry not yet drawn and taller than its estimate
+       reaches into the next one, and axe takes its code chips for that entry's background. */
+    overflow: hidden;
 
     @variant sm {
       contain-intrinsic-block-size: auto 930px;
