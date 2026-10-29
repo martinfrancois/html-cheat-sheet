@@ -40,6 +40,12 @@ with Astro and Tailwind and published at https://html.fmartin.ch.
 - When a user corrects a repeatable mistake or states a useful repository preference, update the
   relevant page under `docs/agents/` in the same change. Keep this file short.
 
+## Agent skills
+
+- [Issue tracker](docs/agents/issue-tracker.md): GitHub Issues through the `gh` CLI
+- [Triage labels](docs/agents/triage-labels.md): the five default labels, `needs-triage` to `wontfix`
+- [Domain docs](docs/agents/domain.md): single context, `CONTEXT.md` and `docs/adr/` at the root
+
 ## Detailed instructions
 
 - [Default workflow](docs/agents/default-workflow.md): build, verify in a browser, commits, pull
