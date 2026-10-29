@@ -3,9 +3,8 @@
 ## Scope
 
 The accessibility rule for the page chrome: layout, navigation, search, cards, buttons, code blocks,
-and both color themes. It is a standing rule from martinfrancois, and applies to every
-change. Why the rule exists is in
-[ADR 0007](../adr/0007-wcag-2-2-aa-with-aaa-contrast-and-text-presentation.md).
+and both color themes. It is a standing rule from martinfrancois and applies to every change. Why
+the rule exists is in [ADR 0007](../adr/0007-wcag-2-2-aa-with-aaa-contrast-and-text-presentation.md).
 
 ## Rule
 
