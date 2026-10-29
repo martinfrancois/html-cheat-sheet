@@ -33,10 +33,3 @@ test("the theme colours in the page head and the manifest match the page backgro
   assert.equal(manifest.theme_color, light);
 });
 
-// The index opens where its toggle is hidden by Tailwind's sm: variant.
-test("the index opens at Tailwind's sm breakpoint", () => {
-  const page = readFileSync(new URL("../src/pages/index.astro", import.meta.url), "utf8");
-  const tailwind = readFileSync(new URL("../node_modules/tailwindcss/theme.css", import.meta.url), "utf8");
-  const sm = tailwind.match(/--breakpoint-sm: ([^;]+);/)![1];
-  assert.equal(page.match(/data-open-from="([^"]+)"/)?.[1], `(min-width: ${sm})`);
-});

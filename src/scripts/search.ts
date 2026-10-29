@@ -27,7 +27,7 @@ export function setupSearch(): void {
     let result: Set<number> | undefined;
     for (const word of query.toLowerCase().split(/\s+/)) {
       const found = new Set(fuzzy.filter(haystack, word) ?? []);
-      result = result ? new Set([...result].filter((index) => found.has(index))) : found;
+      result = result ? result.intersection(found) : found;
     }
     return result ?? new Set<number>();
   };

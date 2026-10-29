@@ -25,6 +25,24 @@ test.describe("the cheat sheet", () => {
     expect(problems).toEqual([]);
   });
 
+  // The index starts folded on a phone, so the entries come first, and shows without its toggle
+  // where there is room, with or without JavaScript.
+  for (const javaScriptEnabled of [true, false]) {
+    test.describe(javaScriptEnabled ? "with JavaScript" : "without JavaScript", () => {
+      test.use({ javaScriptEnabled, viewport: { width: 390, height: 844 } });
+
+      test("folds the index on a phone only", async ({ page }) => {
+        await page.goto("/");
+        const index = page.getByRole("navigation", { name: "Index" });
+        await expect(index.locator("summary")).toBeVisible();
+        await expect(index.getByRole("link").first()).toBeHidden();
+        await page.setViewportSize({ width: 1280, height: 900 });
+        await expect(index.locator("summary")).toBeHidden();
+        await expect(index.getByRole("link").first()).toBeVisible();
+      });
+    });
+  }
+
   test("links every entry from the index", async ({ page }) => {
     await page.goto("/");
     const ids = await page.locator("article[data-entry]").evaluateAll((articles) => articles.map((article) => article.id));
@@ -477,6 +495,11 @@ test.describe("the cheat sheet", () => {
 });
 
 test.describe("search", () => {
+  test("sits in a search landmark", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByRole("search").getByLabel("Search elements and attributes")).toBeVisible();
+  });
+
   test("filters entries and tolerates a typo", async ({ page }) => {
     await page.goto("/");
     await page.getByLabel("Search elements and attributes").fill("dialgo");

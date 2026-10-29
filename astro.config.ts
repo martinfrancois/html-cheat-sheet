@@ -20,9 +20,9 @@ const FALLBACKS = {
 };
 
 // Cloudflare, in front of the site, can run Rocket Loader, which holds back every script until after
-// the first paint. The two inline scripts must run before it, or a saved dark theme flashes light
-// and the index pushes the entries down. Rocket Loader leaves a script with data-cfasync="false"
-// alone: the inline ones carry it in src/pages/index.astro, and this adds it to the module script
+// the first paint. The inline script must run before it, or a saved dark theme flashes light.
+// Rocket Loader leaves a script with data-cfasync="false" alone: the inline one carries it in
+// src/pages/index.astro, and this adds it to the module script
 // Astro writes, which would stop being bundled if the attribute were in its source. No library adds
 // an attribute to Astro's script tags, and Astro has no setting for it: docs/adr/0014.
 const skipRocketLoader: AstroIntegration = {

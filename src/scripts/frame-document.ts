@@ -25,7 +25,6 @@ const frameScript = `<script>(() => {
     parent.postMessage({ "${HEIGHT_MESSAGE}": height }, "*");
   };
   new ResizeObserver(report).observe(document.documentElement);
-  new MutationObserver(report).observe(document.documentElement, { subtree: true, attributes: true, attributeFilter: ["open"] });
   addEventListener("load", report);
   addEventListener("toggle", report, true);
   addEventListener("submit", (event) => event.target.method === "dialog" || event.preventDefault());
