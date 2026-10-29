@@ -117,7 +117,8 @@ const supported = listOf(supportedBrowsers());
 
       {/* The chapters, and the entries in each, stack in block layout with margins, not as grids:
            WebKit lays out a whole grid again when one item changes height, which made every
-           keystroke in an example's editor take 600 ms on the full page. */}
+           keystroke in an example's editor take 600 ms on the full page. Each entry's margin leaves
+           out the room it keeps below for a focus ring, so entries stay 3.5rem apart. */}
       <main id="entries" class="min-w-0 space-y-24">
         {
           chapters.map((chapter) => (
@@ -125,7 +126,7 @@ const supported = listOf(supportedBrowsers());
               <h2 id={`${chapter.id}-heading`} class="border-b-4 border-accent pb-2 text-[clamp(1.6rem,1.3rem+1vw,2.1rem)] leading-tight font-bold">
                 {chapter.title}
               </h2>
-              <div class="space-y-14">
+              <div class="space-y-[calc(--spacing(14)-var(--ring-room))]">
                 {chapter.entries.map((entry) => (
                   <Entry entry={entry} />
                 ))}

@@ -54,8 +54,38 @@ for (const [device, viewport] of [
   test(`text contrast holds before the entries are drawn, on a ${device}`, async ({ page }) => {
     await page.setViewportSize(viewport);
     await page.goto("/");
-    const results = await new AxeBuilder({ page }).withRules(["color-contrast", "color-contrast-enhanced"]).exclude("iframe").analyze();
-    expect(withLargeTextAtAA(results.violations)).toEqual([]);
+    for (const colorScheme of ["light", "dark"] as const) {
+      await page.emulateMedia({ colorScheme });
+      const results = await new AxeBuilder({ page }).withRules(["color-contrast", "color-contrast-enhanced"]).exclude("iframe").analyze();
+      expect(withLargeTextAtAA(results.violations)).toEqual([]);
+    }
+  });
+}
+
+// An entry clips whatever reaches past its box (docs/adr/0018), so text there is lost, which WCAG
+// 1.4.10 rules out down to 320 pixels, and so is the part of a focus ring outside it.
+for (const width of [320, 390, 1280]) {
+  test(`nothing in an entry, focus rings included, reaches past its edge at ${width} pixels`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await layOutEveryEntry(page);
+    const cut = await page.evaluate(() => {
+      const root = getComputedStyle(document.documentElement);
+      const ring = parseFloat(root.getPropertyValue("--focus-width")) + parseFloat(root.getPropertyValue("--focus-offset"));
+      const found: string[] = [];
+      for (const entry of document.querySelectorAll("[data-entry]")) {
+        const box = entry.getBoundingClientRect();
+        for (const element of entry.querySelectorAll("*")) {
+          const rect = element.getBoundingClientRect();
+          if (rect.width === 0 || rect.height === 0) continue;
+          const reach = element.matches("a[href], button, textarea, summary, [tabindex='0']") ? ring : 0;
+          const outside = rect.left - reach < box.left - 0.5 || rect.right + reach > box.right + 0.5 || rect.top - reach < box.top - 0.5 || rect.bottom + reach > box.bottom + 0.5;
+          if (outside) found.push(`${entry.id}: <${element.tagName.toLowerCase()}> ${element.textContent?.trim().slice(0, 30)}`);
+        }
+      }
+      return found;
+    });
+    expect(cut).toEqual([]);
   });
 }
 

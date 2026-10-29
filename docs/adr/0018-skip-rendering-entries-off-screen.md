@@ -67,12 +67,17 @@ the old offset.
 * Bad, because a test that measures or checks every entry has to draw them all first, with
   `layOutEveryEntry` in `test/e2e/helpers.ts`, or it passes without looking at them. The axe
   check does so too, so it checks the page with every entry drawn.
+* Bad, because `content-visibility` clips an entry to its box, so whatever reaches past it is cut
+  off. Focus rings on code blocks, buttons and links at an entry's edge lost a side, and at 320
+  pixels the end of `display: table-column-group` and of the `<marquee>` entry's text was cut. Each
+  entry keeps room for a focus ring at its sides and bottom, with a negative margin of the same
+  size so nothing moves, and below 22.5rem the facts stack and the "Use instead" note has less
+  padding, so their widest code fits.
 * Bad, because Lighthouse runs axe before the entries below the screen are drawn. An entry taller
   than its estimate then reaches past its box into the next one, and axe read a code chip there as
   the next entry's background, which cost 4 points of the accessibility score. Each entry has
   `overflow: hidden`, which changes nothing on screen, since `content-visibility` already clips an
-  entry to its box, but is the clipping axe knows. The test "text contrast holds before the
-  entries are drawn" in `test/e2e/accessibility.spec.ts` runs axe that way.
+  entry to its box, but is the clipping axe knows.
 * Bad, because Playwright's WebKit answers each test call about 200 ms slower on this page, while
   the page itself runs at 60 frames a second there as before. Tests that made one call per entry
   now make one call in all.
@@ -88,6 +93,12 @@ These Playwright tests in `test/e2e/page.spec.ts` run in Chromium, Firefox and W
   jump ends on the entry and that it doesn't move while the entries around it are drawn.
 * "find in page reaches the last entry" checks that the browser finds text in an entry that hasn't
   been drawn, with `window.find`, which searches like the find bar but isn't the find bar itself.
+
+These in `test/e2e/accessibility.spec.ts` do too:
+
+* "nothing in an entry, focus rings included, reaches past its edge", at 320, 390 and 1280 pixels.
+* "text contrast holds before the entries are drawn", at Lighthouse's phone and desktop sizes, in
+  both themes, runs axe the way Lighthouse does.
 
 ## Pros and Cons of the Options
 

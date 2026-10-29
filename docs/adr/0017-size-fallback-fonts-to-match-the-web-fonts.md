@@ -117,11 +117,3 @@ in the Chromium of the `mcr.microsoft.com/playwright:v1.64.1-noble` image, whose
 include Liberation Sans and Liberation Mono, metric-compatible with Arial and Courier New.
 martinfrancois asked for the shift to be looked into after one of three Lighthouse runs against
 https://html.fmartin.ch measured 0.82.
-
-The preloads stay, measured on 2026-10-29 with Lighthouse 12.6.1's mobile preset against the build
-served with zstd, five runs each unless noted. The fonts make up most of the mobile largest paint:
-with none, it's 1,353 ms instead of 1,952 ms. Without the preloads it was 1,801 ms in two of three
-runs, but the fonts then arrived after the first paint, where with the preloads they arrived before
-it in every run, also in PageSpeed Insights' run against the live site. A reader would see the
-fallback first and then the swap. Martian Mono's static bold file, 10.6 KB instead of 23.5 KB for
-the variable one, left the largest paint at 1,951 ms.

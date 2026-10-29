@@ -53,7 +53,8 @@ spacing 0.12 times, and word spacing 0.16 times.
 - A Playwright test runs axe-core on the built page in both themes, with the WCAG 2.2 A and AA rules
   plus `color-contrast-enhanced`. A violation fails CI. The scan excludes the content of live output
   frames. A second contrast check runs before the entries below the screen are drawn, the way
-  Lighthouse checks the page.
+  Lighthouse checks the page, and another test checks that nothing in an entry, focus rings
+  included, reaches past its edge, where it would be cut off.
 - Playwright tests cover what axe cannot see: no sideways scrolling at 320 px, and visual snapshots
   in both themes at phone and desktop widths. See [Testing](testing.md).
 - Check the rest by hand when a change touches layout or styles: 200% zoom, a text spacing

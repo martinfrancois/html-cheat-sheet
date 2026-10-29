@@ -87,7 +87,8 @@ changes that were tried and dropped.
 - Lighthouse's mobile preset simulates a slow connection and counts a whole round trip at a time,
   about 150 ms. A text largest paint waits there for every request that starts before the page is
   first drawn: the HTML, the three preloaded fonts and the page's script. Removing 9.4 KB of the
-  compressed HTML changed nothing; the fonts change most. ADR 0017 has the numbers.
+  compressed HTML changed nothing; the fonts change most.
+  [ADR 0022](../adr/0022-keep-preloading-the-web-fonts.md) has the numbers.
 
 ## Updating snapshots
 
