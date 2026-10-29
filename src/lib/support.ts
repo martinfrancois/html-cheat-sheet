@@ -31,7 +31,7 @@ const BROWSERSLIST: Record<string, string> = {
 };
 
 // The browsers whose absence the badge names, desktop and mobile of each.
-const FAMILIES = [
+export const FAMILIES = [
   { name: "Chrome", desktop: "chrome", mobile: "chrome_android", desktopName: "Chrome on desktop", mobileName: "Chrome for Android" },
   { name: "Edge", desktop: "edge", desktopName: "Edge" },
   { name: "Firefox", desktop: "firefox", mobile: "firefox_android", desktopName: "Firefox on desktop", mobileName: "Firefox for Android" },

@@ -26,6 +26,10 @@ What to read, run, and check for every change, and how a change reaches `main`. 
   using one, look up its `status.baseline_low_date` in the `web-features` package, for a single
   CSS value through `status.by_compat_key`. `usableSince()` in `test/page-features.ts` turns that
   into the date. The rule is for the page's own code; examples may show any feature, with a badge.
+  A feature not yet widely available that a reader would miss goes into
+  `src/lib/required-features.ts` with a check, so an older browser gets the notice and the
+  supported versions stay right, see
+  [ADR 0021](../adr/0021-tell-readers-when-their-browser-is-too-old.md).
 - A choice among several plausible approaches gets an ADR, see [Design decisions](design-decisions.md).
 - Change `src/data/spec.json` only through `pnpm run sync-spec`. Read the diff it produces: a new
   element in the standard needs a new entry.
