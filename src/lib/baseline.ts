@@ -15,7 +15,8 @@ export interface BaselineStatus {
   support?: Support;
 }
 
-type CompatStatus = { baseline: BaselineLevel; baseline_low_date?: string; baseline_high_date?: string };
+// The status web-features gives one compat key.
+export type CompatStatus = { baseline: BaselineLevel; baseline_low_date?: string; baseline_high_date?: string };
 
 // web-features dates everything older than its first tracked browser release to this day, so <b>
 // would otherwise read "Widely available since 2018".

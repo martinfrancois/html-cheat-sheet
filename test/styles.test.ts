@@ -11,12 +11,13 @@ function declarations(selector: RegExp): string {
 }
 
 // Each colour token holds both themes, so a token missing its dark value shows the light one there.
-test("every colour token gives a light and a dark value, or derives from tokens that do", () => {
+test("every colour token gives a light and a dark value, or mixes only tokens that do", () => {
   const palette = declarations(/^:root \{([^}]*)\}/m);
+  assert.match(palette, /color-scheme: light dark;/);
   const tokens = [...palette.matchAll(/(--[a-z-]+): ([^;]+);/g)];
   assert.ok(tokens.length > 0);
-  const oneValue = tokens.filter(([, , value]) => !value!.startsWith("light-dark(") && !value!.includes("var(--")).map(([, name]) => name);
-  assert.deepEqual(oneValue, []);
+  const lightOnly = tokens.filter(([, , value]) => !value!.startsWith("light-dark(") && /#[0-9a-f]{3,8}\b|\b(?:white|black)\b/i.test(value!)).map(([, name]) => name);
+  assert.deepEqual(lightOnly, []);
 });
 
 // The browser paints its own bar and the installed app's window in these colours, so they match

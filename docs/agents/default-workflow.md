@@ -25,7 +25,7 @@ What to read, run, and check for every change, and how a change reaches `main`. 
   see [ADR 0016](../adr/0016-use-web-features-six-months-after-they-become-baseline.md). Before
   using one, look up its `status.baseline_low_date` in the `web-features` package, for a single
   CSS value through `status.by_compat_key`. `usableSince()` in `test/page-features.ts` turns that
-  into the date. Examples on the page are not bound by this, they carry a badge.
+  into the date. The rule is for the page's own code; examples may show any feature, with a badge.
 - A choice among several plausible approaches gets an ADR, see [Design decisions](design-decisions.md).
 - Change `src/data/spec.json` only through `pnpm run sync-spec`. Read the diff it produces: a new
   element in the standard needs a new entry.

@@ -297,7 +297,7 @@ A sentence that only says there is a difference is not enough.
 
 - The page itself uses a web feature once it has been Baseline newly available for six months
   ([ADR 0016](docs/adr/0016-use-web-features-six-months-after-they-become-baseline.md)). A
-  workaround for a feature that isn't there yet has a test that fails once the feature qualifies, so
+  workaround for a feature that doesn't qualify yet has a test that fails once the feature does, so
   the workaround can go.
 - The tests run in Chromium, Firefox and WebKit.
 - Examples MAY show newer features. They carry a badge (section 9.5).
