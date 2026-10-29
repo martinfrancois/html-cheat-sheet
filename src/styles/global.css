@@ -162,12 +162,19 @@
 }
 
 @layer components {
-  /* An entry off screen skips style and layout until it comes near the screen. The estimate is an
-     entry's average height on a phone; once drawn, the browser keeps an entry's real height:
-     docs/adr/0018. */
+  /* Without it the browser lays out all entries on every load and search: docs/adr/0018. Each
+     estimate is an entry's average height at that width, until the entry is drawn. */
   [data-entry] {
     content-visibility: auto;
     contain-intrinsic-block-size: auto 1300px;
+
+    @variant sm {
+      contain-intrinsic-block-size: auto 930px;
+    }
+
+    @variant lg {
+      contain-intrinsic-block-size: auto 830px;
+    }
   }
 
   .gutter {

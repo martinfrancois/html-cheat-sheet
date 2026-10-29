@@ -37,9 +37,6 @@ image will not match.
   machine, and set `PLAYWRIGHT_WORKERS` higher only when it is idle.
 - Every change runs in Chromium, Firefox and WebKit. `pnpm run test:e2e --project=chromium` is
   fine for quick feedback while you work, but run all three before a pull request.
-- Entries off screen skip layout (`content-visibility: auto`, ADR 0018) and measure zero until
-  drawn. A test that measures or checks every entry calls `layOutEveryEntry` from
-  `test/e2e/helpers.ts` first, or it passes without looking at them.
 - The examples spec and the visual snapshots run in Chromium only: the example markup is the same
   in every browser, and snapshots of three engines would triple the images to review.
 - The layout shift tests in `test/e2e/page.spec.ts` run in Chromium only, the one engine that
@@ -60,6 +57,9 @@ image will not match.
 - Wait for a condition, never for a fixed time.
 - A new user-visible feature needs an end-to-end test of its main path.
 - A fixed bug needs a test that fails without the fix.
+- Entries off screen aren't drawn (`content-visibility: auto`, ADR 0018) and measure zero until
+  they are. A test that measures or checks every entry calls `layOutEveryEntry` from
+  `test/e2e/helpers.ts` first, or it passes without looking at them.
 
 ## Checking each example
 
@@ -76,8 +76,9 @@ frame would show from the site's origin, so relative image paths load, then chec
 
 martinfrancois wants Lighthouse scores of 100 in every category, as long as reaching them costs the
 reader nothing. Keep a performance change only when a measurement shows it helps, and record what
-you measured; [ADR 0012](../adr/0012-create-live-output-frames-near-the-screen.md) has the current
-numbers and the changes that were tried and dropped.
+you measured; [ADR 0012](../adr/0012-create-live-output-frames-near-the-screen.md) and
+[ADR 0018](../adr/0018-skip-rendering-entries-off-screen.md) have the current numbers and the
+changes that were tried and dropped.
 
 - Measure the built page (`pnpm run build`), served with gzip like GitHub Pages, never the dev
   server. Run Lighthouse's mobile and desktop presets at least three times each: single runs vary
