@@ -31,6 +31,8 @@ page and link that page instead.
 - Choosing a library or writing code here: [Libraries](libraries.md).
 - Pins, cooldown, and Renovate: [Dependencies](dependencies.md).
 - When and how to write an ADR: [Design decisions](design-decisions.md).
+- Where the engineering skills find issues, triage labels, and domain docs: [Issue tracker](issue-tracker.md),
+  [Triage labels](triage-labels.md), and [Domain docs](domain.md).
 - Project terms: `CONTEXT.md`, not a page here.
 
 A new topic that fits none of these gets a new page, linked from `AGENTS.md` and from the list above.
