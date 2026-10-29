@@ -9,7 +9,8 @@ function load(): Promise<PostHog | undefined> {
   const key = document.body.dataset.posthogKey;
   if (!key) return Promise.resolve(undefined);
   // PostHog may not fetch code from its servers, so the web-vitals code it needs comes bundled.
-  client ??= Promise.all([import("posthog-js"), import("posthog-js/dist/web-vitals")]).then(([{ default: posthog }]) => {
+  // Usage events don't depend on it: when that file fails to load, PostHog runs without web vitals.
+  client ??= Promise.all([import("posthog-js"), import("posthog-js/dist/web-vitals").catch(() => undefined)]).then(([{ default: posthog }]) => {
     posthog.init(key, {
       api_host: "https://eu.i.posthog.com",
       // Needs "Cookieless server hash mode" switched on in the PostHog project settings.

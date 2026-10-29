@@ -51,7 +51,7 @@ replaces the cached one.
 * Bad, because the first visit has to download everything the cache needs, including the editor
   chunk that the reader may never use.
 * Neutral, because analytics events from offline visits are lost
-  ([ADR 0005](0005-cookieless-posthog-analytics-as-the-only-third-party-request.md)).
+  ([ADR 0013](0013-measure-usage-and-web-vitals-with-cookieless-posthog.md)).
 
 ### Confirmation
 

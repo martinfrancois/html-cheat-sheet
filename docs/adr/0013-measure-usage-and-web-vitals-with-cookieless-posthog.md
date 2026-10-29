@@ -38,7 +38,9 @@ measures the four metrics with the analytics the page already has, without anoth
 stored on the device.
 
 The page sends page views, searches with no results (with the search text), clicks on Edit and
-Copy, and one or two `$web_vitals` events per visit. It records no session replays and sets no
+Copy, and `$web_vitals` events: usually one with FCP and LCP and one with CLS and INP when the
+reader leaves, plus one more each time the page is hidden again or restored from the back-forward
+cache. It records no session replays and sets no
 cookies. PostHog loads two seconds after the page and brings the web-vitals code with it from the
 page's own bundle, because the page doesn't let PostHog fetch code from its servers. The page asks
 for the web-vitals build without attribution, which is the one bundled; the attribution build would
@@ -51,12 +53,16 @@ tell which element caused a slow metric, for more code than a reference page nee
 * Good, because readers see no consent banner and nothing is written to cookies or local storage.
 * Good, because searches with no results show which elements or words readers expect and don't
   find.
-* Bad, because the web-vitals code adds about 4 KB compressed to the analytics download, which
-  starts after the page is ready.
-* Neutral, because each browser reports only what it measures: Firefox has no layout shift API, so
-  Firefox readers send no CLS.
-* Bad, because PostHog starts two seconds in, so an interaction in those first two seconds doesn't
-  count toward INP. LCP, CLS and FCP are read from the browser's buffer and are complete.
+* Bad, because the web-vitals code adds 3.9 KB gzipped (11 KB raw, posthog-js 1.438.13, measured
+  2026-10-29) to the analytics download, which starts after the page is ready.
+* Neutral, because each browser reports only what it measures. Only Chromium-based browsers have
+  the layout shift API, so Firefox and Safari readers send no CLS. Safari sends LCP and INP from
+  version 26.2 on, and only FCP before that.
+* Bad, because a visit that ends before PostHog loads, two seconds in plus the download, sends no
+  web vitals. Those are the slowest loads on the slowest phones, so the numbers lean fast.
+* Neutral, because PostHog reads LCP, CLS and FCP from the browser's buffer once it starts, and INP
+  from buffered event timings, which keep every interaction of 104 ms or more. A quick interaction
+  in the first two seconds is missed, a slow one isn't.
 * Bad, because without a stored identifier, PostHog can't tell a returning visitor from a new one,
   so visitor counts are approximate.
 * Bad, because PostHog is the one request to another host. A reader who blocks it is not counted,
@@ -72,8 +78,11 @@ Playwright tests in `test/e2e/page.spec.ts`:
   checks that every request goes to the site's own origin or to PostHog's EU host, and that the page
   sets no cookies and writes no analytics keys to local storage.
 * One hides the page, as leaving it does, and checks that `$web_vitals` events reach PostHog's EU
-  host with LCP, INP, CLS and FCP in Chromium, and without CLS in Firefox. Playwright's WebKit
-  doesn't show the test the requests PostHog sends on its own, so it skips this one.
+  host with LCP, INP, CLS and FCP in Chromium, and without CLS in Firefox. In Playwright's WebKit,
+  PostHog sends no web vitals for a reason not found yet, so the test skips it there, see
+  [html-cheat-sheet issue #13](https://github.com/martinfrancois/html-cheat-sheet/issues/13). The
+  analytics tests block the service worker, because in WebKit the page's requests go through it,
+  where the test can't answer them.
 * One blocks the PostHog host and checks that the page still works.
 
 ## Pros and Cons of the Options

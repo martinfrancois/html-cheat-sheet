@@ -71,7 +71,7 @@ The choices, as of 2026-10-28:
   notice ([ADR 0006](0006-offline-support-with-a-service-worker.md)). `@vite-pwa/astro` was rejected
   because its peer range, as of version 1.2.0, stops at Astro 5 and the project is on Astro 7.
 * **Analytics.** `posthog-js`, see
-  [ADR 0005](0005-cookieless-posthog-analytics-as-the-only-third-party-request.md).
+  [ADR 0013](0013-measure-usage-and-web-vitals-with-cookieless-posthog.md).
 * **Markdown in entry text.** `marked`, with `parseInline` for the inline code, emphasis, and links
   that entry fields allow.
 * **HTML parsing in scripts.** `node-html-parser`, which the old link check already used.

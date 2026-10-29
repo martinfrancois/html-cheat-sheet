@@ -257,10 +257,11 @@ A sentence that only says there is a difference is not enough.
 
 - The page sends usage data to its own PostHog project in the EU: page views, searches that find
   nothing (sent once typing pauses), and clicks on Edit and Copy. It also sends the Core Web Vitals
-  each reader gets (LCP, INP, CLS and FCP), so the owner sees how fast the page is for real readers.
+  each reader's browser measures (LCP, INP and CLS), plus FCP, so the owner sees how fast the page
+  is for real readers. Only Chromium-based browsers measure CLS.
 - It sets no cookies, stores nothing on the reader's device and records no sessions, so it needs no
   consent banner.
-- The PostHog script loads when the browser is idle, and only when the build had a PostHog key. It
+- The PostHog script loads two seconds after the page, and only when the build had a PostHog key. It
   is the page's only request to a third party.
   [ADR 0013](docs/adr/0013-measure-usage-and-web-vitals-with-cookieless-posthog.md) records
   the choice.
