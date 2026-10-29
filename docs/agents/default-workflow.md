@@ -21,8 +21,11 @@ What to read, run, and check for every change, and how a change reaches `main`. 
   constructor parameter properties. Import local files with their `.ts` extension. `pnpm run check`
   type-checks everything.
 - Check [Libraries](libraries.md) before writing code for a problem a library may already solve.
-- The page itself may use only web features that are Baseline widely available. Check a feature
-  with the `web-features` package (`features[id].status.baseline` is `"high"`) before using it.
+- The page itself may use a web feature once it has been Baseline newly available for six months,
+  see [ADR 0016](../adr/0016-use-web-features-six-months-after-they-become-baseline.md). Before
+  using one, look up its `status.baseline_low_date` in the `web-features` package, for a single
+  CSS value through `status.by_compat_key`. `usableSince()` in `test/page-features.ts` turns that
+  into the date. Examples on the page are not bound by this, they carry a badge.
 - A choice among several plausible approaches gets an ADR, see [Design decisions](design-decisions.md).
 - Change `src/data/spec.json` only through `pnpm run sync-spec`. Read the diff it produces: a new
   element in the standard needs a new entry.

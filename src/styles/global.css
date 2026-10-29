@@ -13,99 +13,44 @@
  * light theme, --ink on the dark ones.
  */
 :root {
-  color-scheme: light;
-  --bg: #fcfcfc;
-  --surface: #ffffff;
-  --sunk: #efefef;
-  --chip: #9b0065;
-  --ink: #1b1b1b;
-  --muted: #4d4d4d;
-  --line: #868686;
+  color-scheme: light dark;
+  --bg: light-dark(#fcfcfc, #050808);
+  --surface: light-dark(#ffffff, #0b1011);
+  --sunk: light-dark(#efefef, #1a2223);
+  --chip: light-dark(#9b0065, #501135);
+  --ink: light-dark(#1b1b1b, #e7f1f1);
+  --muted: light-dark(#4d4d4d, #b3c1c1);
+  --line: light-dark(#868686, #5d6565);
   /* A neutral wash for hovered icons: the chip color is a strong accent, too loud behind every one. */
   --tint: color-mix(in srgb, var(--ink) 10%, transparent);
-  --link: #014ca7;
-  --accent: #fe38ad;
-  --chip-ink: #ffffff;
-  --focus: #014ca7;
-  --wide: #0f5c26;
-  --wide-bg: #e3f3e7;
-  --new: #0b4a94;
-  --new-bg: #e3edfb;
-  --limited: #7e3500;
-  --limited-bg: #fbeadb;
-  --bad: #8f1717;
-  --bad-bg: #fbe4e4;
-  --code-ink: #1b1b1b;
-  --code-tag: #014ca7;
-  --code-attr: #9b0065;
-  --code-string: #4d4d4d;
-  --code-comment: #4d4d4d;
-  --code-punct: #4d4d4d;
+  --link: light-dark(#014ca7, #14f4fe);
+  --accent: light-dark(#fe38ad, #ff05a9);
+  --chip-ink: light-dark(#ffffff, var(--ink));
+  --focus: light-dark(#014ca7, #14f4fe);
+  --wide: light-dark(#0f5c26, #8fe0a5);
+  --wide-bg: light-dark(#e3f3e7, #11301c);
+  --new: light-dark(#0b4a94, #9cc4ff);
+  --new-bg: light-dark(#e3edfb, #10264a);
+  --limited: light-dark(#7e3500, #ffbf85);
+  --limited-bg: light-dark(#fbeadb, #3a2210);
+  --bad: light-dark(#8f1717, #ffaaa3);
+  --bad-bg: light-dark(#fbe4e4, #3d1515);
+  --code-ink: light-dark(#1b1b1b, #e7f1f1);
+  --code-tag: light-dark(#014ca7, #14f4fe);
+  --code-attr: light-dark(#9b0065, #ff8aca);
+  --code-string: light-dark(#4d4d4d, #0dfd78);
+  --code-comment: light-dark(#4d4d4d, #b3c1c1);
+  --code-punct: light-dark(#4d4d4d, #b3c1c1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --bg: #050808;
-    --surface: #0b1011;
-    --sunk: #1a2223;
-    --chip: #501135;
-    --ink: #e7f1f1;
-    --muted: #b3c1c1;
-    --line: #5d6565;
-    --tint: color-mix(in srgb, var(--ink) 10%, transparent);
-    --link: #14f4fe;
-    --accent: #ff05a9;
-    --chip-ink: var(--ink);
-    --focus: #14f4fe;
-    --wide: #8fe0a5;
-    --wide-bg: #11301c;
-    --new: #9cc4ff;
-    --new-bg: #10264a;
-    --limited: #ffbf85;
-    --limited-bg: #3a2210;
-    --bad: #ffaaa3;
-    --bad-bg: #3d1515;
-    --code-ink: #e7f1f1;
-    --code-tag: #14f4fe;
-    --code-attr: #ff8aca;
-    --code-string: #0dfd78;
-    --code-comment: #b3c1c1;
-    --code-punct: #b3c1c1;
-  }
+/* The toggle's explicit choice wins over the system setting. light-dark() in the tokens above
+   follows color-scheme, so this is all a choice has to change. */
+:root[data-theme="light"] {
+  color-scheme: light;
 }
 
-/* Same values as the media query above, so an explicit dark choice wins over a light OS
-   setting. test/styles.test.ts fails when the two blocks differ. light-dark() would remove the
-   copy once it is Baseline widely available; test/baseline-workarounds.test.ts reports when. */
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #050808;
-  --surface: #0b1011;
-  --sunk: #1a2223;
-  --chip: #501135;
-  --ink: #e7f1f1;
-  --muted: #b3c1c1;
-  --line: #5d6565;
-  --tint: color-mix(in srgb, var(--ink) 10%, transparent);
-  --link: #14f4fe;
-  --accent: #ff05a9;
-  --chip-ink: var(--ink);
-  --focus: #14f4fe;
-  --wide: #8fe0a5;
-  --wide-bg: #11301c;
-  --new: #9cc4ff;
-  --new-bg: #10264a;
-  --limited: #ffbf85;
-  --limited-bg: #3a2210;
-  --bad: #ffaaa3;
-  --bad-bg: #3d1515;
-  --code-ink: #e7f1f1;
-  --code-tag: #14f4fe;
-  --code-attr: #ff8aca;
-  --code-string: #0dfd78;
-  --code-comment: #b3c1c1;
-  --code-punct: #b3c1c1;
 }
 
 @theme inline {

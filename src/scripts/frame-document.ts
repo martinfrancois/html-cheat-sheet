@@ -12,11 +12,10 @@ export const HEIGHT_MESSAGE = "html-cheat-sheet:height";
 // frame grows to show it whole and shrinks back when it closes. Browsers center it, so the frame
 // leaves the example's own height free above and below it, and the button that opened it stays
 // visible. The root's box height is used, not scrollHeight, which never drops below the frame's
-// current height. The selector is in a try because a browser without popovers rejects
-// :popover-open (test/baseline-workarounds.test.ts).
+// current height.
 // iframe-resizer does this job, but its GPL-3.0 license doesn't fit this MIT project (ADR 0009).
 const frameScript = `<script>(() => {
-  const inTopLayer = (element) => { try { return element.matches(":modal, :popover-open"); } catch { return element.matches(":modal"); } };
+  const inTopLayer = (element) => element.matches(":modal, :popover-open");
   const report = () => {
     const content = document.documentElement.getBoundingClientRect().height;
     let height = content;

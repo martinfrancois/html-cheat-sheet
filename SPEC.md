@@ -295,8 +295,9 @@ A sentence that only says there is a difference is not enough.
 
 ## 12. Browser support for the page
 
-- The page itself uses only web features that are Baseline widely available. A workaround for a
-  feature that isn't there yet has a test that fails once the feature becomes widely available, so
+- The page itself uses a web feature once it has been Baseline newly available for six months
+  ([ADR 0016](docs/adr/0016-use-web-features-six-months-after-they-become-baseline.md)). A
+  workaround for a feature that isn't there yet has a test that fails once the feature qualifies, so
   the workaround can go.
 - The tests run in Chromium, Firefox and WebKit.
 - Examples MAY show newer features. They carry a badge (section 9.5).
