@@ -5,11 +5,13 @@ import { setupLiveOutput } from "./live-output.ts";
 import { setupOffline } from "./offline.ts";
 import { setupSearch } from "./search.ts";
 import { setupTheme } from "./theme.ts";
+import { setupToTop } from "./to-top.ts";
 
 setupTheme();
 setupIndexNav();
 setupLiveOutput();
 setupExamples();
 setupSearch();
+setupToTop();
 setupOffline();
 setupAnalytics();

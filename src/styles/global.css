@@ -286,6 +286,23 @@
     }
   }
 
+  /* The scroll-to-top link floats over the entries, so it has its own background and a border at
+     3:1, and its tooltip opens above it instead of below the screen's bottom edge. */
+  .to-top {
+    border: 1px solid var(--line);
+    border-radius: 9999px;
+    background: var(--surface);
+  }
+
+  .to-top:hover {
+    background: color-mix(in srgb, var(--ink) 10%, var(--surface));
+  }
+
+  .to-top::after {
+    top: auto;
+    bottom: calc(100% + 0.25rem);
+  }
+
   .icon-button[data-done] .when-idle,
   .icon-button:not([data-done]) .when-done {
     display: none;

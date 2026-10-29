@@ -1,10 +1,10 @@
 ---
 import { THEME_KEY } from "../lib/theme-key.ts";
+import ArrowUp from "@lucide/astro/icons/arrow-up";
 import Moon from "@lucide/astro/icons/moon";
 import Sun from "@lucide/astro/icons/sun";
 import Entry from "../components/Entry.astro";
 import { loadChapters } from "../lib/entries.ts";
-import { globalAttributes, obsoleteElements, specElements } from "../lib/spec.ts";
 import "../styles/global.css";
 // The Latin files of the three fonts, which every visitor needs. Preloading them lets the text
 // render in its own font at the first paint instead of shifting the page when the font arrives.
@@ -13,11 +13,6 @@ import atkinsonMono from "@fontsource-variable/atkinson-hyperlegible-mono/files/
 import atkinsonNext from "@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-wght-normal.woff2?url";
 
 const chapters = await loadChapters();
-// Keyed by kind, so the <title> element and the title attribute count separately.
-const covered = new Set(
-  chapters.flatMap((chapter) => chapter.entries.flatMap((entry) => (entry.kind === "attribute" ? entry.names : entry.elements.map((element) => `<${element.name}>`)))),
-);
-const total = specElements.length + globalAttributes.length + obsoleteElements.length;
 const description = `Every HTML element and global attribute, with what it's for, its key attributes, browser support, and a live example you can edit.`;
 const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
 ---
@@ -76,13 +71,6 @@ const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
     </header>
 
     <div id="top" class="gutter mx-auto grid max-w-7xl gap-y-8 pt-8 pb-24">
-      <p class="max-w-[70ch] text-muted">
-        Every element and global attribute of the <a href="https://html.spec.whatwg.org/multipage/">HTML standard</a>: what it's for, the attributes you'll
-        reach for, and an example you can edit next to what your browser draws for it. A badge marks anything that doesn't work in every
-        browser yet, or only recently does, with the share of visitors whose browser supports it.
-        {covered.size < total && <strong class="font-semibold text-ink"> Preview: {covered.size} of {total} written so far.</strong>}
-      </p>
-
       <nav aria-label="Index">
         {/* Tailwind's sm breakpoint, where the summary below hides; test/styles.test.ts checks it. */}
         <details id="index" data-open-from="(min-width: 40rem)">
@@ -158,9 +146,16 @@ const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
       </footer>
     </div>
 
-    <div id="update-notice" class="fixed right-[max(16px,env(safe-area-inset-right,0px))] bottom-[max(16px,env(safe-area-inset-bottom,0px))] z-30 flex items-center gap-3 rounded-md bg-ink px-4 py-2 text-bg shadow-lg" hidden>
-      <span>A new version is ready.</span>
-      <button type="button" class="control" data-action="reload">Reload</button>
+    {/* One corner for both, so the update notice never covers the link back to the top. */}
+    <div class="fixed right-[max(16px,env(safe-area-inset-right,0px))] bottom-[max(16px,env(safe-area-inset-bottom,0px))] z-30 flex flex-col items-end gap-3">
+      {/* Appears once the first screen is scrolled away; src/scripts/to-top.ts shows it. */}
+      <a id="to-top" href="#top" class="icon-button to-top" aria-label="Scroll to top" hidden>
+        <ArrowUp aria-hidden="true" />
+      </a>
+      <div id="update-notice" class="flex items-center gap-3 rounded-md bg-ink px-4 py-2 text-bg shadow-lg" hidden>
+        <span>A new version is ready.</span>
+        <button type="button" class="control" data-action="reload">Reload</button>
+      </div>
     </div>
 
     <script>
