@@ -39,6 +39,9 @@ image will not match.
   fine for quick feedback while you work, but run all three before a pull request.
 - The examples spec and the visual snapshots run in Chromium only: the example markup is the same
   in every browser, and snapshots of three engines would triple the images to review.
+- The layout shift tests in `test/e2e/page.spec.ts` run in Chromium only, the one engine that
+  reports layout shifts. They measure with the image's system fonts, Liberation Sans and Liberation
+  Mono, so they check the sized fallback for those two fonts only.
 - An earlier sample run saw WebKit's page process (`WPEWebProcess`) abort near the end of a full
   three-browser run, failing the last WebKit tests with "Target page, context or browser has been
   closed". Two full runs with every entry didn't reproduce it. If it comes back, run WebKit alone

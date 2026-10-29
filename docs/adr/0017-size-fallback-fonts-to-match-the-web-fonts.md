@@ -28,7 +28,9 @@ on a first visit over a slow network sees the text jump. How should the page kee
 ## Considered Options
 
 * Fallback faces sized to the web fonts with fontaine
+* Astro's Fonts API with its sized fallbacks
 * `font-display: optional`
+* `font-display: fallback`
 * `font-display: block`
 
 ## Decision Outcome
@@ -72,6 +74,18 @@ Next.js does the same for fonts loaded through `next/font`.
 * Bad, because it can't detect that the variable mono fonts are monospace, so `astro.config.ts`
   names their fallback list.
 
+### Astro's Fonts API with its sized fallbacks
+
+Astro 7 can load the fonts itself, from Fontsource or local files, and with `optimizedFallbacks`
+adds a sized fallback face in the same way.
+
+* Good, because it needs no extra dependency.
+* Bad, because Astro 7.4.1 sizes one system font per generic family: Arial for `sans-serif` and
+  Courier New for `monospace`. Android has neither, so a first visit there still jumps; fontaine
+  also sizes Roboto, Noto Sans, Liberation Sans, Segoe UI and Helvetica Neue.
+* Bad, because the fonts would move from the `@fontsource-variable` imports and their preloads to
+  Astro's own loading, a larger change for the same result on desktop.
+
 ### `font-display: optional`
 
 The browser waits about 100 ms for a font. If it isn't there by then, the page keeps the system
@@ -79,6 +93,15 @@ font for that visit, and the font is used from the next visit on.
 
 * Good, because nothing ever moves.
 * Bad, because a first visit on a slow network never shows the page's fonts.
+
+### `font-display: fallback`
+
+The browser hides text for about 100 ms, then shows the system font, and swaps in the web font
+only if it arrives within about three seconds.
+
+* Good, because a font later than three seconds no longer moves the page.
+* Bad, because a font that arrives within the three seconds moves the page as much as it does now,
+  and on a slower network the first visit keeps the system font.
 
 ### `font-display: block`
 

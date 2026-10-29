@@ -70,6 +70,8 @@
   --color-limited-bg: var(--limited-bg);
   --color-bad: var(--bad);
   --color-bad-bg: var(--bad-bg);
+  /* Each "fallback" face comes from fontaine in astro.config.ts, sized to its web font so the page
+     barely moves when the web font arrives: docs/adr/0017. */
   --font-sans: "Atkinson Hyperlegible Next Variable", "Atkinson Hyperlegible Next Variable fallback", system-ui, sans-serif;
   --font-mono: "Atkinson Hyperlegible Mono Variable", "Atkinson Hyperlegible Mono Variable fallback", ui-monospace, monospace;
   --font-display: "Martian Mono Variable", "Martian Mono Variable fallback", ui-monospace, monospace;
