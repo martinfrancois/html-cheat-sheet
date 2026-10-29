@@ -34,7 +34,7 @@ const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={Astro.site?.href} />
     <meta property="og:type" content="website" />
-    {/* data-cfasync: astro.config.ts says why every script carries it. */}
+    {/* data-cfasync before any src: docs/adr/0014 says why every script carries it. */}
     <script is:inline data-cfasync="false" define:vars={{ THEME_KEY }}>
       // Runs before the first paint so a saved theme never flashes the other one.
       try {

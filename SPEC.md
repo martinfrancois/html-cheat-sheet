@@ -358,6 +358,10 @@ Renovate keeps these packages current, so badges and links follow the data witho
 - GitHub Pages serves the page at https://html.fmartin.ch. The workflow
   `.github/workflows/deploy.yml` builds and deploys it on every push to `main`.
 - Changes reach `main` through a pull request, merged by rebase.
+- Cloudflare sits in front of GitHub Pages for the fmartin.ch zone. Its Rocket Loader stays on for
+  the zone, so every script on the page carries `data-cfasync="false"` before any `src`, and none
+  runs later than the page itself starts it.
+  [ADR 0014](docs/adr/0014-opt-every-script-out-of-rocket-loader.md) records the choice.
   [Default workflow](docs/agents/default-workflow.md) has the steps.
 
 ### 16.1 Not done yet

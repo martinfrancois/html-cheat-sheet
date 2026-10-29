@@ -389,12 +389,12 @@ test.describe("search", () => {
 });
 
 // Rocket Loader, which Cloudflare can run in front of the site, holds back any script without this
-// attribute until after the first paint: astro.config.ts says why none may be held back.
+// attribute before its src until after the first paint: docs/adr/0014.
 test("every script on the page opts out of Rocket Loader", async ({ page }) => {
   await page.goto("/");
   const scripts = await page.locator("script").evaluateAll((elements) => elements.map((script) => script.outerHTML.slice(0, 80)));
   expect(scripts.length).toBeGreaterThan(0);
-  expect(scripts.filter((script) => !script.includes('data-cfasync="false"'))).toEqual([]);
+  expect(scripts.filter((script) => !/^<script(?: [^>]*?)? data-cfasync="false"(?: |>)/.test(script) || /\bsrc=[^>]*data-cfasync/.test(script))).toEqual([]);
 });
 
 test.describe("back to top", () => {
