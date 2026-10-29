@@ -161,8 +161,9 @@ A sentence that only says there is a difference is not enough.
 
 - One page. A header stays at the top while scrolling, with the site name `<html> cheat sheet`, the
   search box and the theme button. A skip link leads to the entries.
-- A short introduction says what the page holds and what the badges mean. While entries are
-  missing, it says how many names are covered, such as "Preview: 13 of 177 written so far."
+- No introduction: the site name, the index and the badges' own text say what the page holds.
+- Once the first screen is scrolled away, a round link at the bottom right leads back to the top.
+  It jumps there without a smooth scroll, which on a page this long would take seconds.
 - The index sits above the entries at full width, one row per chapter: the chapter title on the
   left, its entry names flowing to the right. There is no sidebar. On screens narrower than 40rem
   the index starts folded behind an "Index" button, so the entries come first.

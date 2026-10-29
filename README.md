@@ -15,7 +15,7 @@ The page has one entry per element or global attribute in the [WHATWG HTML stand
 
 A search box filters the entries and tolerates typos. The page follows your light or dark system setting, or the choice you make in the header, and works offline after the first visit.
 
-![The top of the cheat sheet: the search box and the theme button, a short introduction, an index with one row per chapter of the HTML standard listing its elements, and the start of the entry for the base element](docs/screenshot.png)
+![The top of the cheat sheet: the search box and the theme button, then an index with one row per chapter of the HTML standard listing its elements, followed by the global attributes and the obsolete elements](docs/screenshot.png)
 
 ## Requirements
 

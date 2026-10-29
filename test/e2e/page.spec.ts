@@ -387,6 +387,31 @@ test.describe("search", () => {
   });
 });
 
+test.describe("scroll to top", () => {
+  test("appears after the first screen and jumps back to the top", async ({ page }) => {
+    await page.goto("/");
+    const link = page.getByRole("link", { name: "Scroll to top" });
+    await expect(link).toBeHidden();
+    await page.evaluate(() => scrollTo(0, innerHeight * 3));
+    await expect(link).toBeVisible();
+    await link.click();
+    await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
+    await expect(link).toBeHidden();
+  });
+
+  test("sits above the update notice instead of under it", async ({ page }) => {
+    await page.goto("/");
+    await page.evaluate(() => {
+      scrollTo(0, innerHeight * 3);
+      document.getElementById("update-notice")!.hidden = false;
+    });
+    const link = page.getByRole("link", { name: "Scroll to top" });
+    await expect(link).toBeVisible();
+    const [linkBox, noticeBox] = [(await link.boundingBox())!, (await page.locator("#update-notice").boundingBox())!];
+    expect(linkBox.y + linkBox.height).toBeLessThanOrEqual(noticeBox.y);
+  });
+});
+
 test.describe("theme", () => {
   test("switches on click and keeps the choice after a reload", async ({ page }) => {
     await page.goto("/");
