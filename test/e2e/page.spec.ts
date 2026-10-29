@@ -1,8 +1,14 @@
 import { gunzipSync } from "node:zlib";
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Locator, type Page, test } from "@playwright/test";
 import { CHIP_ROW } from "../../src/lib/chips.ts";
 import { THEME_KEY } from "../../src/lib/theme-key.ts";
 import { entry, layOutEveryEntry, liveOutput } from "./helpers.ts";
+
+const topOf = (locator: Locator) => locator.evaluate((element) => element.getBoundingClientRect().top);
+// The place src/scripts/keep-place.ts saved in the history entry, once a scroll has ended.
+const savedPlace = (page: Page) => page.evaluate(() => (history.state as { place?: { id: string } } | null)?.place?.id);
+// Two animation frames: the browser draws the entries that came near the screen in between.
+const nextFrames = (page: Page) => page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
 
 test.describe("the cheat sheet", () => {
   test("loads without console errors or failed requests", async ({ page }) => {
@@ -44,12 +50,42 @@ test.describe("the cheat sheet", () => {
         }
         const heading = page.locator(`article#${id} h3`).first();
         await expect(heading).toBeInViewport({ ratio: 1 });
-        // Entries drawn around it get their real height; the heading must stay in place.
-        await page.evaluate(() => new Promise((resolve) => setTimeout(resolve, 500)));
-        await expect(heading).toBeInViewport({ ratio: 1 });
+        // Entries drawn around it get their real height in the next frames; the heading stays put.
+        const top = await topOf(heading);
+        await nextFrames(page);
+        expect(Math.abs((await topOf(heading)) - top)).toBeLessThan(2);
       }
     });
   }
+
+  // The browser would restore the scroll offset, which points elsewhere once entries above have
+  // only an estimated height again: src/scripts/keep-place.ts.
+  for (const [width, height] of [[390, 844], [1280, 900]] as const) {
+    test(`a reload keeps the reader's place at ${width} pixels`, async ({ page }) => {
+      await page.setViewportSize({ width, height });
+      await page.goto("/");
+      const entry = page.locator("article[data-entry]").nth(60);
+      await entry.evaluate((article) => article.scrollIntoView());
+      await expect.poll(() => savedPlace(page)).toBeDefined();
+      const before = await topOf(entry);
+      await page.reload();
+      await expect.poll(async () => Math.abs((await topOf(entry)) - before)).toBeLessThan(2);
+    });
+  }
+
+  test("Back after a jump returns to the reader's place", async ({ page }) => {
+    await page.goto("/");
+    const entries = page.locator("article[data-entry]");
+    const entry = entries.nth(30);
+    await entry.evaluate((article) => article.scrollIntoView());
+    await expect.poll(() => savedPlace(page)).toBeDefined();
+    const before = await topOf(entry);
+    // A new history entry starts without a place, until its jump ends.
+    await page.evaluate((id) => (location.hash = id!), await entries.nth(100).getAttribute("id"));
+    await expect.poll(() => savedPlace(page)).toBeDefined();
+    await page.goBack();
+    await expect.poll(async () => Math.abs((await topOf(entry)) - before)).toBeLessThan(2);
+  });
 
   // SPEC.md section 3: nothing may hide part of the page from find in page, including entries that
   // content-visibility hasn't drawn yet.
