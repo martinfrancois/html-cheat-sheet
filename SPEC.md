@@ -180,8 +180,9 @@ A sentence that only says there is a difference is not enough.
 
 ### 9.1 Search
 
-- One search box, labelled "Search elements and attributes", with the placeholder "Search
-  elements". The placeholder MUST fit whole on a phone and on the inner screen of a foldable.
+- One search box, in a search landmark, labelled "Search elements and attributes", with the
+  placeholder "Search elements". The placeholder MUST fit whole on a phone and on the inner screen
+  of a foldable.
 - Typing filters the entries. Search tolerates one typo per word, so "dialgo" finds `<dialog>`.
   Every word must match somewhere in an entry, in any order. Angle brackets and slashes are
   ignored, so `<dialog>` works too.
