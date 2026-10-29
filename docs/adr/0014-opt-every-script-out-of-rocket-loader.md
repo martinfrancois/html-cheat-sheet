@@ -39,7 +39,7 @@ because it keeps Rocket Loader on for the zone, lives in the repository next to 
 scripts it protects, and a test fails when a script misses it.
 
 Cloudflare documents that Rocket Loader ignores a script with `data-cfasync="false"`, and that the
-attribute must come before `src`. The two inline scripts carry it in `src/pages/index.astro`. The
+attribute must come before `src`. The inline script carries it in `src/pages/index.astro`. The
 main module is written by Astro, which stops bundling a `<script>` that has any attribute in its
 source, so a small integration in `astro.config.ts` adds it to the built tag of every page. Astro
 7 has no setting for attributes on its script tags, and no library does this, so the integration is

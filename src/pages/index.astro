@@ -51,7 +51,8 @@ const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
         <h1 class="font-display text-[1.2rem] font-bold whitespace-nowrap">
           <a href="#top" class="text-ink no-underline"><span class="text-accent" aria-hidden="true">&lt;</span>html<span class="text-accent" aria-hidden="true">&gt;</span> cheat sheet</a>
         </h1>
-        <div class="order-last flex w-full items-center gap-2 sm:order-none sm:flex-1">
+        {/* <search> makes it a search landmark, so a screen reader can jump to it. */}
+        <search class="order-last flex w-full items-center gap-2 sm:order-none sm:flex-1">
           <label for="search-input" class="sr-only">Search elements and attributes</label>
           <input
             id="search-input"
@@ -62,7 +63,7 @@ const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
             aria-keyshortcuts="/"
             class="min-h-11 w-full rounded-md border border-line bg-surface px-3 text-base text-ink placeholder:text-muted"
           />
-        </div>
+        </search>
         {/* Follows the system setting until clicked; src/scripts/theme.ts sets the label to the next mode. */}
         <button id="theme" type="button" class="icon-button ml-auto shrink-0" aria-label="Switch theme">
           <Moon class="when-light" aria-hidden="true" />
@@ -73,8 +74,9 @@ const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
 
     <div id="top" class="gutter mx-auto grid max-w-7xl gap-y-8 pt-8 pb-36">
       <nav aria-label="Index">
-        {/* Tailwind's sm breakpoint, where the summary below hides; test/styles.test.ts checks it. */}
-        <details id="index" data-open-from="(min-width: 40rem)">
+        {/* On a phone the index starts folded, so the entries come first. From Tailwind's sm
+             breakpoint its toggle hides and src/styles/global.css shows its content, open or not. */}
+        <details id="index">
           <summary class="control sm:hidden"><span class="marker" aria-hidden="true"></span>Index</summary>
           <dl class="grid gap-x-6 gap-y-2 pt-4 sm:grid-cols-[max-content_minmax(0,1fr)] sm:pt-0">
             {
@@ -103,14 +105,6 @@ const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
             }
           </dl>
         </details>
-        <script is:inline data-cfasync="false">
-          // Opens the index before the first paint where there is room, so it never pushes the
-          // entries down after they're drawn. src/scripts/index-nav.ts follows later resizes.
-          {
-            const index = document.getElementById("index");
-            index.open = matchMedia(index.dataset.openFrom).matches;
-          }
-        </script>
       </nav>
 
       <p id="search-status" role="status" class="text-lg empty:hidden"></p>

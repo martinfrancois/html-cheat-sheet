@@ -317,6 +317,13 @@
     content: "▾";
   }
 
+  /* Without it the index stays folded where its toggle is hidden, from Tailwind's sm breakpoint. */
+  @variant sm {
+    #index::details-content {
+      content-visibility: visible;
+    }
+  }
+
   .control:hover {
     border-color: var(--ink);
   }
