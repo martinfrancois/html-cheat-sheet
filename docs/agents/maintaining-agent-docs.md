@@ -56,7 +56,7 @@ A new topic that fits none of these gets a new page, linked from `AGENTS.md` and
 - If a new rule conflicts with an existing one and it's not clear which should win, ask the owner.
   Don't keep both.
 - Write for any person on any machine with any agent: no local paths, no host names, no first names.
-  Say "the owner" or "martinfrancois".
+  [Writing style](writing-style.md#naming-people) says how to name people.
 - Follow [Writing style](writing-style.md).
 
 ## Template for a new page
