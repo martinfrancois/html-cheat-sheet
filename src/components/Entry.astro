@@ -82,7 +82,7 @@ const titleNames = entry.kind === "attribute" ? entry.names : entry.elements.map
     }
     {
       entry.replacement && (
-        <p class="border-l-4 border-bad bg-bad-bg px-4 py-3 text-bad">
+        <p class="border-l-4 border-bad bg-bad-bg px-4 py-3 text-bad narrow:px-3">
           <strong>Use instead: </strong>
           <span set:html={entry.replacement} />
         </p>

@@ -10,7 +10,7 @@ const { element } = Astro.props;
 
 {/* Labels and values in two aligned columns, one fact per row. The lines are taller than 1.5, or
    code chips on consecutive lines of a role context touch. */}
-<dl class="grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-1 text-sm leading-relaxed" data-facts>
+<dl class="grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 narrow:grid-cols-1 gap-y-1 text-sm leading-relaxed" data-facts>
   <dt class="text-muted">Default CSS</dt>
   <dd>
     <code>display: <span class="whitespace-nowrap">{element.display}</span></code>

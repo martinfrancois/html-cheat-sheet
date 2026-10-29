@@ -3,6 +3,10 @@
 @import "@fontsource-variable/atkinson-hyperlegible-mono";
 @import "@fontsource-variable/martian-mono";
 
+/* Below this width "display: table-column-group" no longer fits beside its label, nor the
+   prefers-reduced-motion chip inside a "Use instead" note's padding, and either was cut off. */
+@custom-variant narrow (@media (width < 22.5rem));
+
 /*
  * Every text colour pair below reaches 7:1 contrast (WCAG 1.4.6 AAA) in its theme, and every
  * line or focus colour 3:1 against the surfaces it sits on (1.4.11). --accent is for large text
@@ -27,6 +31,8 @@
   --accent: light-dark(#fe38ad, #ff05a9);
   --chip-ink: light-dark(#ffffff, var(--ink));
   --focus: light-dark(#014ca7, #14f4fe);
+  --focus-width: 3px;
+  --focus-offset: 2px;
   --wide: light-dark(#0f5c26, #8fe0a5);
   --wide-bg: light-dark(#e3f3e7, #11301c);
   --new: light-dark(#0b4a94, #9cc4ff);
@@ -118,8 +124,8 @@
   }
 
   :focus-visible {
-    outline: 3px solid var(--focus);
-    outline-offset: 2px;
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: var(--focus-offset);
   }
 
   code,
@@ -167,10 +173,15 @@
   [data-entry] {
     content-visibility: auto;
     contain-intrinsic-block-size: auto 1300px;
-    /* content-visibility already clips an entry to its box, but axe, which Lighthouse runs, only
-       knows overflow: hidden. Without it, an entry not yet drawn and taller than its estimate
-       reaches into the next one, and axe takes its code chips for that entry's background. */
+    /* Without it axe, in Lighthouse, reads a chip as the next entry's background: docs/adr/0018 */
     overflow: hidden;
+    /* Room for a focus ring, plus a pixel for rounding, that the clip would cut: docs/adr/0018 */
+    --ring-room: calc(var(--focus-width) + var(--focus-offset) + 1px);
+    padding-inline: var(--ring-room);
+    padding-block-end: var(--ring-room);
+    margin-inline: calc(-1 * var(--ring-room));
+    /* For the last entry; space-y sets the others, less the same room: src/pages/index.astro */
+    margin-block-end: calc(-1 * var(--ring-room));
 
     @variant sm {
       contain-intrinsic-block-size: auto 930px;
