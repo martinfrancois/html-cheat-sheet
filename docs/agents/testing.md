@@ -42,10 +42,11 @@ image will not match.
 - The layout shift tests in `test/e2e/page.spec.ts` run in Chromium only, the one engine that
   reports layout shifts. They measure with the image's system fonts, Liberation Sans and Liberation
   Mono, so they check the sized fallback for those two fonts only.
-- An earlier sample run saw WebKit's page process (`WPEWebProcess`) abort near the end of a full
-  three-browser run, failing the last WebKit tests with "Target page, context or browser has been
-  closed". Two full runs with every entry didn't reproduce it. If it comes back, run WebKit alone
-  to tell a crash from a page bug.
+- WebKit tests failing with "Target page, context or browser has been closed" or "Page crashed"
+  mean the browser aborted, not that the page broke. Podman's default limit of 2048 processes and
+  threads per container caused it once: four WebKit workers need about 2000, and WebKit aborts
+  when it can't start a thread. `scripts/playwright.sh` lifts the limit. To see why WebKit aborted,
+  run the image by hand with `--env DEBUG=pw:browser`, which prints the browser's own errors.
 - Renovate updates the image tag and the npm package together. Never change one without the other.
 - Running `pnpm exec playwright test` directly on your machine is fine for a quick check of behavior, but
   ignore its snapshot results.
