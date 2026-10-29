@@ -34,10 +34,11 @@ test.describe("the cheat sheet", () => {
       test("folds the index on a phone only", async ({ page }) => {
         await page.goto("/");
         const index = page.getByRole("navigation", { name: "Index" });
-        await expect(index.locator("summary")).toBeVisible();
+        const toggle = index.getByText("Index", { exact: true });
+        await expect(toggle).toBeVisible();
         await expect(index.getByRole("link").first()).toBeHidden();
         await page.setViewportSize({ width: 1280, height: 900 });
-        await expect(index.locator("summary")).toBeHidden();
+        await expect(toggle).toBeHidden();
         await expect(index.getByRole("link").first()).toBeVisible();
       });
     });

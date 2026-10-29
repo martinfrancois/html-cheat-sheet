@@ -75,8 +75,8 @@ const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
     <div id="top" class="gutter mx-auto grid max-w-7xl gap-y-8 pt-8 pb-36">
       <nav aria-label="Index">
         {/* On a phone the index starts folded, so the entries come first. From Tailwind's sm
-             breakpoint its toggle hides and src/styles/global.css shows its content, open or not. */}
-        <details id="index">
+             breakpoint its toggle hides and its content shows, open or not: docs/adr/0019. */}
+        <details id="index" class="sm:[&::details-content]:[content-visibility:visible]">
           <summary class="control sm:hidden"><span class="marker" aria-hidden="true"></span>Index</summary>
           <dl class="grid gap-x-6 gap-y-2 pt-4 sm:grid-cols-[max-content_minmax(0,1fr)] sm:pt-0">
             {

@@ -26,6 +26,8 @@ const frameScript = `<script>(() => {
   };
   new ResizeObserver(report).observe(document.documentElement);
   addEventListener("load", report);
+  // toggle fires when a dialog, popover or <details> opens or closes, except when a script sets a
+  // dialog's open attribute itself, which the spec advises against and no example does.
   addEventListener("toggle", report, true);
   addEventListener("submit", (event) => event.target.method === "dialog" || event.preventDefault());
   // The frame's <base target="_blank"> would open an in-page link, such as a skip link, in a new
