@@ -288,7 +288,9 @@ A sentence that only says there is a difference is not enough.
 - Colors pop: clean, barely tinted greys, with color from saturated accents. Inline code chips
   stand out clearly from the background.
 - Text uses Atkinson Hyperlegible Next, code uses Atkinson Hyperlegible Mono, and the site name and
-  entry headings use Martian Mono. All three are bundled with the site.
+  entry headings use Martian Mono. All three are bundled with the site. Until they arrive, text is
+  drawn in a system font sized to match, so the page barely moves when they swap in
+  ([ADR 0017](docs/adr/0017-size-fallback-fonts-to-match-the-web-fonts.md)).
 - [Visual design](docs/agents/visual-design.md) has the rules and the review steps.
 - The color theme is "Cyan and pink": cyan for what you read and click, pink for structure, at
   full neon strength in dark mode and as blue and deep magenta in light mode.

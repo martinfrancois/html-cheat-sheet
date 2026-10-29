@@ -348,6 +348,38 @@ test.describe("the cheat sheet", () => {
     });
   }
 
+  // On a slow connection the fonts arrive after the first paint, and the text, drawn in a fallback
+  // font until then, takes a new size. Fallback faces with the web fonts' metrics keep that shift
+  // near zero, where it was 0.19 at 412 pixels and 0.41 at 1440. At some widths one line still wraps
+  // differently, such as 0.08 at 390, so these two widths are the ones checked: docs/adr/0017.
+  for (const [width, height] of [[412, 823], [1440, 900]] as const) {
+    test(`late fonts barely move the page at ${width} pixels`, async ({ page, context, browserName }) => {
+      test.skip(browserName !== "chromium", "only Chromium reports layout shifts");
+      await context.route("**/*.woff2", async (route) => {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await route.continue();
+      });
+      await page.setViewportSize({ width, height });
+      await page.addInitScript(() => {
+        (window as unknown as { shift: number }).shift = 0;
+        new PerformanceObserver((list) => {
+          for (const entry of list.getEntries() as (PerformanceEntry & { value: number; hadRecentInput: boolean })[]) {
+            if (!entry.hadRecentInput) (window as unknown as { shift: number }).shift += entry.value;
+          }
+        }).observe({ type: "layout-shift", buffered: true });
+      });
+      await page.goto("/", { waitUntil: "load" });
+      await page.evaluate(() => document.fonts.ready);
+      await page.evaluate(async () => {
+        const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
+        await nextFrame();
+        await nextFrame();
+      });
+      expect(await page.evaluate(() => document.fonts.check("16px 'Atkinson Hyperlegible Next Variable'"))).toBe(true);
+      expect(await page.evaluate(() => (window as unknown as { shift: number }).shift)).toBeLessThan(0.01);
+    });
+  }
+
   test("never scrolls sideways on a 320 pixel wide screen", async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 800 });
     await page.goto("/");

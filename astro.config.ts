@@ -2,6 +2,22 @@ import { readdir, readFile, writeFile } from "node:fs/promises";
 import tailwindcss from "@tailwindcss/vite";
 import type { AstroIntegration } from "astro";
 import { defineConfig } from "astro/config";
+import { DEFAULT_CATEGORY_FALLBACKS, type FontCategory, FontaineTransform } from "fontaine";
+
+// Until the web fonts arrive, text is drawn in a fallback font. fontaine gives each fallback the
+// web font's size and line height, so the page barely moves when the fonts swap in:
+// docs/adr/0017. fontaine can't tell the variable mono fonts are monospace, and its sans list leaves
+// out Roboto, Android's system font.
+function systemFonts(category: FontCategory): string[] {
+  const fonts = DEFAULT_CATEGORY_FALLBACKS[category];
+  if (!fonts) throw new Error(`fontaine has no ${category} fallbacks`);
+  return fonts;
+}
+const FALLBACKS = {
+  "Atkinson Hyperlegible Next Variable": [...systemFonts("sans-serif"), "Roboto"],
+  "Atkinson Hyperlegible Mono Variable": systemFonts("monospace"),
+  "Martian Mono Variable": systemFonts("monospace"),
+};
 
 // Cloudflare, in front of the site, can run Rocket Loader, which holds back every script until after
 // the first paint. The two inline scripts must run before it, or a saved dark theme flashes light
@@ -37,5 +53,7 @@ export default defineConfig({
   server: { headers: { "Access-Control-Allow-Origin": "*" } },
   build: { inlineStylesheets: "always" },
   integrations: [skipRocketLoader],
-  vite: { plugins: [tailwindcss()] },
+  vite: {
+    plugins: [FontaineTransform.vite({ fallbacks: FALLBACKS, resolvePath: (id) => new URL(id, import.meta.url) }), tailwindcss()],
+  },
 });
