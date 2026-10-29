@@ -62,10 +62,6 @@ says the page works in Safari 26, not that it works fully there.
   version, and which features it lacked.
 * Good, because a new feature added to the list moves the supported versions in the notice by
   itself.
-* Neutral, because none of this is sent until the PostHog project and the repository's
-  `PUBLIC_POSTHOG_KEY` variable exist
-  ([issue #4](https://github.com/martinfrancois/html-cheat-sheet/issues/4)). The notice shows
-  either way.
 * Bad, because the list has to be kept: a new feature the page relies on and nobody adds goes
   unnoticed. [Default workflow](../agents/default-workflow.md) asks for it with every new feature.
 * Bad, because the dialog check calls `show()` on a dialog and cancels the opening, since dialogs'
