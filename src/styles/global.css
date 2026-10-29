@@ -70,9 +70,9 @@
   --color-limited-bg: var(--limited-bg);
   --color-bad: var(--bad);
   --color-bad-bg: var(--bad-bg);
-  --font-sans: "Atkinson Hyperlegible Next Variable", "Atkinson Hyperlegible Next", system-ui, sans-serif;
-  --font-mono: "Atkinson Hyperlegible Mono Variable", "Atkinson Hyperlegible Mono", ui-monospace, monospace;
-  --font-display: "Martian Mono Variable", "Martian Mono", ui-monospace, monospace;
+  --font-sans: "Atkinson Hyperlegible Next Variable", "Atkinson Hyperlegible Next Variable fallback", system-ui, sans-serif;
+  --font-mono: "Atkinson Hyperlegible Mono Variable", "Atkinson Hyperlegible Mono Variable fallback", ui-monospace, monospace;
+  --font-display: "Martian Mono Variable", "Martian Mono Variable fallback", ui-monospace, monospace;
   /* Nothing on the page is smaller than 15px; running text is 18px. */
   --text-sm: 0.9375rem;
   --text-sm--line-height: 1.5;
