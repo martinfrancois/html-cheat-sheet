@@ -17,7 +17,10 @@ Write a record when:
 
 - a choice can't be recovered from the code, and the obvious cleanup of a line would undo it;
 - martinfrancois and an agent weigh several options and pick one. A decision must not live only in
-  chat, a pull request, or a commit message;
+  chat, a pull request, an issue comment, or a commit message;
+- a setting outside the repository that changes how the page reaches readers, such as a Cloudflare
+  or GitHub setting, is changed or deliberately left as it is. Closing an issue because a reported
+  setting turned out not to matter is such a decision;
 - an approach, library, or setting was tried or seriously considered and rejected for a reason that
   isn't obvious, so the next person doesn't try it again;
 - a measured or verified fact decided the choice, such as a library's size or a feature's Baseline

@@ -25,8 +25,10 @@ test("offers a reload when a new version is deployed, then shows it", async ({ p
   // Serve a copy of the build, so the test can deploy a changed version into it.
   const root = await mkdtemp(join(tmpdir(), "html-cheat-sheet-deploy-"));
   await cp("dist", root, { recursive: true });
-  // Port 0 takes a free port, so the test can run in several browsers at once.
-  const server = await preview({ configFile: false, root, build: { outDir: root }, preview: { host: "127.0.0.1", port: 0 } });
+  // Port 0 takes a free port, so the test can run in several browsers at once. The header is the
+  // 31-day browser cache Cloudflare sends, which must not hold back a deploy: docs/adr/0015.
+  const headers = { "cache-control": "max-age=2678400" };
+  const server = await preview({ configFile: false, root, build: { outDir: root }, preview: { host: "127.0.0.1", port: 0, headers } });
   try {
     await page.goto(server.resolvedUrls!.local[0]!);
     await waitForServiceWorker(page);
