@@ -1,0 +1,170 @@
+---
+import { THEME_KEY } from "../lib/theme-key.ts";
+import Moon from "@lucide/astro/icons/moon";
+import Sun from "@lucide/astro/icons/sun";
+import Entry from "../components/Entry.astro";
+import { loadChapters } from "../lib/entries.ts";
+import { globalAttributes, obsoleteElements, specElements } from "../lib/spec.ts";
+import "../styles/global.css";
+// The Latin files of the three fonts, which every visitor needs. Preloading them lets the text
+// render in its own font at the first paint instead of shifting the page when the font arrives.
+import martianMono from "@fontsource-variable/martian-mono/files/martian-mono-latin-wght-normal.woff2?url";
+import atkinsonMono from "@fontsource-variable/atkinson-hyperlegible-mono/files/atkinson-hyperlegible-mono-latin-wght-normal.woff2?url";
+import atkinsonNext from "@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-wght-normal.woff2?url";
+
+const chapters = await loadChapters();
+// Keyed by kind, so the <title> element and the title attribute count separately.
+const covered = new Set(
+  chapters.flatMap((chapter) => chapter.entries.flatMap((entry) => (entry.kind === "attribute" ? entry.names : entry.elements.map((element) => `<${element.name}>`)))),
+);
+const total = specElements.length + globalAttributes.length + obsoleteElements.length;
+const description = `Every HTML element and global attribute, with what it's for, its key attributes, browser support, and a live example you can edit.`;
+const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HTML cheat sheet</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={Astro.site?.href} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    {[atkinsonNext, atkinsonMono, martianMono].map((font) => <link rel="preload" href={font} as="font" type="font/woff2" crossorigin />)}
+    <meta name="theme-color" content="#fcfcfc" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#050808" media="(prefers-color-scheme: dark)" />
+    <meta property="og:title" content="HTML cheat sheet" />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={Astro.site?.href} />
+    <meta property="og:type" content="website" />
+    <script is:inline define:vars={{ THEME_KEY }}>
+      // Runs before the first paint so a saved theme never flashes the other one.
+      try {
+        const theme = localStorage.getItem(THEME_KEY);
+        if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+      } catch {}
+    </script>
+  </head>
+  <body data-posthog-key={posthogKey}>
+    <a href="#entries" class="sr-only z-30 bg-surface p-3 focus:not-sr-only focus:fixed focus:top-2 focus:left-2">Skip to the entries</a>
+
+    <header class="sticky top-0 z-20 border-b border-line bg-bg">
+      <div class="gutter mx-auto flex max-w-7xl flex-wrap items-center gap-x-4 gap-y-2 py-2 sm:flex-nowrap sm:gap-x-6">
+        <h1 class="font-display text-[1.2rem] font-bold whitespace-nowrap">
+          <a href="#top" class="text-ink no-underline"><span class="text-accent" aria-hidden="true">&lt;</span>html<span class="text-accent" aria-hidden="true">&gt;</span> cheat sheet</a>
+        </h1>
+        <div class="order-last flex w-full items-center gap-2 sm:order-none sm:flex-1">
+          <label for="search-input" class="sr-only">Search elements and attributes</label>
+          <input
+            id="search-input"
+            type="search"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Search elements"
+            aria-keyshortcuts="/"
+            class="min-h-11 w-full rounded-md border border-line bg-surface px-3 text-base text-ink placeholder:text-muted"
+          />
+        </div>
+        {/* Follows the system setting until clicked; src/scripts/theme.ts sets the label to the next mode. */}
+        <button id="theme" type="button" class="icon-button ml-auto shrink-0" aria-label="Switch theme">
+          <Moon class="when-light" aria-hidden="true" />
+          <Sun class="when-dark" aria-hidden="true" />
+        </button>
+      </div>
+    </header>
+
+    <div id="top" class="gutter mx-auto grid max-w-7xl gap-y-8 pt-8 pb-24">
+      <p class="max-w-[70ch] text-muted">
+        Every element and global attribute of the <a href="https://html.spec.whatwg.org/multipage/">HTML standard</a>: what it's for, the attributes you'll
+        reach for, and an example you can edit next to what your browser draws for it. A badge marks anything that doesn't work in every
+        browser yet, or only recently does, with the share of visitors whose browser supports it.
+        {covered.size < total && <strong class="font-semibold text-ink"> Preview: {covered.size} of {total} written so far.</strong>}
+      </p>
+
+      <nav aria-label="Index">
+        {/* Tailwind's sm breakpoint, where the summary below hides; test/styles.test.ts checks it. */}
+        <details id="index" data-open-from="(min-width: 40rem)">
+          <summary class="control sm:hidden"><span class="marker" aria-hidden="true"></span>Index</summary>
+          <dl class="grid gap-x-6 gap-y-2 pt-4 sm:grid-cols-[max-content_minmax(0,1fr)] sm:pt-0">
+            {
+              chapters.map((chapter) => (
+                <div class="grid sm:col-span-2 sm:grid-cols-subgrid" data-index-chapter={chapter.id}>
+                  <dt>
+                    <a href={`#${chapter.id}`} class="inline-flex min-h-7 items-center font-semibold no-underline">
+                      {chapter.title}
+                    </a>
+                  </dt>
+                  <dd>
+                    <ul class="flex flex-wrap gap-x-4">
+                      {chapter.entries.flatMap((entry) =>
+                        entry.names.map((name) => (
+                          <li data-index-entry={entry.id}>
+                            <a href={`#${entry.id}`} class="inline-flex min-h-7 items-center font-mono no-underline">
+                              {name}
+                            </a>
+                          </li>
+                        )),
+                      )}
+                    </ul>
+                  </dd>
+                </div>
+              ))
+            }
+          </dl>
+        </details>
+        <script is:inline>
+          // Opens the index before the first paint where there is room, so it never pushes the
+          // entries down after they're drawn. src/scripts/index-nav.ts follows later resizes.
+          {
+            const index = document.getElementById("index");
+            index.open = matchMedia(index.dataset.openFrom).matches;
+          }
+        </script>
+      </nav>
+
+      <p id="search-status" role="status" class="text-lg empty:hidden"></p>
+
+      {/* The chapters, and the entries in each, stack in block layout with margins, not as grids:
+           WebKit lays out a whole grid again when one item changes height, which made every
+           keystroke in an example's editor take 600 ms on the full page. */}
+      <main id="entries" class="min-w-0 space-y-24">
+        {
+          chapters.map((chapter) => (
+            <section id={chapter.id} class="space-y-6" data-chapter aria-labelledby={`${chapter.id}-heading`}>
+              <h2 id={`${chapter.id}-heading`} class="border-b-4 border-accent pb-2 text-[clamp(1.6rem,1.3rem+1vw,2.1rem)] leading-tight font-bold">
+                {chapter.title}
+              </h2>
+              <div class="space-y-14">
+                {chapter.entries.map((entry) => (
+                  <Entry entry={entry} />
+                ))}
+              </div>
+            </section>
+          ))
+        }
+      </main>
+
+      <footer class="grid max-w-[70ch] gap-2 border-t border-line pt-8 text-sm text-muted">
+        <p>
+          Element lists, sections and default display come from the <a href="https://html.spec.whatwg.org/multipage/">WHATWG HTML standard</a>, roles from <a
+            href="https://w3c.github.io/html-aam/">HTML Accessibility API Mappings</a
+          >, and browser support from <a href="https://github.com/web-platform-dx/web-features">web-features</a>.
+        </p>
+        <p>
+          <a href="https://github.com/martinfrancois/html-cheat-sheet">Source on GitHub</a>, MIT license. Made by <a href="https://fmartin.ch">François Martin</a>.
+        </p>
+      </footer>
+    </div>
+
+    <div id="update-notice" class="fixed right-[max(16px,env(safe-area-inset-right,0px))] bottom-[max(16px,env(safe-area-inset-bottom,0px))] z-30 flex items-center gap-3 rounded-md bg-ink px-4 py-2 text-bg shadow-lg" hidden>
+      <span>A new version is ready.</span>
+      <button type="button" class="control" data-action="reload">Reload</button>
+    </div>
+
+    <script>
+      import "../scripts/main.ts";
+    </script>
+  </body>
+</html>

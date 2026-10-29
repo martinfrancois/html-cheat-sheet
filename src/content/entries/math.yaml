@@ -1,0 +1,36 @@
+elements:
+  - name: math
+    summary: A formula in MathML. Browsers draw real fractions, roots and exponents, and screen readers can read the formula out.
+    # MathML-AAM gives math; HTML-AAM, where spec.json takes roles from, doesn't cover MathML.
+    role: math
+attributes:
+  - name: display
+    default: inline
+    summary: "Where the formula goes: `block` puts it on its own line, centered and in a larger style, and `inline` keeps it in the line of text."
+notes:
+  - 'You don''t need a script such as MathJax: since 2023, all major browsers draw MathML by themselves.'
+  - Put numbers in `<mn>`, variables in `<mi>` and operators in `<mo>`, because each kind gets its own spacing and letter style.
+examples:
+  - title: A formula inside a sentence, and one on its own line with `display="block"`
+    code: |
+      <p>
+        A circle's area is
+        <math>
+          <mi>A</mi>
+          <mo>=</mo>
+          <mi>π</mi>
+          <msup>
+            <mi>r</mi>
+            <mn>2</mn>
+          </msup>
+        </math>.
+      </p>
+      <p>Average speed is the distance divided by the time:</p>
+      <math display="block">
+        <mi>v</mi>
+        <mo>=</mo>
+        <mfrac>
+          <mi>d</mi>
+          <mi>t</mi>
+        </mfrac>
+      </math>

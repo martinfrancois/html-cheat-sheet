@@ -1,0 +1,18 @@
+elements:
+  - name: q
+    summary: A short quotation inside a sentence, taken from another source. Browsers add the quotation marks themselves.
+attributes:
+  - name: cite
+    summary: The URL of the source. Browsers don't show it, so name the source in the text too.
+notes:
+  - Don't type quotation marks around it, because the browser already adds a pair and readers would see two.
+  - For a quotation of one or more paragraphs, use `<blockquote>`, because `<q>` only holds text inside a sentence.
+  - "Use it only for words someone said or wrote, not for sarcasm or a word in quotes: there's no source being quoted."
+examples:
+  - title: A quotation with its source named in the text and linked in `cite`
+    code: |
+      <p>
+        The <cite>Alpine Hiking Guide</cite>
+        says <q cite="https://example.com">always pack a headlamp</q>, and
+        it was right.
+      </p>

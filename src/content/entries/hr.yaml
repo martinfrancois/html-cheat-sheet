@@ -1,0 +1,22 @@
+elements:
+  - name: hr
+    summary: A change of topic between paragraphs, such as a scene change in a story or a new subject within a section. Inside `<select>`, it separates groups of options.
+notes:
+  - Don't put it before a new heading, because the heading already shows that the topic changes.
+  - For a line that's only decoration, use a CSS `border`, because `<hr>` tells screen readers that a new topic starts.
+examples:
+  - title: A scene change in a story
+    code: |
+      <p>The last bus left without her, so she walked home in the rain.</p>
+      <hr>
+      <p>Three weeks later, a letter came with no name on the envelope.</p>
+  - title: A line between groups of options in a `<select>`
+    compat: [html.elements.select.hr_in_select]
+    code: |
+      <label for="delivery">Delivery</label>
+      <select id="delivery" name="delivery">
+        <option>Standard, 3 to 5 days</option>
+        <option>Express, next day</option>
+        <hr>
+        <option>Pick up at the shop</option>
+      </select>

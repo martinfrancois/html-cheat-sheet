@@ -1,0 +1,35 @@
+elements:
+  - name: button
+    summary: A button labeled by its content, which can be text, an icon or both. In a form, a button without `type` submits the form, unless it has `commandfor`.
+attributes:
+  - name: type
+    summary: "`submit` sends the form, `reset` puts every field back to its starting value, and `button` does nothing until a script gives it a job. Without it, a button acts as `submit`, unless it has `commandfor`."
+  - name: name, value
+    summary: Sent with the form for the button that was pressed, so the server knows which one it was.
+  - name: disabled
+    summary: The button can't be pressed or focused.
+  - name: commandfor, command
+    summary: "Runs an action, such as `show-modal` or `toggle-popover` ([all values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button#command)), on the element whose `id` is in `commandfor`, with no JavaScript."
+notes:
+  - Give buttons in a form that don't submit `type="button"`, because without a `type` they submit the form.
+  - Use `<a href>` to go to another page and `<button>` for an action on this one, because people can open a link in a new tab or bookmark it.
+  - Give an icon-only button text, such as `aria-label="Close"`, because screen readers have nothing to read otherwise.
+examples:
+  - title: Two submit buttons that send different values, and a reset button
+    code: |
+      <form id="post">
+        <p><label>Comment <input name="comment"></label></p>
+        <button name="action" value="publish">Publish</button>
+        <button name="action" value="draft">Save draft</button>
+        <button type="reset">Clear</button>
+        <p id="sent">Nothing sent yet.</p>
+      </form>
+      <script>
+        const form = document.querySelector("#post");
+        const sent = document.querySelector("#sent");
+        form.addEventListener("submit", (event) => {
+          // Stay on this page instead of sending the form.
+          event.preventDefault();
+          sent.textContent = `Sent with action=${event.submitter.value}`;
+        });
+      </script>

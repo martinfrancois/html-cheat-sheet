@@ -1,0 +1,15 @@
+elements:
+  - name: mark
+    summary: Text highlighted because it's relevant to what the reader is doing now, such as the words that match a search, or the part of a quotation you want to point out.
+notes:
+  - "Use `<strong>` for text that's important in itself: `<mark>` is for text that matters in this context, such as a search match."
+  - In a quotation, say that the highlight is yours, such as "highlight mine", because the original author didn't mark it.
+  - "For syntax highlighting, use `<span>` with a class: every keyword gets a color, while `<mark>` points at one relevant spot."
+examples:
+  - title: The words that match a search
+    code: |
+      <p>Results for <q>tent</q>:</p>
+      <p>
+        A two-person <mark>tent</mark> that packs down to the size of a
+        water bottle.
+      </p>

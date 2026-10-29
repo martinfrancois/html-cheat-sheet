@@ -1,0 +1,19 @@
+attribute:
+  name: data-*
+  summary: Your own data on an element, in attributes whose names start with `data-`, such as `data-length="2:11"`. Scripts read them through `element.dataset`, and CSS can select them.
+notes:
+  - They're for the page's own scripts. Browsers ignore them, so use a standard attribute where one exists.
+  - In JavaScript, `data-track-length` becomes `dataset.trackLength`. A hyphen followed by a letter becomes that letter in capitals.
+  - Write the names in lowercase, because HTML turns every attribute name into lowercase.
+examples:
+  - title: A script adds each song's length from `data-length`
+    code: |
+      <ol>
+        <li data-length="2:11">Beyond the Sea</li>
+        <li data-length="2:28">Mack the Knife</li>
+      </ol>
+      <script>
+        for (const song of document.querySelectorAll("[data-length]")) {
+          song.append(` (${song.dataset.length})`);
+        }
+      </script>

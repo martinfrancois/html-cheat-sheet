@@ -1,0 +1,14 @@
+attribute:
+  name: on*
+  summary: Event handler attributes, such as `onclick` or `oninput`, run their JavaScript when that event happens on the element. In the code, `this` is the element and `event` is the event.
+notes:
+  - Prefer `addEventListener()` in a script, so one script can handle many elements and the markup holds no code.
+  - A Content Security Policy that blocks inline scripts blocks these attributes too.
+  - Most of them are allowed on every element, but their events only happen on some, such as `onvolumechange` on `<video>`.
+  - On `<body>`, attributes such as `onload` and `onscroll` handle the events of the whole window.
+examples:
+  - title: "`onclick` changes the button's own text"
+    code: |
+      <button type="button" onclick="this.textContent = 'Draft saved'">
+        Save draft
+      </button>

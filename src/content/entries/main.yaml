@@ -1,0 +1,23 @@
+elements:
+  - name: main
+    summary: The main content of the page, the part that's unique to it. The header, navigation, sidebars and footer that repeat on other pages stay outside.
+notes:
+  - Screen readers have a key to jump to `<main>`, so their users can skip the header and navigation on every page.
+  - Give it an `id` and put a "Skip to main content" link first on the page, so keyboard users can skip the navigation too.
+  - A page has only one visible `<main>`. A single-page app can keep one per view and add `hidden` to all but the current one.
+  - 'Put it straight in `<body>` or in a `<div>`, never in `<article>` or `<section>`: it holds the main content of the whole page.'
+examples:
+  - title: The main content between the navigation and the footer, with a skip link
+    code: |
+      <a href="#content">Skip to main content</a>
+      <nav>
+        <a href="https://example.com">Home</a>
+        <a href="https://example.com">Opening hours</a>
+      </nav>
+      <main id="content">
+        <h1>Opening hours</h1>
+        <p>Monday to Friday, 9:00 to 18:00. Closed on weekends.</p>
+      </main>
+      <footer>
+        <p>City Library, 12 Station Road</p>
+      </footer>

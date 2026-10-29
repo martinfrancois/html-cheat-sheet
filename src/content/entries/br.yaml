@@ -1,0 +1,24 @@
+elements:
+  - name: br
+    summary: A line break that's part of the content, as in a poem or a postal address.
+  - name: wbr
+    summary: A place where the browser may break a long word or URL when the line runs out of room. It shows nothing otherwise and adds no hyphen.
+notes:
+  - "Separate paragraphs with `<p>` and space them with the CSS `margin` property, not `<br>`: screen readers may announce every `<br>`."
+  - "For a hyphen where a word breaks, use `&shy;` instead of `<wbr>`: the hyphen then shows only when the line breaks there."
+examples:
+  - title: An address with its line breaks, and a long URL that may break after each slash
+    code: |
+      <p>
+        Example Hotel Galway<br>
+        Reception desk<br>
+        12 Harbour Road<br>
+        Galway H91 X2Y3<br>
+        Ireland
+      </p>
+      <p>
+        Download the form from
+        <a href="https://example.com">
+          example.com/<wbr>downloads/<wbr>housing/<wbr>tenancy/<wbr>move.pdf
+        </a>
+      </p>

@@ -1,0 +1,14 @@
+attribute:
+  name: id
+  summary: A name for the element that's unique in the page. Links jump to it with `#name`, attributes such as `for` and `aria-describedby` point at it, and CSS and scripts find it.
+notes:
+  - Never give two elements the same `id`, because links, labels and `getElementById()` then only find the first.
+  - It needs at least one character and no spaces. Digits and punctuation are fine.
+examples:
+  - title: "`for` and `aria-describedby` find their elements by `id`"
+    code: |
+      <p>
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone" aria-describedby="hint">
+      </p>
+      <p id="hint">We only call if your delivery is late.</p>

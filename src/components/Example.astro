@@ -1,0 +1,104 @@
+---
+import Check from "@lucide/astro/icons/check";
+import Copy from "@lucide/astro/icons/copy";
+import Pencil from "@lucide/astro/icons/pencil";
+import RotateCcw from "@lucide/astro/icons/rotate-ccw";
+import { Code } from "astro:components";
+import BaselineBadge from "./BaselineBadge.astro";
+import { breakAtSeams, codeTheme, keepAttributesTogether, keepIndentWithFirstToken } from "../lib/code-theme.ts";
+import type { ExampleView } from "../lib/entries.ts";
+
+interface Props {
+  example: ExampleView;
+}
+
+const { example } = Astro.props;
+const captionId = `${example.id}-caption`;
+// The height a frame starts at, until its document reports its own.
+const FRAME_START = "48px";
+// Keeps the last two words of a title on one line, so a title that wraps never leaves one word
+// alone on its last line and otherwise fills its lines as usual. A no-break space alone isn't
+// enough: WebKit still breaks between it and a code chip, as in "with <iframe>". Spaces inside
+// tags don't count, and when the last two words cut through a tag the title stays as it is.
+function keepLastWordsTogether(html: string): string {
+  const spaces: number[] = [];
+  let inTag = false;
+  for (let index = 0; index < html.length; index++) {
+    if (html[index] === "<") inTag = true;
+    else if (html[index] === ">") inTag = false;
+    else if (html[index] === " " && !inTag) spaces.push(index);
+  }
+  if (spaces.length < 2) return html;
+  const tail = html.slice(spaces.at(-2)! + 1);
+  const opened = tail.match(/<[a-z]/g)?.length ?? 0;
+  const closed = tail.match(/<\//g)?.length ?? 0;
+  if (opened !== closed) return html;
+  return `${html.slice(0, spaces.at(-2)! + 1)}<span class="whitespace-nowrap">${tail}</span>`;
+}
+// A compat key as markup: html.elements.input.type_month is <input type="month">, and
+// html.elements.button.commandfor is <button commandfor>.
+const compatLabel = (key: string) => {
+  // A DOM event, such as api.Element.contextmenu_event, is named the way JavaScript listens for it.
+  const event = key.match(/^api\.\w+\.(\w+)_event$/)?.[1];
+  if (event) return `${event} event`;
+  const rule = key.match(/^css\.at-rules\.([\w-]+)$/)?.[1];
+  if (rule) return `@${rule}`;
+  const [, kind, name, sub] = key.match(/^html\.(elements|global_attributes)\.([^.]+)(?:\.(.+))?$/) ?? [];
+  if (!name) throw new Error(`No readable label for the compat key ${key}; add one in compatLabel`);
+  if (kind === "global_attributes") return name;
+  // html.elements.select.hr_in_select is <hr> in <select>.
+  const inside = sub?.match(/^(\w+)_in_(\w+)$/);
+  if (inside) return `<${inside[1]}> in <${inside[2]}>`;
+  const type = sub?.match(/^type_(.+)$/)?.[1];
+  return type ? `<${name} type="${type}">` : sub ? `<${name} ${sub.replace(/_/g, "-")}>` : `<${name}>`;
+};
+---
+
+{/* The caption is the header of the code block: the title and any support badges on the left,
+     Copy and Edit on the right, a thin line under it. On wide screens the live output sits next
+     to both. */}
+<figure class="example grid items-start gap-x-2 gap-y-2 lg:grid-cols-[3fr_2fr] lg:grid-rows-[auto_1fr] lg:gap-y-0" data-example id={example.id}>
+  <figcaption class="flex min-w-0 items-start justify-between gap-3 rounded-t-md border-b border-line/40 bg-sunk py-1 pr-1 pl-3 lg:col-start-1">
+    <span class="grid min-w-0 gap-1 py-2">
+      <span id={captionId} class="font-semibold" set:html={keepLastWordsTogether(example.title)} />
+      {
+        example.badges.length > 0 && (
+          <span class="flex flex-wrap gap-1.5">
+            {example.badges.map(({ key, status, foreign }) => (
+              <BaselineBadge status={status} label={example.badges.length > 1 || foreign ? compatLabel(key) : undefined} />
+            ))}
+          </span>
+        )
+      }
+    </span>
+    <span class="flex shrink-0">
+      <button type="button" class="icon-button" data-action="copy" aria-label="Copy code" aria-describedby={captionId}>
+        <Copy class="when-idle" aria-hidden="true" />
+        <Check class="when-done" aria-hidden="true" />
+      </button>
+      <button type="button" class="icon-button" data-action="edit" aria-label="Edit code" aria-describedby={captionId}>
+        <Pencil aria-hidden="true" />
+      </button>
+      <button type="button" class="icon-button" data-action="reset" aria-label="Reset example" aria-describedby={captionId} hidden>
+        <RotateCcw aria-hidden="true" />
+      </button>
+    </span>
+  </figcaption>
+  <div class="-mt-2 min-w-0 rounded-b-md bg-sunk lg:col-start-1 lg:mt-0">
+    <div data-code-view>
+      <Code code={example.code} lang="html" theme={codeTheme} transformers={[keepAttributesTogether, keepIndentWithFirstToken, breakAtSeams]} />
+    </div>
+    <div data-editor hidden></div>
+  </div>
+  {/* src/scripts/live-output.ts swaps the placeholder for the frame when the box nears the screen. */}
+  <div class="min-w-0 overflow-hidden rounded-md border border-line/60 bg-surface lg:col-start-2 lg:row-span-2 lg:row-start-1" data-live-output>
+    <div style={`height: ${FRAME_START}`}></div>
+    <template>
+      <iframe
+        class="block w-full"
+        style={`height: ${FRAME_START}`}
+        title={`Live output: ${example.plainTitle}`}
+        sandbox="allow-scripts allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox"></iframe>
+    </template>
+  </div>
+</figure>

@@ -1,0 +1,72 @@
+---
+import ArrowUpRight from "@lucide/astro/icons/arrow-up-right";
+import { type BaselineStatus, worthABadge } from "../lib/baseline.ts";
+import { CHIP_ROW } from "../lib/chips.ts";
+
+interface Props {
+  status?: BaselineStatus;
+  // The feature the badge is about, when an example has more than one, such as input type="week".
+  label?: string;
+}
+
+const { status: given, label } = Astro.props;
+const status = worthABadge(given) ? given : undefined;
+// Short text: the share of visitors who can use it, or for a feature in every browser since a
+// recent year, that year. The missing browsers and the Baseline level go in the tooltip and on the
+// linked page.
+const text = !status
+  ? undefined
+  : status.support
+    ? // A share of 0% means no released browser has it yet; "available for 0%" reads like a bug.
+      status.support.share === 0
+      ? "not in any browser yet"
+      : `available for ${status.support.share}% of visitors`
+    : `widely available${status.since ? ` since ${status.since}` : ""}`;
+const missing = status?.support?.missing.length ? `Not in ${new Intl.ListFormat("en", { type: "disjunction" }).format(status.support.missing)}.` : undefined;
+const tone = !status ? "" : status.level === "high" ? "bg-wide-bg text-wide" : status.level === "low" ? "bg-new-bg text-new" : "bg-limited-bg text-limited";
+const meaning = !status
+  ? undefined
+  : status.level === "high"
+    ? "Baseline widely available: works in all major browsers for at least 30 months."
+    : status.level === "low"
+      ? "Baseline newly available: works in the latest version of every major browser, but not yet in older ones."
+      : "Baseline limited availability: doesn't work in every major browser yet.";
+const tooltip = [meaning, missing, status?.support && "The share counts the browsers people use worldwide."].filter(Boolean).join(" ");
+const sentence = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
+const shown = text && (label ? text : sentence(text));
+// The last two words stay together, so a badge that wraps in a narrow title bar never leaves
+// "visitors" alone on its second line.
+const split = shown?.lastIndexOf(" ", shown.lastIndexOf(" ") - 1) ?? -1;
+const [head, tail] = shown && split > 0 ? [shown.slice(0, split + 1), shown.slice(split + 1)] : ["", shown];
+// Like a code chip in the text, a label longer than a narrow phone's row breaks between its words.
+const labelWords = !label ? [] : label.length <= CHIP_ROW ? [label] : label.split(" ");
+---
+
+{
+  status && text && (
+    <a
+      href={`https://webstatus.dev/features/${status.feature}`}
+      class:list={["inline-flex min-h-8 items-center justify-self-start gap-x-1.5 rounded-md px-3 py-1 text-sm font-semibold no-underline", tone]}
+      title={tooltip}
+      data-support
+    >
+      <span>
+        {label && (
+          <>
+            <code>
+              {labelWords.map((word, index) => (
+                <>
+                  {index > 0 && " "}
+                  <span class="whitespace-nowrap">{word}</span>
+                </>
+              ))}
+            </code>{" "}
+          </>
+        )}
+        {head}
+        <span class="whitespace-nowrap">{tail}</span>
+      </span>
+      <ArrowUpRight class="size-4 shrink-0" aria-hidden="true" />
+    </a>
+  )
+}

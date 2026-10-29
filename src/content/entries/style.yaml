@@ -1,0 +1,42 @@
+elements:
+  - name: style
+    summary: CSS written inside the page. It styles the page it's in and shows nothing itself.
+attributes:
+  - name: media
+    summary: "A media query, such as `print` or `(max-width: 40em)`. The CSS only applies when it matches."
+notes:
+  - Put CSS that several pages share in a file and load it with `<link rel="stylesheet">`, so you change it in one place.
+  - Put it after any `<link rel="stylesheet">` it overrides, because when two rules match equally, the later one wins.
+  - In `<body>`, it must be the first child of its parent, with its rules inside `@scope { }`, so it only styles that parent.
+examples:
+  - title: CSS in the head styles the whole page
+    code: |
+      <!doctype html>
+      <html lang="en">
+      <head>
+        <title>Opening hours | Rosa's Bakery</title>
+        <style>
+          body { font-family: sans-serif; }
+          h1 { border-bottom: 2px solid; }
+        </style>
+      </head>
+      <body>
+        <h1>Opening hours</h1>
+        <p>We're open Monday to Saturday, from 7:00 to 18:00.</p>
+      </body>
+      </html>
+  - title: CSS in the body styles only the element it's in
+    compat: [css.at-rules.scope]
+    code: |
+      <article>
+        <style>
+          @scope {
+            :scope { border: 2px solid; padding: 0 1em; }
+            h2 { font-family: sans-serif; }
+          }
+        </style>
+        <h2>Open on Sundays</h2>
+        <p>From May, we're also open on Sundays, from 8:00 to 12:00.</p>
+      </article>
+      <h2>Holidays</h2>
+      <p>We're closed on 1 January and 25 December.</p>

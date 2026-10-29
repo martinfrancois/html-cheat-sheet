@@ -1,0 +1,20 @@
+elements:
+  - name: label
+    summary: A caption for a form control. Screen readers read it as the control's name, and clicking it focuses the control or ticks the checkbox.
+attributes:
+  - name: for
+    summary: The `id` of the control it names. Leave it out when the control is inside the label.
+notes:
+  - A click on the label counts as a click on its control, so the whole text is a target, not just a small checkbox.
+  - Keep links and buttons out of a label, because a click on them doesn't reach the control.
+  - A label names one control, so name a group of radio buttons with `<fieldset>` and `<legend>` instead.
+examples:
+  - title: "`for` pointing at a field's `id`, and a checkbox inside its label"
+    code: |
+      <p>
+        <label for="city">City</label>
+        <input id="city" name="city" autocomplete="address-level2">
+      </p>
+      <p>
+        <label><input type="checkbox" name="remember"> Remember me</label>
+      </p>

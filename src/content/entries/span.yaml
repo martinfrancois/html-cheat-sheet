@@ -1,0 +1,11 @@
+elements:
+  - name: span
+    summary: A piece of text with no meaning of its own, for CSS or a script to use, or to give it an attribute such as `class` or `lang`. It's the inline version of `<div>`.
+notes:
+  - Look for an element with a meaning first, such as `<em>`, `<code>` or `<time>`, because `<span>` tells screen readers nothing.
+  - Don't make a `<span>` clickable as a button. Use `<button>`, because a `<span>` can't get keyboard focus on its own.
+examples:
+  - title: A `<span>` changes nothing until CSS or an attribute uses it
+    code: |
+      <p>Status: <span style="text-transform: uppercase">in stock</span></p>
+      <p>Our café is called <span lang="fr">Le Petit Coin</span>.</p>

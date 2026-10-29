@@ -1,0 +1,32 @@
+elements:
+  - name: a
+    summary: A link to another page, a file, an email address or a place on the same page. Without `href` it isn't a link, only a placeholder where one could go.
+    roleContext: 'with `href`, and `generic` without it'
+attributes:
+  - name: href
+    summary: "Where the link goes: a URL, `#id` for an element on the same page, or a `mailto:` or `tel:` address."
+  - name: target
+    summary: Where the page opens, such as `_blank` for a new tab ([all values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a#target)). A page opened with `_blank` can't reach yours through `window.opener`, so you don't need `rel="noopener"`.
+  - name: download
+    summary: Saves the file instead of opening it. A value, such as `download="menu.pdf"`, suggests a file name. It only works for files from the page's own origin (the same scheme, domain and port); browsers follow other links as usual.
+  - name: rel
+    summary: How the linked page relates to this one, such as `noreferrer` ([all values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#value)). With `noreferrer`, the linked site doesn't learn which page the visitor came from.
+notes:
+  - "Make the link text say where it goes, such as \"our price list\", not \"click here\": screen readers can list links apart from their sentences."
+  - "For an action that loads no new page, such as opening a menu, use `<button>`: an `href=\"#\"` link breaks new tabs and bookmarks."
+  - Say in the link text when a link opens a new tab, as the size chart link below does, so the new tab doesn't take readers by surprise.
+examples:
+  - title: A link to another site, one that opens a new tab, and one to a heading further down
+    code: |
+      <p>
+        Read <a href="https://example.com">our guide to choosing a tent</a>
+        first.
+      </p>
+      <p>
+        <a href="https://example.com" target="_blank">
+          Size chart (opens in new tab)
+        </a>
+      </p>
+      <p>The prices are <a href="#prices">at the end of this page</a>.</p>
+      <h2 id="prices">Prices</h2>
+      <p>Two-person tent: 129 €</p>

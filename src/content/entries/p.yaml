@@ -1,0 +1,12 @@
+elements:
+  - name: p
+    summary: A paragraph. Most hold a few sentences, but a paragraph can also group a label with its form field.
+notes:
+  - Split text into paragraphs, because screen readers have keys to jump from one paragraph to the next.
+  - Don't add an empty `<p>` for space, because screen readers may announce a paragraph with nothing in it. Use CSS `margin`.
+  - 'A `<p>` can''t hold a list: the browser ends the paragraph where a `<ul>` or `<ol>` starts. Close the `<p>` before the list.'
+examples:
+  - title: Two paragraphs, which browsers separate with a blank line
+    code: |
+      <p>The library opens at 9:00 on weekdays and 10:00 on Saturdays.</p>
+      <p>Return books in the slot by the door, even when we're closed.</p>

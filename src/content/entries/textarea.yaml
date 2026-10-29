@@ -1,0 +1,25 @@
+elements:
+  - name: textarea
+    summary: A field for several lines of plain text, such as a message or an address. The text between its tags is the starting value.
+attributes:
+  - name: rows
+    default: "2"
+    summary: How many lines show at once. People can type more and scroll.
+  - name: cols
+    default: "20"
+    summary: The width in characters.
+  - name: maxlength
+    summary: The most characters people can type.
+  - name: wrap
+    default: soft
+    summary: "Which line breaks the form sends: with `hard`, also the ones where the text wraps on screen, which needs `cols`; with `soft`, only the ones people typed."
+notes:
+  - It has no `value` attribute. Write the starting text between the tags.
+  - Write an empty one as `<textarea></textarea>` with nothing between the tags, because spaces there end up in the field.
+examples:
+  - title: A field for a short bio, four lines high
+    code: |
+      <p>
+        <label for="bio">About you</label>
+        <textarea id="bio" name="bio" rows="4" maxlength="300"></textarea>
+      </p>

@@ -1,0 +1,1165 @@
+{
+  "chapters": [
+    {
+      "section": "4.1",
+      "title": "The document element"
+    },
+    {
+      "section": "4.2",
+      "title": "Document metadata"
+    },
+    {
+      "section": "4.3",
+      "title": "Sections"
+    },
+    {
+      "section": "4.4",
+      "title": "Grouping content"
+    },
+    {
+      "section": "4.5",
+      "title": "Text-level semantics"
+    },
+    {
+      "section": "4.7",
+      "title": "Edits"
+    },
+    {
+      "section": "4.8",
+      "title": "Embedded content"
+    },
+    {
+      "section": "4.9",
+      "title": "Tabular data"
+    },
+    {
+      "section": "4.10",
+      "title": "Forms"
+    },
+    {
+      "section": "4.11",
+      "title": "Interactive elements"
+    },
+    {
+      "section": "4.12",
+      "title": "Scripting"
+    }
+  ],
+  "elements": [
+    {
+      "name": "html",
+      "href": "https://html.spec.whatwg.org/multipage/semantics.html#the-html-element",
+      "section": "4.1.1",
+      "display": "block",
+      "role": "generic"
+    },
+    {
+      "name": "head",
+      "href": "https://html.spec.whatwg.org/multipage/semantics.html#the-head-element",
+      "section": "4.2.1",
+      "display": "none",
+      "role": null
+    },
+    {
+      "name": "title",
+      "href": "https://html.spec.whatwg.org/multipage/semantics.html#the-title-element",
+      "section": "4.2.2",
+      "display": "none",
+      "role": null
+    },
+    {
+      "name": "base",
+      "href": "https://html.spec.whatwg.org/multipage/semantics.html#the-base-element",
+      "section": "4.2.3",
+      "display": "none",
+      "role": null
+    },
+    {
+      "name": "link",
+      "href": "https://html.spec.whatwg.org/multipage/semantics.html#the-link-element",
+      "section": "4.2.4",
+      "display": "none",
+      "role": null
+    },
+    {
+      "name": "meta",
+      "href": "https://html.spec.whatwg.org/multipage/semantics.html#meta",
+      "section": "4.2.5",
+      "display": "none",
+      "role": null
+    },
+    {
+      "name": "style",
+      "href": "https://html.spec.whatwg.org/multipage/semantics.html#the-style-element",
+      "section": "4.2.6",
+      "display": "none",
+      "role": null
+    },
+    {
+      "name": "body",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#the-body-element",
+      "section": "4.3.1",
+      "display": "block",
+      "role": "generic"
+    },
+    {
+      "name": "article",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#the-article-element",
+      "section": "4.3.2",
+      "display": "block",
+      "role": "article"
+    },
+    {
+      "name": "section",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#the-section-element",
+      "section": "4.3.3",
+      "display": "block",
+      "role": "region"
+    },
+    {
+      "name": "nav",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#the-nav-element",
+      "section": "4.3.4",
+      "display": "block",
+      "role": "navigation"
+    },
+    {
+      "name": "aside",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#the-aside-element",
+      "section": "4.3.5",
+      "display": "block",
+      "role": "complementary"
+    },
+    {
+      "name": "h1",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#the-h1-element",
+      "section": "4.3.6",
+      "display": "block",
+      "role": "heading"
+    },
+    {
+      "name": "h2",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#the-h2-element",
+      "section": "4.3.6",
+      "display": "block",
+      "role": "heading"
+    },
+    {
+      "name": "h3",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#the-h3-element",
+      "section": "4.3.6",
+      "display": "block",
+      "role": "heading"
+    },
+    {
+      "name": "h4",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#the-h4-element",
+      "section": "4.3.6",
+      "display": "block",
+      "role": "heading"
+    },
+    {
+      "name": "h5",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#the-h5-element",
+      "section": "4.3.6",
+      "display": "block",
+      "role": "heading"
+    },
+    {
+      "name": "h6",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#the-h6-element",
+      "section": "4.3.6",
+      "display": "block",
+      "role": "heading"
+    },
+    {
+      "name": "hgroup",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#the-hgroup-element",
+      "section": "4.3.7",
+      "display": "block",
+      "role": "group"
+    },
+    {
+      "name": "header",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#the-header-element",
+      "section": "4.3.8",
+      "display": "block",
+      "role": "sectionheader"
+    },
+    {
+      "name": "footer",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#the-footer-element",
+      "section": "4.3.9",
+      "display": "block",
+      "role": "sectionfooter"
+    },
+    {
+      "name": "address",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#the-address-element",
+      "section": "4.3.10",
+      "display": "block",
+      "role": "group"
+    },
+    {
+      "name": "p",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-p-element",
+      "section": "4.4.1",
+      "display": "block",
+      "role": "paragraph"
+    },
+    {
+      "name": "hr",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-hr-element",
+      "section": "4.4.2",
+      "display": "block",
+      "role": "separator"
+    },
+    {
+      "name": "pre",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-pre-element",
+      "section": "4.4.3",
+      "display": "block",
+      "role": "generic"
+    },
+    {
+      "name": "blockquote",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-blockquote-element",
+      "section": "4.4.4",
+      "display": "block",
+      "role": "blockquote"
+    },
+    {
+      "name": "ol",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-ol-element",
+      "section": "4.4.5",
+      "display": "block",
+      "role": "list"
+    },
+    {
+      "name": "ul",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-ul-element",
+      "section": "4.4.6",
+      "display": "block",
+      "role": "list"
+    },
+    {
+      "name": "menu",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#menus",
+      "section": "4.4.7",
+      "display": "block",
+      "role": "list"
+    },
+    {
+      "name": "li",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-li-element",
+      "section": "4.4.8",
+      "display": "list-item",
+      "role": "listitem"
+    },
+    {
+      "name": "dl",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-dl-element",
+      "section": "4.4.9",
+      "display": "block",
+      "role": "list"
+    },
+    {
+      "name": "dt",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-dt-element",
+      "section": "4.4.10",
+      "display": "block",
+      "role": "term"
+    },
+    {
+      "name": "dd",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-dd-element",
+      "section": "4.4.11",
+      "display": "block",
+      "role": "definition"
+    },
+    {
+      "name": "figure",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-figure-element",
+      "section": "4.4.12",
+      "display": "block",
+      "role": "figure"
+    },
+    {
+      "name": "figcaption",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-figcaption-element",
+      "section": "4.4.13",
+      "display": "block",
+      "role": "caption"
+    },
+    {
+      "name": "main",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-main-element",
+      "section": "4.4.14",
+      "display": "block",
+      "role": "main"
+    },
+    {
+      "name": "search",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-search-element",
+      "section": "4.4.15",
+      "display": "block",
+      "role": "search"
+    },
+    {
+      "name": "div",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-div-element",
+      "section": "4.4.16",
+      "display": "block",
+      "role": "generic"
+    },
+    {
+      "name": "a",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element",
+      "section": "4.5.1",
+      "display": "inline",
+      "role": "link"
+    },
+    {
+      "name": "em",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-em-element",
+      "section": "4.5.2",
+      "display": "inline",
+      "role": "emphasis"
+    },
+    {
+      "name": "strong",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-strong-element",
+      "section": "4.5.3",
+      "display": "inline",
+      "role": "strong"
+    },
+    {
+      "name": "small",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-small-element",
+      "section": "4.5.4",
+      "display": "inline",
+      "role": "generic"
+    },
+    {
+      "name": "s",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-s-element",
+      "section": "4.5.5",
+      "display": "inline",
+      "role": "deletion"
+    },
+    {
+      "name": "cite",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-cite-element",
+      "section": "4.5.6",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "q",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-q-element",
+      "section": "4.5.7",
+      "display": "inline",
+      "role": "generic"
+    },
+    {
+      "name": "dfn",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-dfn-element",
+      "section": "4.5.8",
+      "display": "inline",
+      "role": "term"
+    },
+    {
+      "name": "abbr",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-abbr-element",
+      "section": "4.5.9",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "ruby",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-ruby-element",
+      "section": "4.5.10",
+      "display": "ruby",
+      "role": null
+    },
+    {
+      "name": "rt",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-rt-element",
+      "section": "4.5.11",
+      "display": "ruby-text",
+      "role": null
+    },
+    {
+      "name": "rp",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-rp-element",
+      "section": "4.5.12",
+      "display": "none",
+      "role": null
+    },
+    {
+      "name": "data",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-data-element",
+      "section": "4.5.13",
+      "display": "inline",
+      "role": "generic"
+    },
+    {
+      "name": "time",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-time-element",
+      "section": "4.5.14",
+      "display": "inline",
+      "role": "time"
+    },
+    {
+      "name": "code",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-code-element",
+      "section": "4.5.15",
+      "display": "inline",
+      "role": "code"
+    },
+    {
+      "name": "var",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-var-element",
+      "section": "4.5.16",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "samp",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-samp-element",
+      "section": "4.5.17",
+      "display": "inline",
+      "role": "generic"
+    },
+    {
+      "name": "kbd",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-kbd-element",
+      "section": "4.5.18",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "sub",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-sub-element",
+      "section": "4.5.19",
+      "display": "inline",
+      "role": "subscript"
+    },
+    {
+      "name": "sup",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-sup-element",
+      "section": "4.5.19",
+      "display": "inline",
+      "role": "superscript"
+    },
+    {
+      "name": "i",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-i-element",
+      "section": "4.5.20",
+      "display": "inline",
+      "role": "generic"
+    },
+    {
+      "name": "b",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-b-element",
+      "section": "4.5.21",
+      "display": "inline",
+      "role": "generic"
+    },
+    {
+      "name": "u",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-u-element",
+      "section": "4.5.22",
+      "display": "inline",
+      "role": "generic"
+    },
+    {
+      "name": "mark",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-mark-element",
+      "section": "4.5.23",
+      "display": "inline",
+      "role": "mark"
+    },
+    {
+      "name": "bdi",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-bdi-element",
+      "section": "4.5.24",
+      "display": "inline",
+      "role": "generic"
+    },
+    {
+      "name": "bdo",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-bdo-element",
+      "section": "4.5.25",
+      "display": "inline",
+      "role": "generic"
+    },
+    {
+      "name": "span",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-span-element",
+      "section": "4.5.26",
+      "display": "inline",
+      "role": "generic"
+    },
+    {
+      "name": "br",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-br-element",
+      "section": "4.5.27",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "wbr",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-wbr-element",
+      "section": "4.5.28",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "ins",
+      "href": "https://html.spec.whatwg.org/multipage/edits.html#the-ins-element",
+      "section": "4.7.1",
+      "display": "inline",
+      "role": "insertion"
+    },
+    {
+      "name": "del",
+      "href": "https://html.spec.whatwg.org/multipage/edits.html#the-del-element",
+      "section": "4.7.2",
+      "display": "inline",
+      "role": "deletion"
+    },
+    {
+      "name": "picture",
+      "href": "https://html.spec.whatwg.org/multipage/embedded-content.html#the-picture-element",
+      "section": "4.8.1",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "source",
+      "href": "https://html.spec.whatwg.org/multipage/embedded-content.html#the-source-element",
+      "section": "4.8.2",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "img",
+      "href": "https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element",
+      "section": "4.8.3",
+      "display": "inline",
+      "role": "image"
+    },
+    {
+      "name": "iframe",
+      "href": "https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element",
+      "section": "4.8.5",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "embed",
+      "href": "https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-embed-element",
+      "section": "4.8.6",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "object",
+      "href": "https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element",
+      "section": "4.8.7",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "video",
+      "href": "https://html.spec.whatwg.org/multipage/media.html#video",
+      "section": "4.8.8",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "audio",
+      "href": "https://html.spec.whatwg.org/multipage/media.html#audio",
+      "section": "4.8.9",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "track",
+      "href": "https://html.spec.whatwg.org/multipage/media.html#the-track-element",
+      "section": "4.8.10",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "map",
+      "href": "https://html.spec.whatwg.org/multipage/image-maps.html#the-map-element",
+      "section": "4.8.12",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "area",
+      "href": "https://html.spec.whatwg.org/multipage/image-maps.html#the-area-element",
+      "section": "4.8.13",
+      "display": "none",
+      "role": "link"
+    },
+    {
+      "name": "table",
+      "href": "https://html.spec.whatwg.org/multipage/tables.html#the-table-element",
+      "section": "4.9.1",
+      "display": "table",
+      "role": "table"
+    },
+    {
+      "name": "caption",
+      "href": "https://html.spec.whatwg.org/multipage/tables.html#the-caption-element",
+      "section": "4.9.2",
+      "display": "table-caption",
+      "role": "caption"
+    },
+    {
+      "name": "colgroup",
+      "href": "https://html.spec.whatwg.org/multipage/tables.html#the-colgroup-element",
+      "section": "4.9.3",
+      "display": "table-column-group",
+      "role": null
+    },
+    {
+      "name": "col",
+      "href": "https://html.spec.whatwg.org/multipage/tables.html#the-col-element",
+      "section": "4.9.4",
+      "display": "table-column",
+      "role": null
+    },
+    {
+      "name": "tbody",
+      "href": "https://html.spec.whatwg.org/multipage/tables.html#the-tbody-element",
+      "section": "4.9.5",
+      "display": "table-row-group",
+      "role": "rowgroup"
+    },
+    {
+      "name": "thead",
+      "href": "https://html.spec.whatwg.org/multipage/tables.html#the-thead-element",
+      "section": "4.9.6",
+      "display": "table-header-group",
+      "role": "rowgroup"
+    },
+    {
+      "name": "tfoot",
+      "href": "https://html.spec.whatwg.org/multipage/tables.html#the-tfoot-element",
+      "section": "4.9.7",
+      "display": "table-footer-group",
+      "role": "rowgroup"
+    },
+    {
+      "name": "tr",
+      "href": "https://html.spec.whatwg.org/multipage/tables.html#the-tr-element",
+      "section": "4.9.8",
+      "display": "table-row",
+      "role": "row"
+    },
+    {
+      "name": "td",
+      "href": "https://html.spec.whatwg.org/multipage/tables.html#the-td-element",
+      "section": "4.9.9",
+      "display": "table-cell",
+      "role": "cell"
+    },
+    {
+      "name": "th",
+      "href": "https://html.spec.whatwg.org/multipage/tables.html#the-th-element",
+      "section": "4.9.10",
+      "display": "table-cell",
+      "role": "cell"
+    },
+    {
+      "name": "form",
+      "href": "https://html.spec.whatwg.org/multipage/forms.html#the-form-element",
+      "section": "4.10.3",
+      "display": "block",
+      "role": "form"
+    },
+    {
+      "name": "label",
+      "href": "https://html.spec.whatwg.org/multipage/forms.html#the-label-element",
+      "section": "4.10.4",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "input",
+      "href": "https://html.spec.whatwg.org/multipage/input.html#the-input-element",
+      "section": "4.10.5",
+      "display": "inline-block",
+      "role": "textbox"
+    },
+    {
+      "name": "button",
+      "href": "https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element",
+      "section": "4.10.6",
+      "display": "inline-block",
+      "role": "button"
+    },
+    {
+      "name": "select",
+      "href": "https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element",
+      "section": "4.10.7",
+      "display": "inline-block",
+      "role": null
+    },
+    {
+      "name": "datalist",
+      "href": "https://html.spec.whatwg.org/multipage/form-elements.html#the-datalist-element",
+      "section": "4.10.8",
+      "display": "none",
+      "role": "listbox"
+    },
+    {
+      "name": "optgroup",
+      "href": "https://html.spec.whatwg.org/multipage/form-elements.html#the-optgroup-element",
+      "section": "4.10.9",
+      "display": "block",
+      "role": "group"
+    },
+    {
+      "name": "option",
+      "href": "https://html.spec.whatwg.org/multipage/form-elements.html#the-option-element",
+      "section": "4.10.10",
+      "display": "block",
+      "role": "option"
+    },
+    {
+      "name": "textarea",
+      "href": "https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element",
+      "section": "4.10.11",
+      "display": "inline-block",
+      "role": "textbox"
+    },
+    {
+      "name": "output",
+      "href": "https://html.spec.whatwg.org/multipage/form-elements.html#the-output-element",
+      "section": "4.10.12",
+      "display": "inline",
+      "role": "status"
+    },
+    {
+      "name": "progress",
+      "href": "https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element",
+      "section": "4.10.13",
+      "display": "inline-block",
+      "role": "progressbar"
+    },
+    {
+      "name": "meter",
+      "href": "https://html.spec.whatwg.org/multipage/form-elements.html#the-meter-element",
+      "section": "4.10.14",
+      "display": "inline-block",
+      "role": "meter"
+    },
+    {
+      "name": "fieldset",
+      "href": "https://html.spec.whatwg.org/multipage/form-elements.html#the-fieldset-element",
+      "section": "4.10.15",
+      "display": "block",
+      "role": "group"
+    },
+    {
+      "name": "legend",
+      "href": "https://html.spec.whatwg.org/multipage/form-elements.html#the-legend-element",
+      "section": "4.10.16",
+      "display": "block",
+      "role": null
+    },
+    {
+      "name": "selectedcontent",
+      "href": "https://html.spec.whatwg.org/multipage/form-elements.html#the-selectedcontent-element",
+      "section": "4.10.17",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "details",
+      "href": "https://html.spec.whatwg.org/multipage/interactive-elements.html#the-details-element",
+      "section": "4.11.1",
+      "display": "block",
+      "role": "group"
+    },
+    {
+      "name": "summary",
+      "href": "https://html.spec.whatwg.org/multipage/interactive-elements.html#the-summary-element",
+      "section": "4.11.2",
+      "display": "block",
+      "role": null
+    },
+    {
+      "name": "dialog",
+      "href": "https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element",
+      "section": "4.11.4",
+      "display": "block",
+      "role": "dialog"
+    },
+    {
+      "name": "script",
+      "href": "https://html.spec.whatwg.org/multipage/scripting.html#script",
+      "section": "4.12.1",
+      "display": "none",
+      "role": null
+    },
+    {
+      "name": "noscript",
+      "href": "https://html.spec.whatwg.org/multipage/scripting.html#the-noscript-element",
+      "section": "4.12.2",
+      "display": "none",
+      "role": null
+    },
+    {
+      "name": "template",
+      "href": "https://html.spec.whatwg.org/multipage/scripting.html#the-template-element",
+      "section": "4.12.3",
+      "display": "none",
+      "role": null
+    },
+    {
+      "name": "slot",
+      "href": "https://html.spec.whatwg.org/multipage/scripting.html#the-slot-element",
+      "section": "4.12.4",
+      "display": "contents",
+      "role": null
+    },
+    {
+      "name": "canvas",
+      "href": "https://html.spec.whatwg.org/multipage/canvas.html#canvas",
+      "section": "4.12.5",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "math",
+      "href": "https://html.spec.whatwg.org/multipage/embedded-content-other.html#mathml",
+      "section": "4.8.15",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "svg",
+      "href": "https://html.spec.whatwg.org/multipage/embedded-content-other.html#svg-0",
+      "section": "4.8.16",
+      "display": "inline",
+      "role": null
+    }
+  ],
+  "globalAttributes": [
+    {
+      "name": "accesskey",
+      "href": "https://html.spec.whatwg.org/multipage/interaction.html#the-accesskey-attribute"
+    },
+    {
+      "name": "autocapitalize",
+      "href": "https://html.spec.whatwg.org/multipage/interaction.html#attr-autocapitalize"
+    },
+    {
+      "name": "autocorrect",
+      "href": "https://html.spec.whatwg.org/multipage/interaction.html#attr-autocorrect"
+    },
+    {
+      "name": "autofocus",
+      "href": "https://html.spec.whatwg.org/multipage/interaction.html#attr-fe-autofocus"
+    },
+    {
+      "name": "class",
+      "href": "https://html.spec.whatwg.org/multipage/dom.html#classes"
+    },
+    {
+      "name": "contenteditable",
+      "href": "https://html.spec.whatwg.org/multipage/interaction.html#attr-contenteditable"
+    },
+    {
+      "name": "dir",
+      "href": "https://html.spec.whatwg.org/multipage/dom.html#attr-dir"
+    },
+    {
+      "name": "draggable",
+      "href": "https://html.spec.whatwg.org/multipage/dnd.html#attr-draggable"
+    },
+    {
+      "name": "enterkeyhint",
+      "href": "https://html.spec.whatwg.org/multipage/interaction.html#attr-enterkeyhint"
+    },
+    {
+      "name": "headingoffset",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#attr-headingoffset"
+    },
+    {
+      "name": "headingreset",
+      "href": "https://html.spec.whatwg.org/multipage/sections.html#attr-headingreset"
+    },
+    {
+      "name": "hidden",
+      "href": "https://html.spec.whatwg.org/multipage/interaction.html#attr-hidden"
+    },
+    {
+      "name": "id",
+      "href": "https://html.spec.whatwg.org/multipage/dom.html#the-id-attribute"
+    },
+    {
+      "name": "inert",
+      "href": "https://html.spec.whatwg.org/multipage/interaction.html#the-inert-attribute"
+    },
+    {
+      "name": "inputmode",
+      "href": "https://html.spec.whatwg.org/multipage/interaction.html#attr-inputmode"
+    },
+    {
+      "name": "is",
+      "href": "https://html.spec.whatwg.org/multipage/custom-elements.html#attr-is"
+    },
+    {
+      "name": "itemid",
+      "href": "https://html.spec.whatwg.org/multipage/microdata.html#attr-itemid"
+    },
+    {
+      "name": "itemprop",
+      "href": "https://html.spec.whatwg.org/multipage/microdata.html#names:-the-itemprop-attribute"
+    },
+    {
+      "name": "itemref",
+      "href": "https://html.spec.whatwg.org/multipage/microdata.html#attr-itemref"
+    },
+    {
+      "name": "itemscope",
+      "href": "https://html.spec.whatwg.org/multipage/microdata.html#attr-itemscope"
+    },
+    {
+      "name": "itemtype",
+      "href": "https://html.spec.whatwg.org/multipage/microdata.html#attr-itemtype"
+    },
+    {
+      "name": "lang",
+      "href": "https://html.spec.whatwg.org/multipage/dom.html#attr-lang"
+    },
+    {
+      "name": "nonce",
+      "href": "https://html.spec.whatwg.org/multipage/urls-and-fetching.html#attr-nonce"
+    },
+    {
+      "name": "popover",
+      "href": "https://html.spec.whatwg.org/multipage/popover.html#attr-popover"
+    },
+    {
+      "name": "slot",
+      "href": "https://html.spec.whatwg.org/multipage/dom.html#attr-slot"
+    },
+    {
+      "name": "spellcheck",
+      "href": "https://html.spec.whatwg.org/multipage/interaction.html#attr-spellcheck"
+    },
+    {
+      "name": "style",
+      "href": "https://html.spec.whatwg.org/multipage/dom.html#attr-style"
+    },
+    {
+      "name": "tabindex",
+      "href": "https://html.spec.whatwg.org/multipage/interaction.html#attr-tabindex"
+    },
+    {
+      "name": "title",
+      "href": "https://html.spec.whatwg.org/multipage/dom.html#attr-title"
+    },
+    {
+      "name": "translate",
+      "href": "https://html.spec.whatwg.org/multipage/dom.html#attr-translate"
+    },
+    {
+      "name": "writingsuggestions",
+      "href": "https://html.spec.whatwg.org/multipage/interaction.html#attr-writingsuggestions"
+    },
+    {
+      "name": "data-*",
+      "href": "https://html.spec.whatwg.org/multipage/dom.html#embedding-custom-non-visible-data-with-the-data-*-attributes"
+    },
+    {
+      "name": "on*",
+      "href": "https://html.spec.whatwg.org/multipage/webappapis.html#event-handlers-on-elements,-document-objects,-and-window-objects"
+    }
+  ],
+  "obsolete": [
+    {
+      "name": "acronym",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#acronym",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "applet",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#applet",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "basefont",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#basefont",
+      "display": "none",
+      "role": null
+    },
+    {
+      "name": "bgsound",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#bgsound",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "big",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#big",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "blink",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#blink",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "center",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#center",
+      "display": "block",
+      "role": null
+    },
+    {
+      "name": "dir",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#dir",
+      "display": "block",
+      "role": "list"
+    },
+    {
+      "name": "font",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#font",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "frame",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#frame",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "frameset",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#frameset",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "isindex",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#isindex",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "keygen",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#keygen",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "listing",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#listing",
+      "display": "block",
+      "role": null
+    },
+    {
+      "name": "marquee",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#the-marquee-element",
+      "display": "inline-block",
+      "role": null
+    },
+    {
+      "name": "menuitem",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#menuitem",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "multicol",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#multicol",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "nextid",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#nextid",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "nobr",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#nobr",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "noembed",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#noembed",
+      "display": "none",
+      "role": null
+    },
+    {
+      "name": "noframes",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#noframes",
+      "display": "none",
+      "role": null
+    },
+    {
+      "name": "param",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#param",
+      "display": "none",
+      "role": null
+    },
+    {
+      "name": "plaintext",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#plaintext",
+      "display": "block",
+      "role": null
+    },
+    {
+      "name": "rb",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#rb",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "rtc",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#rtc",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "spacer",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#spacer",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "strike",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#strike",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "tt",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#tt",
+      "display": "inline",
+      "role": null
+    },
+    {
+      "name": "xmp",
+      "href": "https://html.spec.whatwg.org/multipage/obsolete.html#xmp",
+      "display": "block",
+      "role": null
+    }
+  ]
+}

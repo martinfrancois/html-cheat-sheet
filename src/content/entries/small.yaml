@@ -1,0 +1,14 @@
+elements:
+  - name: small
+    summary: A side comment or small print, such as a legal note, a copyright line or "VAT not included" next to a price. It's for short phrases, not whole paragraphs.
+notes:
+  - "To only make text smaller, use the CSS `font-size` property: `<small>` says the words are a side comment."
+  - "Don't use it for a subtitle: put the subtitle in a `<p>` inside `<hgroup>`, which ties it to its heading."
+  - "Don't wrap a whole page of terms in it: there, the terms are the main content, not a side comment."
+examples:
+  - title: Small print next to a price, and a copyright line
+    code: |
+      <p>Room: 99 € a night <small>breakfast included, VAT extra</small></p>
+      <footer>
+        <p><small>© 2026 Example Hotels</small></p>
+      </footer>

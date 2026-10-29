@@ -1,0 +1,25 @@
+elements:
+  - name: base
+    summary: Sets the URL that relative links, images and forms resolve against, and the default target for links. A page has at most one, inside `<head>`, before any element that uses a URL.
+attributes:
+  - name: href
+    summary: The base URL. Relative URLs in the page resolve against it.
+  - name: target
+    summary: Where links and forms without their own `target` open, such as `_blank` for a new tab ([all values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/base#target)).
+notes:
+  - It changes every relative URL, even `<a href="#top">`, which then points at the base URL and leaves the page.
+  - 'Prefer root-relative URLs, such as `/images/logo.svg`: each link then shows where it goes, with no element elsewhere changing it.'
+examples:
+  - title: Images and links resolve inside the images folder and open in a new tab
+    code: |
+      <!doctype html>
+      <html lang="en">
+      <head>
+        <title>Base example</title>
+        <base href="images/" target="_blank">
+      </head>
+      <body>
+        <img src="stickman.svg" alt="A stick figure" width="48" height="96">
+        <p><a href="stickman.svg">Open picture (opens in new tab)</a></p>
+      </body>
+      </html>

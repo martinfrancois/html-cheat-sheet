@@ -1,0 +1,14 @@
+attribute:
+  name: draggable
+  summary: "`true` lets the reader drag the element, `false` stops it. Without it, only images, links and selected text can be dragged."
+notes:
+  - It only lets the drag start. Dropping it somewhere needs JavaScript that listens for the `dragover` and `drop` events.
+  - The standard asks for a `title` that names the element, for people who can't see what they drag.
+  - Offer a way without dragging too, such as buttons, as [WCAG 2.5.7](https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements) asks.
+examples:
+  - title: Tasks you can pick up and drag (dropping them needs JavaScript)
+    code: |
+      <ul>
+        <li draggable="true" title="Task: buy paint">Buy paint</li>
+        <li draggable="true" title="Task: fix the tap">Fix the tap</li>
+      </ul>

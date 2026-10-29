@@ -1,0 +1,18 @@
+elements:
+  - name: rb
+    summary: Wrapped the base text of a `<ruby>` annotation, the characters that get small notes above them, such as how to say them. Only Firefox still pairs each `<rb>` with its own `<rt>`.
+  - name: rtc
+    summary: Held a second set of annotations for the same base text, such as a meaning next to a pronunciation.
+replacement: >-
+  Base text written straight inside `<ruby>`, each part followed by its `<rt>`. For a second layer
+  of annotations, put one `<ruby>` inside another.
+examples:
+  - title: The reading of each character, and the meaning of the whole word
+    code: |
+      <!-- Instead of <rb> and <rtc>: a <ruby> inside a <ruby> -->
+      <p lang="ja">
+        <ruby>
+          <ruby>東<rt>とう</rt>南<rt>なん</rt></ruby>
+          <rt lang="en">Southeast</rt>
+        </ruby>の方角
+      </p>

@@ -1,0 +1,23 @@
+elements:
+  - name: article
+    summary: A piece that makes sense on its own and could be published elsewhere, such as a blog post, a news story, a forum post or a comment.
+  - name: section
+    summary: One part of something bigger, grouped by topic and usually with a heading, such as a chapter, or the comments under a post.
+    roleContext: 'only when it has a name, such as from `aria-labelledby`, and `generic` otherwise'
+notes:
+  - 'Ask if it would make sense alone, such as in a news feed: then use `<article>`. If it''s one part of a whole, use `<section>`.'
+  - Use `<div>` for a box you only need for CSS, because `<section>` says the part belongs in the page's table of contents.
+  - Screen readers only offer a `<section>` as a place to jump to when it has a name, such as from `aria-labelledby`.
+examples:
+  - title: "`<article>` for a post and for each comment, `<section>` for the comments as one part of the post"
+    code: |
+      <article>
+        <h2>How to repot a cactus</h2>
+        <p>Wear thick gloves and use a dry, sandy soil.</p>
+        <section aria-labelledby="comments">
+          <h3 id="comments">Comments</h3>
+          <article>
+            <p>Kitchen tongs work well too, and they're cheaper.</p>
+          </article>
+        </section>
+      </article>

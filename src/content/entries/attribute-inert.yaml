@@ -1,0 +1,20 @@
+attribute:
+  name: inert
+  summary: Blocks clicks and focus on the element and everything inside it, and screen readers skip it. Use it for content that's covered or not ready yet.
+notes:
+  - Make inert content look unavailable too, as the standard asks, so people who see it know why it doesn't react.
+  - For one form control, use `disabled` instead, as the standard advises, because browsers grey it out.
+  - A modal `<dialog>` already makes the rest of the page inert, so it needs no `inert` attribute.
+examples:
+  - title: A form that waits for prices to load, faded so it looks unavailable
+    code: |
+      <p>Loading prices…</p>
+      <form inert style="opacity: 0.4">
+        <p>
+          <label>
+            Quantity
+            <input type="number" name="quantity" value="1">
+          </label>
+        </p>
+        <button>Add to basket</button>
+      </form>

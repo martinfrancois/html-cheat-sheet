@@ -1,0 +1,20 @@
+# No packages key: this is a single project, not a workspace. pnpm reads its settings here.
+
+# Only packages set to true may run install-time build scripts.
+allowBuilds:
+  # Its install script only prints a funding message.
+  core-js: false
+
+# 7 days (7 * 24 * 60 = 10080 minutes), the same wait renovate.json declares as
+# "minimumReleaseAge": "7 days". Renovate's setting only filters the updates it proposes; when it
+# regenerates the lockfile, pnpm resolves the tree, so pnpm has to enforce the wait as well.
+# Setting the key also makes a violation an error instead of an automatic exclusion.
+minimumReleaseAge: 10080
+# A version without a publish time is refused rather than let past the wait.
+minimumReleaseAgeIgnoreMissingTime: false
+
+# Keeps pnpm-lock.yaml a single YAML document. pnpm 12 otherwise puts a first document that pins
+# only pnpm itself, and GitHub's dependency graph reads nothing past it, so Dependabot alerts close
+# while the vulnerable versions are still locked. Remove once GitHub reads the whole file:
+# https://github.com/dependabot/dependabot-core/issues/15904
+pmOnFail: ignore

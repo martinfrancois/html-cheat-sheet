@@ -1,0 +1,25 @@
+elements:
+  - name: output
+    summary: The result of a calculation or of something the user did, such as a total that updates while people type.
+attributes:
+  - name: for
+    summary: The `id`s of the fields the result comes from, separated by spaces.
+  - name: name
+    summary: A name for scripts to find it by. The form doesn't send the output's value.
+notes:
+  - Screen readers announce its new content when it changes, so people hear the result without leaving the field they're typing in.
+  - For text a program printed, such as an error from a command, use `<samp>`, because `<output>` is for results this page works out.
+examples:
+  - title: A tip that updates while you type
+    code: |
+      <form oninput="tip.value = bill.value * percent.value / 100">
+        <p>
+          <label for="bill">Bill</label>
+          <input type="number" id="bill" value="40">
+        </p>
+        <p>
+          <label for="percent">Tip in %</label>
+          <input type="number" id="percent" value="15">
+        </p>
+        <p>Tip: <output id="tip" for="bill percent">6</output></p>
+      </form>

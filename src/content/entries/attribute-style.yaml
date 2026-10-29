@@ -1,0 +1,14 @@
+attribute:
+  name: style
+  summary: 'CSS declarations that apply to this one element, such as `style="background: green"`.'
+notes:
+  - Prefer a `class` and a style sheet, because one rule then changes every element that uses it.
+  - 'The page must still make sense without it, so show and hide content with `hidden`, not `display: none`.'
+  - A strict Content Security Policy blocks it, and the element then gets none of its styles.
+examples:
+  - title: A word marked with the color it names
+    code: |
+      <p>
+        Connect the router with the cable that has the
+        <span style="color: white; background: green">green</span> plug.
+      </p>

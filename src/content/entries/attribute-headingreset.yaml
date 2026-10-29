@@ -1,0 +1,18 @@
+attribute:
+  name: headingreset
+  summary: Stops the `headingoffset` values of ancestors from reaching the headings inside, so each keeps the level its element name gives, such as 1 for `<h1>`. Use it for content outside the page's outline, such as a dialog.
+notes:
+  - The element's own `headingoffset` still counts. Only the offsets of elements around it stop.
+examples:
+  - title: The dialog's `<h1>` stays at level 1, though the section raises its own by one
+    compat: [html.elements.button.commandfor]
+    code: |
+      <section headingoffset="1">
+        <h1>Your orders</h1>
+        <button commandfor="help" command="show-modal">Help</button>
+        <dialog id="help" headingreset aria-labelledby="help-title">
+          <h1 id="help-title">Help with orders</h1>
+          <p>Orders ship within two working days.</p>
+          <button commandfor="help" command="close">Close</button>
+        </dialog>
+      </section>

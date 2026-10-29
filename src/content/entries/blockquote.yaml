@@ -1,0 +1,20 @@
+elements:
+  - name: blockquote
+    summary: A longer quote from another source, shown as its own indented block. It holds only the quoted words.
+attributes:
+  - name: cite
+    summary: The URL of the source. Browsers don't show it, so also name the source in the text.
+notes:
+  - 'Name who said it after the `<blockquote>`, not inside it: only the quoted words go inside.'
+  - Use it only for quotes, not to indent text, because it tells screen readers the words come from someone else. Indent with CSS `margin`.
+  - For a short quote inside a sentence, use `<q>`, which adds quotation marks instead of starting a new block.
+examples:
+  - title: A quote from a review, with the reviewer named after it
+    code: |
+      <blockquote cite="https://example.com/reviews/412">
+        <p>
+          It boils a full kettle in under two minutes, and the lid never
+          sticks.
+        </p>
+      </blockquote>
+      <p>Anna, in her review of the Aurora 3</p>

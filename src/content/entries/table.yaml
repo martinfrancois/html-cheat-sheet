@@ -1,0 +1,60 @@
+elements:
+  - name: table
+    summary: Data in rows and columns, such as a timetable or a price list. It holds an optional `<caption>`, then rows of cells.
+  - name: caption
+    summary: The table's title. It's the first thing inside `<table>`, and browsers center it above the table.
+  - name: tr
+    summary: One row of cells.
+  - name: th
+    summary: A header cell, which labels the cells in its column or its row. Browsers show it in bold.
+    # HTML-AAM gives columnheader, rowheader or cell depending on where the cell sits; the
+    # example's header row is the common case.
+    role: columnheader
+    roleContext: 'for a header of a column, `rowheader` for a header of a row, and `cell` for one that labels neither'
+  - name: td
+    summary: A data cell.
+    roleContext: 'in a table, and `gridcell` in one with `role="grid"`'
+attributes:
+  - name: colspan, rowspan
+    on: td
+    default: "1"
+    summary: How many columns or rows the cell stretches across. `<th>` takes them too.
+  - name: scope
+    on: th
+    summary: "`col` makes the header label the cells below it, `row` the cells in the rest of its row ([all values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/th#scope)). Without it, the browser decides from where the cell is."
+  - name: abbr
+    on: th
+    summary: A short form of the header, which screen readers can say with each cell instead of the full text.
+  - name: headers
+    on: td
+    summary: The `id`s of the header cells that label this cell, for tables too complex for `scope`.
+notes:
+  - Use a table only for data, never for page layout, because screen readers announce rows and columns that would mean nothing there.
+  - Mark header cells with `<th>`, not a bold `<td>`, so screen readers can say the header along with each data cell.
+  - Start with a `<caption>`, so people know what the table shows before they read the cells.
+  - In a `<figure>` that holds only the table, leave out `<caption>` and use `<figcaption>`, so the table gets one title, not two.
+examples:
+  - title: Column headers in the first row, row headers in the first column
+    code: |
+      <table>
+        <caption>Library opening hours</caption>
+        <tr>
+          <th>Day</th>
+          <th>Opens</th>
+          <th>Closes</th>
+        </tr>
+        <tr>
+          <th>Monday to Friday</th>
+          <td>9:00</td>
+          <td>20:00</td>
+        </tr>
+        <tr>
+          <th>Saturday</th>
+          <td>10:00</td>
+          <td>16:00</td>
+        </tr>
+        <tr>
+          <th>Sunday</th>
+          <td colspan="2">Closed</td>
+        </tr>
+      </table>

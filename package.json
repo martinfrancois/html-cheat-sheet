@@ -1,8 +1,9 @@
 {
   "name": "html-cheat-sheet",
-  "version": "1.0.0",
-  "description": "Single-page HTML tag reference that shows each tag with a description, sample code and the rendered result",
+  "version": "2.0.0",
+  "description": "Every HTML element and global attribute with a description, key attributes, browser support, and live examples you can edit",
   "private": true,
+  "type": "module",
   "license": "MIT",
   "author": "François Martin",
   "repository": {
@@ -10,12 +11,50 @@
     "url": "git+https://github.com/martinfrancois/html-cheat-sheet.git"
   },
   "scripts": {
-    "test": "node --test"
+    "dev": "astro dev",
+    "build": "astro build && node scripts/build-service-worker.ts",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "node --test \"test/*.test.ts\"",
+    "test:e2e": "sh scripts/playwright.sh",
+    "sync-spec": "node scripts/sync-spec.ts",
+    "format-examples": "node scripts/format-examples.ts"
   },
   "engines": {
     "node": ">=24"
   },
+  "dependencies": {
+    "@codemirror/lang-html": "6.4.12",
+    "@codemirror/language": "6.13.1",
+    "@fontsource-variable/atkinson-hyperlegible-mono": "5.3.0",
+    "@fontsource-variable/atkinson-hyperlegible-next": "5.3.0",
+    "@fontsource-variable/martian-mono": "5.3.0",
+    "@leeoniya/ufuzzy": "1.0.19",
+    "@lezer/highlight": "1.2.5",
+    "@lucide/astro": "1.61.0",
+    "@mdn/browser-compat-data": "8.1.6",
+    "@tailwindcss/vite": "4.3.3",
+    "@webref/elements": "2.9.2",
+    "astro": "7.4.1",
+    "browserslist": "4.29.4",
+    "caniuse-lite": "1.0.30001818",
+    "codemirror": "6.0.2",
+    "marked": "18.1.1",
+    "posthog-js": "1.438.13",
+    "tailwindcss": "4.3.3",
+    "web-features": "3.43.0",
+    "workbox-window": "7.4.1"
+  },
   "devDependencies": {
-    "node-html-parser": "9.0.4"
-  }
+    "@astrojs/check": "0.9.11",
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
+    "@types/node": "26.6.5",
+    "node-html-parser": "9.0.5",
+    "typescript": "6.0.3",
+    "vite": "8.3.5",
+    "workbox-build": "7.4.1",
+    "yaml": "2.9.1"
+  },
+  "packageManager": "pnpm@12.15.0"
 }

@@ -1,0 +1,23 @@
+elements:
+  - name: ins
+    summary: Text added to the document after it was first written, such as a correction. Browsers underline it.
+  - name: del
+    summary: Text removed from the document but kept visible, such as a crossed-off item on a to-do list. Browsers draw a line through it.
+attributes:
+  - name: datetime
+    summary: When the change was made, as a date with an optional time, such as `2026-05-02` or `2026-05-02T14:30Z` ([all values](https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-date-string-with-optional-time)).
+  - name: cite
+    summary: The URL of a page that explains the change, such as the minutes of a meeting.
+notes:
+  - Browsers don't show `datetime` or `cite`, so say in the text when or why something changed if readers need to know.
+  - Put `<ins>` or `<del>` inside the `<li>`, because a list can't hold them directly between its items.
+  - "Use `<s>` instead for text that's only out of date, such as an old price: `<del>` records an edit to the document."
+examples:
+  - title: A crossed-off to-do item, an added item, and a changed day
+    code: |
+      <ul>
+        <li><del datetime="2026-05-02">Book the train</del></li>
+        <li>Pack the tent</li>
+        <li><ins datetime="2026-05-03">Buy a rain cover</ins></li>
+      </ul>
+      <p>We leave on <del>Friday</del> <ins>Saturday</ins> at 8:00.</p>

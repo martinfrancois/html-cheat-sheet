@@ -38,7 +38,7 @@
   },
   "packageRules": [
     {
-      "description": "Merge eligible non-major updates after checks pass; keep unrelated dependencies separate.",
+      "description": "Merge every update once CI passes; keep unrelated dependencies separate.",
       "matchUpdateTypes": [
         "minor",
         "patch",
@@ -67,23 +67,14 @@
       "rangeStrategy": "replace"
     },
     {
-      "matchManagers": [
-        "nvm"
-      ],
-      "automerge": false,
-      "addLabels": [
-        "needs manual sync"
-      ]
-    },
-    {
       "matchUpdateTypes": [
         "major"
       ],
-      "automerge": false,
+      "automerge": true,
       "addLabels": [
         "major update"
       ],
-      "description": "Keep major updates separate and require a manual merge."
+      "description": "Majors automerge too once CI passes: the unit, accessibility, end-to-end and screenshot tests are the gate (docs/adr/0008-automerge-every-dependency-update-that-passes-ci.md)."
     }
   ]
 }

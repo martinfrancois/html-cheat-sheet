@@ -1,0 +1,150 @@
+elements:
+  - name: input
+    summary: A form control. Its `type` attribute picks one of 22 kinds, from a text box to a date picker to a file chooser.
+    roleContext: 'for `type="text"`, `email`, `tel` and `url`, and each other type has its own, such as `checkbox` or `slider`, or none, such as `date`'
+attributes:
+  - name: type
+    default: text
+    summary: >-
+      The kind of control ([all values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input#input_types)).
+      Pick the most specific one: browsers check `email` and `url` before the form is submitted, and phones
+      show a number pad for `tel` and an `@` key for `email`.
+  - name: name
+    summary: The key the value is sent under when the form is submitted. Radio buttons with the same name form one group.
+  - name: required
+    summary: The form can't be submitted while the field is empty.
+  - name: autocomplete
+    summary: What the field holds, such as `email`, `tel` or `new-password` ([all values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/autocomplete#value)), so browsers and password managers can fill it.
+  - name: min, max, step
+    summary: The allowed range and step for numbers, ranges, dates and times.
+notes:
+  - 'Label every input, so screen readers name it and a click on the text focuses it: wrap it in `<label>` or use `<label for>`.'
+  - A `placeholder` isn't a label, because it disappears as soon as someone types.
+  - 'For buttons, prefer `<button>` to `type="submit"`: it does the same and can hold an icon.'
+examples:
+  - title: "Text: `text`, `search`, `email`, `tel`, `url` and `password`"
+    compat:
+      - html.elements.input.type_text
+      - html.elements.input.type_search
+      - html.elements.input.type_email
+      - html.elements.input.type_tel
+      - html.elements.input.type_url
+      - html.elements.input.type_password
+    code: |
+      <p>
+        <label>
+          Name
+          <input type="text" name="name" autocomplete="name">
+        </label>
+      </p>
+      <p><label>Search <input type="search" name="q"></label></p>
+      <p>
+        <label>
+          Email
+          <input type="email" name="email" autocomplete="email">
+        </label>
+      </p>
+      <p>
+        <label>
+          Phone
+          <input type="tel" name="phone" autocomplete="tel">
+        </label>
+      </p>
+      <p><label>Website <input type="url" name="website"></label></p>
+      <p>
+        <label>
+          Password
+          <input
+            type="password"
+            name="password"
+            autocomplete="current-password">
+        </label>
+      </p>
+  - title: "Numbers: `number` for an exact value, `range` when a slider is close enough"
+    compat:
+      - html.elements.input.type_number
+      - html.elements.input.type_range
+    code: |
+      <p>
+        <label>
+          Guests
+          <input type="number" name="guests" min="1" max="12" value="2">
+        </label>
+      </p>
+      <p>
+        <label>
+          Volume
+          <input type="range" name="volume" min="0" max="100" value="60">
+        </label>
+      </p>
+  - title: "Dates and times: `date`, `time`, `datetime-local` (without a time zone), `month` and `week`"
+    compat:
+      - html.elements.input.type_date
+      - html.elements.input.type_time
+      - html.elements.input.type_datetime-local
+      - html.elements.input.type_month
+      - html.elements.input.type_week
+    code: |
+      <p><label>Arrival <input type="date" name="arrival"></label></p>
+      <p>
+        <label>Alarm <input type="time" name="alarm" value="07:30"></label>
+      </p>
+      <p>
+        <label>Meeting <input type="datetime-local" name="meeting"></label>
+      </p>
+      <p><label>Card expiry <input type="month" name="expiry"></label></p>
+      <p><label>Sprint <input type="week" name="sprint"></label></p>
+  - title: "Choices: a `checkbox` for each yes-or-no, `radio` buttons for one out of a group"
+    compat:
+      - html.elements.input.type_checkbox
+      - html.elements.input.type_radio
+    code: |
+      <p>
+        <label>
+          <input type="checkbox" name="newsletter" checked>
+          Send me the newsletter
+        </label>
+      </p>
+      <fieldset>
+        <legend>Size</legend>
+        <label><input type="radio" name="size" value="s"> Small</label>
+        <label>
+          <input type="radio" name="size" value="m" checked> Medium
+        </label>
+        <label><input type="radio" name="size" value="l"> Large</label>
+      </fieldset>
+  - title: "Pickers: `file` for files from the device, `color` for the system color picker"
+    compat:
+      - html.elements.input.type_file
+      - html.elements.input.type_color
+    code: |
+      <p>
+        <label>
+          Photos
+          <input type="file" name="photos" accept="image/*" multiple>
+        </label>
+      </p>
+      <p>
+        <label>
+          Accent <input type="color" name="accent" value="#1d3b9e">
+        </label>
+      </p>
+  - title: "Buttons: `submit`, `reset` and `button`, plus a `hidden` value that's sent but never shown"
+    compat:
+      - html.elements.input.type_submit
+      - html.elements.input.type_reset
+      - html.elements.input.type_button
+      - html.elements.input.type_hidden
+    code: |
+      <form>
+        <input type="hidden" name="order-id" value="4711">
+        <label>
+          Note <input type="text" name="note" value="Leave it at the door">
+        </label>
+        <input type="submit" value="Save">
+        <input type="reset" value="Undo changes">
+        <input
+          type="button"
+          value="Show the order number"
+          onclick="this.value = 'Order 4711'">
+      </form>

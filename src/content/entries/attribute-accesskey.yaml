@@ -1,0 +1,16 @@
+attribute:
+  name: accesskey
+  summary: Suggests a key for a keyboard shortcut that focuses or activates the element. The browser picks which keys to hold with it, such as Alt, and that differs between browsers and systems.
+notes:
+  - Most sites are better off without it, because its keys can clash with shortcuts of the browser or of a screen reader.
+  - If you use it, name the shortcut on the page, so readers know it exists and don't press it by accident.
+  - 'Give several single characters, such as `accesskey="s 0"`, and the browser takes the first one the keyboard has.'
+examples:
+  - title: A search field with a suggested shortcut key
+    code: |
+      <p>
+        <label>
+          Search (shortcut key S)
+          <input type="search" name="q" accesskey="s">
+        </label>
+      </p>

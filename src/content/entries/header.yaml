@@ -1,0 +1,32 @@
+elements:
+  - name: header
+    summary: The introduction of the page or of a part of it, such as the site name and main menu, or a post's title and date.
+    roleContext: 'inside `<main>`, `<article>`, `<aside>`, `<nav>` or `<section>`, and `banner`, the landmark for the page header, anywhere else'
+  - name: footer
+    summary: Information about the page or a part of it, such as who wrote it, related links or the copyright. It usually comes last.
+    roleContext: 'inside `<main>`, `<article>`, `<aside>`, `<nav>` or `<section>`, and `contentinfo`, the landmark for the page footer, anywhere else'
+notes:
+  - Outside `<main>`, `<article>`, `<section>`, `<aside>` and `<nav>`, they're the whole page's header and footer.
+  - Screen readers let people jump to the whole page's header and footer, but not to those of a single post or section.
+  - Neither one can hold another `<header>` or `<footer>`.
+examples:
+  - title: A header and footer for the whole page, and another pair for one post
+    code: |
+      <header>
+        <p><a href="https://example.com/">Rosa's Bakery</a></p>
+      </header>
+      <main>
+        <article>
+          <header>
+            <h1>Rye sourdough is back</h1>
+            <p><time datetime="2026-10-02">2 October 2026</time></p>
+          </header>
+          <p>We bake it fresh every Friday morning.</p>
+          <footer>
+            <p>Written by Rosa Keller</p>
+          </footer>
+        </article>
+      </main>
+      <footer>
+        <p>© 2026 Rosa's Bakery</p>
+      </footer>

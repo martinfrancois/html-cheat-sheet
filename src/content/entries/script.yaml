@@ -1,0 +1,24 @@
+elements:
+  - name: script
+    summary: Runs JavaScript, written between its tags or loaded from `src`. It can also hold data for scripts, such as JSON. Browsers never show it.
+attributes:
+  - name: src
+    summary: The URL of a JavaScript file. The element then stays empty.
+  - name: type
+    summary: "Leave it out for plain JavaScript. `module` is for JavaScript that uses `import`; another type, such as `application/json`, holds data that doesn't run."
+  - name: defer
+    summary: Loads the file while the browser reads the HTML, and runs it once the HTML is read. Scripts with `defer` run in the order they appear.
+  - name: async
+    summary: Loads the file while the browser reads the HTML, and runs it as soon as it arrives, in any order.
+notes:
+  - A script with `src` but no `defer` or `async` stops the browser reading the HTML until it has loaded and run, so the page shows later.
+  - A script without `src` runs as soon as the browser reads it, so it only finds the elements above it.
+  - A module script waits for the whole HTML, like `defer`, so it needs no `defer`.
+examples:
+  - title: A script that fills in the time the page opened
+    code: |
+      <p>Page opened at <span id="opened">an unknown time</span>.</p>
+      <script>
+        const opened = document.querySelector("#opened");
+        opened.textContent = new Date().toLocaleTimeString();
+      </script>

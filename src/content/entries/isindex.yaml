@@ -1,0 +1,13 @@
+elements:
+  - name: isindex
+    summary: Put a one-line search box on the page that sent the typed words to the page's own address, as in `?apple+berry`. Browsers now treat it as an unknown element, so no box appears.
+replacement: A `<form>` with a labeled text field, such as `<input type="search">`, and a button.
+notes:
+  - With `method="get"`, the default, a form puts the words in the address as `?q=apple+berry`, much like `<isindex>` did.
+examples:
+  - title: A search form that does what `<isindex>` did
+    code: |
+      <form action="https://example.com/search">
+        <label>Search the manual <input type="search" name="q"></label>
+        <button>Search</button>
+      </form>

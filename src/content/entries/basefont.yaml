@@ -1,0 +1,24 @@
+elements:
+  - name: basefont
+    summary: Set the base font size of the page, which `<font size>` counted up or down from. Browsers ignore it now.
+  - name: big
+    summary: Made text one size larger, such as `large` instead of `medium`. Browsers still do.
+  - name: font
+    summary: Set the size, color and typeface of its text with the `size`, `color` and `face` attributes. Browsers still apply them.
+  - name: tt
+    summary: Showed text in a monospace font, where every letter has the same width. Browsers still do.
+replacement: >-
+  CSS for the looks, such as `font-size`, `color` and `font-family`. When the text means something,
+  use the element for that meaning: `<strong>`, `<mark>` or a heading instead of `<big>`, and
+  `<code>`, `<kbd>`, `<samp>` or `<var>` instead of `<tt>`.
+examples:
+  - title: CSS for the font, and elements for what the text means
+    code: |
+      <!-- Instead of <basefont> and <font>: CSS -->
+      <p style="font-family: Georgia, serif; font-size: 1.25em">
+        The pool closes at 6 pm on public holidays.
+      </p>
+      <!-- Instead of <big>: <strong> for words that matter more -->
+      <p><strong>Bring your own towel.</strong> We don't rent them.</p>
+      <!-- Instead of <tt>: <kbd> for keys, <code> for code -->
+      <p>Press <kbd><kbd>Ctrl</kbd>+<kbd>P</kbd></kbd> to print.</p>

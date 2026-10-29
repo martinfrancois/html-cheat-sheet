@@ -1,0 +1,19 @@
+attribute:
+  name: hidden
+  summary: Hides the element from everyone, screen readers included, for content that doesn't apply yet or anymore. With `until-found`, the browser shows it when the reader searches the page or follows a link to something inside.
+notes:
+  - "Don't use it for content that's only out of view, such as other tabs: it hides that content from screen readers too."
+  - 'A CSS `display` rule overrides it, so `div { display: block }` also shows every hidden `<div>`.'
+  - Hidden form fields are still sent with the form, and hidden scripts still run.
+examples:
+  - title: The second paragraph is in the code but not on the screen
+    code: |
+      <p>Your order has shipped.</p>
+      <p hidden>Your order is late. We're sorry.</p>
+  - title: Search the page for "parking" to show the hidden answer
+    compat: [html.global_attributes.hidden.until-found]
+    code: |
+      <h2>Can I park at the museum?</h2>
+      <div hidden="until-found">
+        <p>Yes. Parking is free after 6 pm.</p>
+      </div>

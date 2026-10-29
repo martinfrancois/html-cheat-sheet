@@ -1,0 +1,22 @@
+attribute:
+  name: spellcheck
+  summary: "`true` asks the browser to underline spelling and grammar mistakes in editable text, `false` asks it not to. Without it, the browser decides, often from the parent element."
+notes:
+  - Turn it off for names, codes and addresses, because they aren't dictionary words and every one gets underlined.
+  - It only marks mistakes. To stop the browser from changing words, use `autocorrect="off"`.
+  - The reader's browser settings can override it.
+examples:
+  - title: No underlines in the product code, the browser's choice in the review
+    code: |
+      <p>
+        <label>
+          Product code
+          <input name="product" value="XQ-77B" spellcheck="false">
+        </label>
+      </p>
+      <p>
+        <label>
+          Review
+          <textarea name="review">Realy comfortable shoes.</textarea>
+        </label>
+      </p>

@@ -1,0 +1,35 @@
+elements:
+  - name: marquee
+    summary: Scrolled its content across its box, from right to left unless `direction` says otherwise. Browsers still do.
+replacement: >-
+  A CSS `animation`, stopped with `prefers-reduced-motion` for people who ask for less motion in
+  their system settings.
+notes:
+  - If text moves for more than 5 seconds, add a way to pause or stop it, because moving text distracts people from the rest of the page.
+examples:
+  - title: Scrolling text in CSS, with a pause control
+    code: |
+      <!doctype html>
+      <html lang="en">
+      <head>
+        <title>Train news</title>
+        <style>
+          .ticker { overflow: hidden; }
+          .ticker p { animation: scroll 8s linear infinite; }
+          .ticker:has(:checked) p { animation-play-state: paused; }
+          @keyframes scroll {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .ticker p { animation: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="ticker">
+          <p>Trains to the airport run every 15 minutes again.</p>
+          <label><input type="checkbox"> Pause</label>
+        </div>
+      </body>
+      </html>

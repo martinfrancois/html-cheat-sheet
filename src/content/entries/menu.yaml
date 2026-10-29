@@ -1,0 +1,14 @@
+elements:
+  - name: menu
+    summary: A list of commands, such as the buttons of a toolbar. It works like `<ul>`, with `<li>` items, and browsers show and announce it as a list.
+notes:
+  - It doesn't act like an app's menu by itself. Moving between the items with the arrow keys needs JavaScript.
+  - '`<menu type="context">` for right-click menus was removed from browsers, and `<menuitem>` is obsolete.'
+examples:
+  - title: A small toolbar of formatting buttons
+    code: |
+      <menu aria-label="Text formatting">
+        <li><button type="button">Bold</button></li>
+        <li><button type="button">Italic</button></li>
+        <li><button type="button">Underline</button></li>
+      </menu>

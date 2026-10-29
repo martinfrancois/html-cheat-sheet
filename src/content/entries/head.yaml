@@ -1,0 +1,22 @@
+elements:
+  - name: head
+    summary: Information about the page for browsers and search engines, such as its title, its character encoding and its style sheets. Nothing in it shows on the page.
+notes:
+  - It holds exactly one `<title>`. Any `<meta>`, `<link>`, `<style>`, `<script>` and `<base>` elements are optional.
+  - 'Put what readers should see, such as the site name or logo, in `<header>` inside `<body>`, because nothing in `<head>` shows.'
+  - A `<p>`, a `<div>` or plain text in `<head>` makes the browser start `<body>` there, so the elements after it end up in the body.
+examples:
+  - title: A typical head. Only the paragraph in the body shows.
+    code: |
+      <!doctype html>
+      <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Opening hours | Rosa's Bakery</title>
+        <link rel="icon" href="images/stickman.svg" type="image/svg+xml">
+      </head>
+      <body>
+        <p>We're open Monday to Saturday, from 7:00 to 18:00.</p>
+      </body>
+      </html>

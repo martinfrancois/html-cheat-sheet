@@ -1,0 +1,43 @@
+elements:
+  - name: template
+    summary: Holds HTML that the page doesn't show or run. A script copies its content into the page. With `shadowrootmode`, it becomes a shadow root, the hidden inner HTML of a component.
+  - name: slot
+    summary: A placeholder in a shadow root. The component's children show in its place, matched by their `slot` attribute. With no match, the slot's own content shows.
+attributes:
+  - name: shadowrootmode
+    on: template
+    summary: "`open` or `closed`. Turns the template into the shadow root of its parent element while the page loads, with no JavaScript."
+  - name: name
+    on: slot
+    summary: Children with a `slot` attribute of the same name go here. A slot without a name takes all the other children.
+notes:
+  - Scripts in a template don't run until a script puts a copy of its content in the page.
+  - Copy `template.content` with `cloneNode(true)` each time, because adding it directly moves the content out and empties the template.
+examples:
+  - title: A script that fills a list from a template
+    code: |
+      <ul id="cart"></ul>
+      <template id="cart-item">
+        <li><span class="name"></span>: <span class="price"></span></li>
+      </template>
+      <script>
+        const cart = document.querySelector("#cart");
+        const template = document.querySelector("#cart-item");
+        const items = [["Tea", "4.50"], ["Scone", "3.20"]];
+        for (const [name, price] of items) {
+          const item = template.content.cloneNode(true);
+          item.querySelector(".name").textContent = name;
+          item.querySelector(".price").textContent = price;
+          cart.append(item);
+        }
+      </script>
+  - title: A component with a shadow root, where the page's text fills two slots
+    code: |
+      <user-card>
+        <template shadowrootmode="open">
+          <p><strong><slot name="name">Anonymous</slot></strong></p>
+          <p><slot>No bio yet.</slot></p>
+        </template>
+        <span slot="name">Ada Lovelace</span>
+        Wrote the first published computer program.
+      </user-card>

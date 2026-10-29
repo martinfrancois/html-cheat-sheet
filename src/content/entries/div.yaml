@@ -1,0 +1,14 @@
+elements:
+  - name: div
+    summary: A container with no meaning of its own. It groups elements for CSS or a script, or sets an attribute such as `lang` on all of them at once.
+notes:
+  - 'Use it only when no other element fits: `<article>`, `<nav>` or `<fieldset>` tell screen readers what the group is, `<div>` doesn''t.'
+  - 'Don''t put a `<div>` inside a `<p>`: the browser ends the paragraph where the `<div>` starts. Use `<span>` inside text.'
+examples:
+  - title: One `lang` attribute for two paragraphs in German
+    code: |
+      <p>Open Monday to Friday, 9:00 to 18:00. Closed on weekends.</p>
+      <div lang="de">
+        <p>Geöffnet Montag bis Freitag, 9:00 bis 18:00 Uhr.</p>
+        <p>Am Wochenende geschlossen.</p>
+      </div>

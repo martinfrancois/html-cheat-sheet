@@ -1,4 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="96" viewBox="0 0 48 96" role="img" aria-label="stick figure">
-  <circle cx="24" cy="14" r="10" fill="none" stroke="#000" stroke-width="3"/>
-  <path d="M24 24 V60 M24 34 L6 50 M24 34 L42 50 M24 60 L10 92 M24 60 L38 92" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round"/>
-</svg>

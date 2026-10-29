@@ -1,0 +1,16 @@
+attribute:
+  name: headingoffset
+  summary: Raises the level of every heading inside the element by a number from 0 to 8. An `<h1>` inside `headingoffset="1"` counts as a level 2 heading.
+notes:
+  - Use it for a part you reuse, such as a card that always starts with `<h1>`, so its headings fit wherever you put it.
+  - Write headings that make sense without it, because browsers that don't support it read an `<h1>` as level 1.
+  - Offsets of nested elements add up, and a heading's level stops at 9.
+  - "`headingreset` on an element stops the offsets of its ancestors from reaching the headings inside."
+examples:
+  - title: The section's `<h1>` counts as level 2
+    code: |
+      <h1>Insect guide</h1>
+      <section headingoffset="1">
+        <h1>Beetles</h1>
+        <p>A beetle's front wings are hard and cover the back wings.</p>
+      </section>

@@ -1,0 +1,19 @@
+elements:
+  - name: frame
+    summary: Filled one area of a `<frameset>` with a separate page, loaded from its `src`. Browsers still do.
+  - name: frameset
+    summary: Took the place of `<body>` and split the window into rows or columns of frames, set by its `rows` and `cols` attributes. Browsers still do.
+  - name: noframes
+    summary: Held content for browsers that couldn't show frames. Browsers hide it.
+replacement: >-
+  `<iframe>` and CSS, to show one page inside another. For a header or menu that every page
+  shares, the standard suggests building each complete page on the server, with the shared parts
+  included.
+examples:
+  - title: Another page inside this one, with `<iframe>`
+    code: |
+      <!-- Instead of <frameset>, <frame> and <noframes>: -->
+      <p>Today's menu, from the canteen's own page:</p>
+      <iframe
+        title="Canteen menu"
+        srcdoc="<p>Soup of the day: tomato</p>"></iframe>

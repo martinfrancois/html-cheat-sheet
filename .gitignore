@@ -1,4 +1,8 @@
 node_modules/
+dist/
+.astro/
+test-results/
+playwright-report/
 
 # IntelliJ project files
 .idea/

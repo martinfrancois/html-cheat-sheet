@@ -1,0 +1,12 @@
+attribute:
+  name: dir
+  summary: "The direction of the element's text: `ltr` for left to right, `rtl` for right to left, as in Arabic or Hebrew, or `auto` to let the browser decide from the text."
+notes:
+  - Elements inside inherit it, so set `dir="rtl"` on `<html>` for a page in a right-to-left language.
+  - Use `auto` only for text you can't know ahead, such as user comments, because it only looks at the first letter that has a direction.
+  - Set `lang` too, because `dir` gives only the direction, not the language.
+examples:
+  - title: An Arabic paragraph runs right to left and lines up on the right
+    code: |
+      <p lang="ar" dir="rtl">هذه الفقرة باللغة العربية.</p>
+      <p>This paragraph is in English.</p>

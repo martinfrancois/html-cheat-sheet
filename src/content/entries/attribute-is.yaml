@@ -1,0 +1,25 @@
+attribute:
+  name: is
+  summary: Gives a built-in element, such as `<button>`, the behavior of a class that a script registered with `customElements.define()`. The element keeps everything a button does.
+notes:
+  - Safari doesn't support it and keeps a plain `<button>` without the script's behavior. Check that people can still finish the task in Safari.
+  - The name needs a hyphen, such as `click-counter`, like every custom element name.
+  - Changing `is` after the element exists does nothing.
+examples:
+  - title: A button that a script turns into a click counter
+    code: |
+      <button is="click-counter" type="button">Clicked 0 times</button>
+      <script>
+        class ClickCounter extends HTMLButtonElement {
+          count = 0;
+          connectedCallback() {
+            this.addEventListener("click", () => {
+              this.count += 1;
+              this.textContent = `Clicked ${this.count} times`;
+            });
+          }
+        }
+        customElements.define("click-counter", ClickCounter, {
+          extends: "button",
+        });
+      </script>

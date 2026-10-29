@@ -1,0 +1,23 @@
+elements:
+  - name: dl
+    summary: A description list. It holds groups of names and values, such as terms and their definitions, questions and answers, or labels and data.
+  - name: dt
+    summary: The name in a group, such as a term, a question or a label. Several `<dt>` in a row share the `<dd>` after them.
+  - name: dd
+    summary: The value for the `<dt>` before it, such as a definition, an answer or a piece of data. Browsers indent it.
+notes:
+  - Two `<dd>` after one `<dt>` are two separate values, such as two colors. Put an answer of several paragraphs in one `<dd>`.
+  - You can wrap each group of `<dt>` and `<dd>` in a `<div>`, for example to style the group as a card. The meaning stays the same.
+  - 'In a glossary, wrap each term in `<dfn>`: `<dt>` only names a group, `<dfn>` says the term is defined right here.'
+examples:
+  - title: "Product details: a `<dt>` for each label, and two `<dd>` for two colors"
+    code: |
+      <dl>
+        <dt>Capacity</dt>
+        <dd>1.7 liters</dd>
+        <dt>Weight</dt>
+        <dd>1.2 kg</dd>
+        <dt>Colors</dt>
+        <dd>Black</dd>
+        <dd>White</dd>
+      </dl>

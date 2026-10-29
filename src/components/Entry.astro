@@ -1,0 +1,156 @@
+---
+import type { EntryView } from "../lib/entries.ts";
+import BaselineBadge from "./BaselineBadge.astro";
+import Example from "./Example.astro";
+import Facts from "./Facts.astro";
+
+interface Props {
+  entry: EntryView;
+}
+
+const { entry } = Astro.props;
+const several = entry.elements.length > 1;
+// About as many characters of an attribute name as the 16rem name column holds.
+const NAME_ROW = 24;
+const facts = (element: EntryView["elements"][number]) => `${element.display} ${element.role?.name} ${element.role?.context}`;
+const shared = several && entry.elements.every((element) => facts(element) === facts(entry.elements[0]!));
+const titleNames = entry.kind === "attribute" ? entry.names : entry.elements.map((element) => element.name);
+---
+
+<article id={entry.id} class="entry relative grid gap-5" data-entry data-search={JSON.stringify(entry.search)}>
+  {
+    // Deep links by element name, such as #strong, for entries about several elements. Absolutely
+    // placed, so they take no grid cell and add no gap.
+    entry.elements.filter((element) => element.name !== entry.id).map((element) => <span id={element.name} class="absolute top-0" />)
+  }
+  <header class="grid gap-2">
+    <div class="flex flex-wrap items-baseline gap-x-6 gap-y-1">
+      <h3 class="font-display text-[clamp(1.4rem,1.2rem+0.8vw,1.8rem)] leading-tight font-bold tracking-tight">
+        {
+          titleNames.map((name, index) => (
+            <>
+              {index > 0 && <span class="text-muted">, </span>}
+              {entry.kind === "attribute" ? (
+                <span>{name}</span>
+              ) : (
+                <span class="whitespace-nowrap">
+                  <span class="text-accent">&lt;</span>
+                  {name}
+                  <span class="text-accent">&gt;</span>
+                </span>
+              )}
+            </>
+          ))
+        }
+      </h3>
+      <p class="flex gap-x-5 text-sm">
+        {entry.mdn && <a href={entry.mdn} class="no-underline">MDN</a>}
+        <a href={entry.spec.href} class="no-underline">Spec</a>
+      </p>
+    </div>
+    {entry.kind === "obsolete" ? <p class="justify-self-start rounded-md bg-bad-bg px-3 py-0.5 text-sm font-semibold text-bad">Obsolete, don't use</p> : <BaselineBadge status={entry.baseline} />}
+  </header>
+
+  <div class="grid max-w-[70ch] gap-5">
+    {entry.summary && <p set:html={entry.summary} />}
+    {
+      // Elements that share their facts, such as <h1> to <h6>, show them once, under all summaries.
+      shared ? (
+        <div class="grid gap-2">
+          {entry.elements.map((element) => (
+            <p>
+              <code class="font-semibold">{`<${element.name}>`}</code> <span set:html={element.summary} />
+            </p>
+          ))}
+          <Facts element={entry.elements[0]!} />
+        </div>
+      ) : (
+        entry.elements.map((element) => (
+          <div class="grid gap-2">
+            <p>
+              {several && (
+                <>
+                  <code class="font-semibold">{`<${element.name}>`}</code>{" "}
+                </>
+              )}
+              <span set:html={element.summary} />
+            </p>
+            <Facts element={element} />
+          </div>
+        ))
+      )
+    }
+    {
+      entry.replacement && (
+        <p class="border-l-4 border-bad bg-bad-bg px-4 py-3 text-bad">
+          <strong>Use instead: </strong>
+          <span set:html={entry.replacement} />
+        </p>
+      )
+    }
+  </div>
+
+  {
+    entry.attributes.length > 0 && (
+      <section class="grid max-w-[70ch] gap-2" aria-labelledby={`${entry.id}-attributes`}>
+        <h4 id={`${entry.id}-attributes`} class="text-sm font-semibold text-muted">
+          Key attributes
+        </h4>
+        <dl class="grid gap-x-6 gap-y-2 sm:grid-cols-[fit-content(16rem)_minmax(0,1fr)]">
+          {entry.attributes.map((attribute) => (
+            <div class="grid sm:col-span-2 sm:grid-cols-subgrid">
+              <dt>
+                {/* A list of names too long for the column, such as onload, ononline, onoffline,
+                    goes one name per line. Wrapped, it would keep the column's full width and
+                    leave a gap before the description. */}
+                {attribute.name.length > NAME_ROW ? (
+                  attribute.name.split(", ").map((name, index, names) => (
+                    <>
+                      <code class="font-semibold text-[var(--code-attr)]">{name}</code>
+                      {index < names.length - 1 && (
+                        <>
+                          ,<br />
+                        </>
+                      )}
+                    </>
+                  ))
+                ) : (
+                  <code class="font-semibold text-[var(--code-attr)]">{attribute.name}</code>
+                )}
+                {attribute.required && <span class="text-sm whitespace-nowrap text-muted"> required</span>}
+                {attribute.on && (
+                  <>
+                    {" "}
+                    <span class="text-sm whitespace-nowrap text-muted">
+                      on <code>{`<${attribute.on}>`}</code>
+                    </span>
+                  </>
+                )}
+              </dt>
+              <dd set:html={attribute.summary} />
+            </div>
+          ))}
+        </dl>
+      </section>
+    )
+  }
+
+  {
+    entry.notes.length > 0 && (
+      <section class="grid max-w-[70ch] gap-2" aria-labelledby={`${entry.id}-notes`}>
+        <h4 id={`${entry.id}-notes`} class="text-sm font-semibold text-muted">
+          Good to know
+        </h4>
+        <ul class="grid list-disc gap-1 pl-5 marker:text-muted">
+          {entry.notes.map((note) => (
+            <li set:html={note} />
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <div class="grid gap-6">
+    {entry.examples.map((example) => <Example example={example} />)}
+  </div>
+</article>

@@ -1,0 +1,14 @@
+elements:
+  - name: em
+    summary: Stress emphasis, the word you'd stress when reading the sentence aloud. Moving it changes what the sentence means.
+  - name: i
+    summary: Text in a different voice or mood, such as a technical term, a phrase in another language, a thought, or the name of a ship.
+notes:
+  - 'Both look italic, so pick by meaning: `<em>` changes what the sentence says, `<i>` only sets the words apart.'
+  - Give `<i>` a `lang` attribute for another language, so screen readers pronounce it right.
+  - 'Use `<cite>` for the title of a work and `<dfn>` where you define a term: they say why the words are in italics.'
+examples:
+  - title: "`<em>` for the word you stress, `<i>` for a phrase in another language"
+    code: |
+      <p>I <em>did</em> lock the door. Stop asking.</p>
+      <p>The menu only said <i lang="fr">plat du jour</i>.</p>

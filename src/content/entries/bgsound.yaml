@@ -1,0 +1,11 @@
+elements:
+  - name: bgsound
+    summary: Played a sound file in the background while the page was open, in Internet Explorer only. Browsers now treat it as an unknown element and play nothing.
+replacement: "`<audio>` with the `controls` attribute, which shows the browser's play, pause and volume controls."
+notes:
+  - Let people start the sound themselves, because sound that plays by itself makes screen readers hard to hear.
+examples:
+  - title: A sound that plays only when someone presses play
+    code: |
+      <p>Our new doorbell chime:</p>
+      <audio controls src="media/doorbell.mp3"></audio>

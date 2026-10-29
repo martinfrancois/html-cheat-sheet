@@ -1,0 +1,15 @@
+attribute:
+  name: autocorrect
+  summary: "Whether the browser may fix spelling mistakes while someone types: `on` lets it, `off` stops it. It works in text fields, text areas and editable content. A field without it follows its form's `autocorrect`, and is `on` when the form has none."
+notes:
+  - Turn it off for user names, codes and other words that aren't in a dictionary, so a correction doesn't change them.
+  - It's always off in `type="email"`, `url` and `password` fields.
+  - "`spellcheck` only underlines mistakes; `autocorrect` changes the text itself."
+  - Set it on a `<form>` to give every field in the form the same default.
+examples:
+  - title: No corrections in a user name, the browser's own in a message
+    code: |
+      <p>
+        <label>User name <input name="username" autocorrect="off"></label>
+      </p>
+      <p><label>Message <textarea name="message"></textarea></label></p>

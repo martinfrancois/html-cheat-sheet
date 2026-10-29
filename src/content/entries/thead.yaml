@@ -1,0 +1,39 @@
+elements:
+  - name: thead
+    summary: The rows at the top of a table that label its columns. A table has at most one.
+  - name: tbody
+    summary: The rows that hold the table's data. A table can have several, such as one for each month.
+  - name: tfoot
+    summary: The rows at the bottom that sum up the columns, such as a total. It comes after the `<tbody>` elements.
+notes:
+  - They don't change how the table looks. They tell screen readers and CSS which rows are headers, data and totals.
+  - Browsers put rows that sit right inside `<table>` into a `<tbody>`, so the CSS selector `table > tr` matches nothing.
+  - When a long table is printed on several pages, browsers can repeat the `<thead>` rows at the top of each page.
+examples:
+  - title: Column labels on top, the items in the middle, the total at the bottom
+    code: |
+      <table>
+        <caption>Trip expenses</caption>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Train tickets</td>
+            <td>84.00</td>
+          </tr>
+          <tr>
+            <td>Hotel, two nights</td>
+            <td>190.00</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Total</th>
+            <td>274.00</td>
+          </tr>
+        </tfoot>
+      </table>

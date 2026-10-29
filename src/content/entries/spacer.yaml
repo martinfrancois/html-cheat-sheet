@@ -1,0 +1,9 @@
+elements:
+  - name: spacer
+    summary: Netscape's element for adding empty space, instead of the one-pixel images people used for spacing. Browsers now treat it as an unknown element, so it adds no space.
+replacement: The CSS properties `margin` and `padding`.
+examples:
+  - title: Space above a paragraph, with `margin-top`
+    code: |
+      <p>Doors open at 7 pm.</p>
+      <p style="margin-top: 3em">The concert starts at 8 pm.</p>

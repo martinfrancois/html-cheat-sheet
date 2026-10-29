@@ -1,0 +1,28 @@
+elements:
+  - name: iframe
+    summary: Shows another HTML page inside this one, in a frame. The page in the frame has its own styles and scripts, which don't reach the outer page.
+attributes:
+  - name: src
+    summary: The URL of the page to show.
+  - name: srcdoc
+    summary: The page's HTML, written right in the attribute. It wins over `src`. Write quotes inside it as `&quot;`.
+  - name: sandbox
+    summary: Blocks scripts, forms, popups and more inside the frame. Values such as `allow-scripts` ([all values](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/iframe#sandbox)) turn single features back on.
+  - name: allow
+    summary: Which browser features the page may use, such as `fullscreen` or `camera` ([all values](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy#directives)).
+  - name: loading
+    default: eager
+    summary: With `lazy`, the frame loads only when it's about to scroll into view.
+notes:
+  - Give it a `title` that names what's inside, such as "Map of the venue", because screen readers announce the frame by that name.
+  - Add `sandbox` when you show HTML you don't control, such as a user's comment, so scripts in it can't run.
+  - Many sites forbid frames with the `X-Frame-Options` header or the `frame-ancestors` CSP rule. The frame then shows an error instead.
+examples:
+  - title: A small page written inline with `srcdoc`, in a sandboxed frame
+    code: |
+      <iframe
+        title="Opening hours"
+        srcdoc="<p>Open Monday to Friday, 9:00 to 17:00.</p>"
+        sandbox
+        width="320"
+        height="80"></iframe>

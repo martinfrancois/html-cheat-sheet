@@ -1,0 +1,19 @@
+elements:
+  - name: strong
+    summary: Text that's important, serious or urgent, such as a warning or a step the reader shouldn't skip.
+  - name: b
+    summary: Text you want to draw attention to without making it more important, such as keywords in a summary or product names in a review.
+notes:
+  - 'Both look bold, so pick by meaning: `<strong>` marks text as more important, `<b>` draws attention without that.'
+  - 'Most screen readers read both like normal text, so say a warning in words too, such as "Warning:", not just in bold.'
+  - 'For bold that''s only decoration, such as a bold label, use the CSS `font-weight` property: `<b>` is for words to notice.'
+examples:
+  - title: "`<strong>` for a warning, `<b>` for product names that stand out without being more important"
+    code: |
+      <p>
+        <strong>Unplug the kettle before cleaning it.</strong>
+        The base stays hot for minutes after it switches off.
+      </p>
+      <p>
+        We tested the <b>Aurora 3</b> and the <b>Nimbus X</b> for a week.
+      </p>

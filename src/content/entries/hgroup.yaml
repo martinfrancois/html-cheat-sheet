@@ -1,0 +1,13 @@
+elements:
+  - name: hgroup
+    summary: A heading together with its subtitle, tagline or alternative title. It holds one heading from `<h1>` to `<h6>` and any number of `<p>` elements before or after it.
+notes:
+  - 'Older guides say to avoid it. That''s outdated: since 2022 it''s one heading plus `<p>` elements, and the heading acts like any other.'
+  - 'Put the subtitle in a `<p>`, not a second heading: people who jump between headings would take it for a new section.'
+examples:
+  - title: A title with its subtitle
+    code: |
+      <hgroup>
+        <h1>Frankenstein</h1>
+        <p>or, The Modern Prometheus</p>
+      </hgroup>

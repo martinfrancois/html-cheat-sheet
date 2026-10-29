@@ -1,0 +1,16 @@
+attribute:
+  name: enterkeyhint
+  summary: Picks the label or icon of the Enter key on on-screen keyboards, such as Send or Search. It doesn't change what the key does.
+attributes:
+  - name: enterkeyhint
+    summary: "`enter`, `done`, `go`, `next`, `previous`, `search` or `send`."
+notes:
+  - Make the key do what its label says, such as moving to the next field for `next`, because the attribute only changes the label.
+examples:
+  - title: A chat field whose Enter key reads Send on a phone
+    code: |
+      <form>
+        <p>
+          <label>Message <input name="message" enterkeyhint="send"></label>
+        </p>
+      </form>

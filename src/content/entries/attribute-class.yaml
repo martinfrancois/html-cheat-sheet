@@ -1,0 +1,24 @@
+attribute:
+  name: class
+  summary: One or more names, separated by spaces, that put the element in groups. CSS selectors such as `.note` and scripts use them to find the element.
+notes:
+  - Name what the content is, such as `note`, not how it looks, such as `red`, so the name still fits after a redesign.
+  - Unlike an `id`, a class can go on many elements, and one element can have several.
+examples:
+  - title: Two paragraphs share the `note` class, and one also has `urgent`
+    code: |
+      <!doctype html>
+      <html lang="en">
+      <head>
+        <title>Visiting the museum</title>
+        <style>
+          .note { border-left: thick solid; padding-left: 1em; }
+          .urgent { font-weight: bold; }
+        </style>
+      </head>
+      <body>
+        <p class="note">The museum is closed on Mondays.</p>
+        <p>Children under 12 get in for free.</p>
+        <p class="note urgent">The east wing is closed until May.</p>
+      </body>
+      </html>

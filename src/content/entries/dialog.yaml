@@ -1,0 +1,59 @@
+elements:
+  - name: dialog
+    summary: A dialog box. Opened as a modal it blocks the rest of the page until it closes; opened as non-modal, the page stays usable behind it.
+attributes:
+  - name: open
+    summary: Shows the dialog as non-modal. Don't set it to open a modal; use `showModal()` or a `command` button instead.
+  - name: closedby
+    summary: "How the reader can close it: `any` (Esc or a click outside), `closerequest` (Esc only) or `none`. Without it, Esc closes a dialog opened with `showModal()`, and other dialogs ignore Esc and clicks outside."
+  - name: command
+    on: button
+    summary: "`show-modal`, `close` or `request-close`, to open or close the dialog named by `commandfor` without JavaScript."
+  - name: method
+    on: form
+    default: get
+    summary: With `dialog`, a form inside the dialog closes it on submit and puts the button's `value` in `returnValue`.
+notes:
+  - A modal blocks clicks and focus on the rest of the page, moves focus inside and closes on Esc, all built in.
+  - 'The `open` attribute, unlike `showModal()`, opens it non-modal: the page stays usable, focus doesn''t move, and Esc doesn''t close it.'
+  - Name the dialog with `aria-labelledby` pointing at its heading, so screen readers say what just opened.
+  - Put a visible close button inside, because touch screens have no Esc key.
+examples:
+  - title: A confirmation opened by a button, with no JavaScript
+    compat: [html.elements.button.commandfor]
+    code: |
+      <button commandfor="confirm" command="show-modal">Delete file</button>
+      <dialog id="confirm" aria-labelledby="confirm-title">
+        <h2 id="confirm-title">Delete report.pdf?</h2>
+        <p>You can't undo this.</p>
+        <form method="dialog">
+          <button value="cancel">Cancel</button>
+          <button value="delete">Delete</button>
+        </form>
+      </dialog>
+  - title: The same with JavaScript, reading which button closed it
+    code: |
+      <button id="open">Delete file</button>
+      <p id="result"></p>
+      <dialog id="confirm" aria-labelledby="confirm-title">
+        <h2 id="confirm-title">Delete report.pdf?</h2>
+        <p>You can't undo this.</p>
+        <form method="dialog">
+          <button value="cancel">Cancel</button>
+          <button value="delete">Delete</button>
+        </form>
+      </dialog>
+      <script>
+        const dialog = document.querySelector("#confirm");
+        const open = document.querySelector("#open");
+        const result = document.querySelector("#result");
+        open.addEventListener("click", () => {
+          // Esc sets no value: clear the old one.
+          dialog.returnValue = "";
+          dialog.showModal();
+        });
+        dialog.addEventListener("close", () => {
+          const choice = dialog.returnValue || "nothing";
+          result.textContent = `You chose: ${choice}`;
+        });
+      </script>

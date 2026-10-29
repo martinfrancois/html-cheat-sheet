@@ -1,0 +1,41 @@
+elements:
+  - name: embed
+    summary: Embeds an external file that the browser shows by itself, such as an image or a PDF. It has no content of its own, so nothing replaces a file that doesn't load.
+  - name: object
+    summary: Embeds an external file, shown as an image or as a page in a frame, depending on its type. What you write inside it shows when the file doesn't load.
+attributes:
+  - name: src
+    on: embed
+    summary: The URL of the file.
+  - name: data
+    on: object
+    required: true
+    summary: The URL of the file.
+  - name: type
+    on: object
+    summary: The file type, such as `application/pdf`. `<embed>` takes it too.
+  - name: width, height
+    on: object
+    summary: The size of the box in CSS pixels. `<embed>` takes them too.
+notes:
+  - Both were made for plugins such as Flash, which browsers removed. Today they only show what the browser can open itself.
+  - For an image use `<img>`, for a page `<iframe>`, for a video `<video>`, because those have `alt`, lazy loading or captions.
+  - Pick `<object>` over `<embed>` when you need a fallback, such as a download link for a PDF that the browser can't show.
+  - Give both a `title`, because screen readers use it to say what the embedded file is.
+examples:
+  - title: The same drawing through `<object>`, with text for when it fails, and through `<embed>`
+    code: |
+      <object
+        data="images/stickman.svg"
+        type="image/svg+xml"
+        width="48"
+        height="96"
+        title="A stick figure">
+        A stick figure
+      </object>
+      <embed
+        src="images/stickman.svg"
+        type="image/svg+xml"
+        width="48"
+        height="96"
+        title="A stick figure">

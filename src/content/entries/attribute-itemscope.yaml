@@ -1,0 +1,16 @@
+attribute:
+  name: itemscope
+  summary: Starts an item of microdata, a group of name-value pairs that programs can read, such as a book with its title and author. The `itemprop` attributes inside it add the pairs.
+notes:
+  - Browsers don't show microdata. It's for programs that read the page, such as search engines.
+  - Add an `itemtype`, so programs know which vocabulary the names come from.
+  - An `itemprop` element with its own `itemscope` holds a nested item, such as the author of a book.
+examples:
+  - title: A book as an item with two properties
+    code: |
+      <div itemscope itemtype="https://schema.org/Book">
+        <p>
+          <cite itemprop="name">Frankenstein</cite>
+          by <span itemprop="author">Mary Shelley</span>
+        </p>
+      </div>

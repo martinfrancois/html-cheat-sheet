@@ -1,0 +1,13 @@
+elements:
+  - name: center
+    summary: Centered its content horizontally. Browsers still render it, but it has been obsolete since HTML5.
+replacement: >-
+  The CSS `text-align` property set to `center` for text and inline content, or the CSS
+  `margin-inline` property set to `auto` for a block with a set width.
+examples:
+  - title: What to write instead
+    code: |
+      <p style="text-align: center">This line is centered with CSS.</p>
+      <div style="width: 12rem; margin-inline: auto; border: solid">
+        This box is centered with CSS.
+      </div>

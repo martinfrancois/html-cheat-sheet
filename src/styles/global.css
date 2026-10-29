@@ -1,0 +1,378 @@
+@import "tailwindcss";
+@import "@fontsource-variable/atkinson-hyperlegible-next";
+@import "@fontsource-variable/atkinson-hyperlegible-mono";
+@import "@fontsource-variable/martian-mono";
+
+/*
+ * Every text colour pair below reaches 7:1 contrast (WCAG 1.4.6 AAA) in its theme, and every
+ * line or focus colour 3:1 against the surfaces it sits on (1.4.11). --accent is for large text
+ * and lines only (bold headings and the chapter rules), so it needs 3:1 (1.4.3 large text, AA),
+ * which leaves room for a brighter color than 7:1 allows. docs/agents/accessibility.md
+ * has the rules; test/e2e/accessibility.spec.ts checks them with axe in both themes.
+ * --chip-ink is the text on --chip, the inline code chips: white on the deep magenta chips of the
+ * light theme, --ink on the dark ones.
+ */
+:root {
+  color-scheme: light;
+  --bg: #fcfcfc;
+  --surface: #ffffff;
+  --sunk: #efefef;
+  --chip: #9b0065;
+  --ink: #1b1b1b;
+  --muted: #4d4d4d;
+  --line: #868686;
+  --link: #014ca7;
+  --accent: #fe38ad;
+  --chip-ink: #ffffff;
+  --focus: #014ca7;
+  --wide: #0f5c26;
+  --wide-bg: #e3f3e7;
+  --new: #0b4a94;
+  --new-bg: #e3edfb;
+  --limited: #7e3500;
+  --limited-bg: #fbeadb;
+  --bad: #8f1717;
+  --bad-bg: #fbe4e4;
+  --code-ink: #1b1b1b;
+  --code-tag: #014ca7;
+  --code-attr: #9b0065;
+  --code-string: #4d4d4d;
+  --code-comment: #4d4d4d;
+  --code-punct: #4d4d4d;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #050808;
+    --surface: #0b1011;
+    --sunk: #1a2223;
+    --chip: #501135;
+    --ink: #e7f1f1;
+    --muted: #b3c1c1;
+    --line: #5d6565;
+    --link: #14f4fe;
+    --accent: #ff05a9;
+    --chip-ink: var(--ink);
+    --focus: #14f4fe;
+    --wide: #8fe0a5;
+    --wide-bg: #11301c;
+    --new: #9cc4ff;
+    --new-bg: #10264a;
+    --limited: #ffbf85;
+    --limited-bg: #3a2210;
+    --bad: #ffaaa3;
+    --bad-bg: #3d1515;
+    --code-ink: #e7f1f1;
+    --code-tag: #14f4fe;
+    --code-attr: #ff8aca;
+    --code-string: #0dfd78;
+    --code-comment: #b3c1c1;
+    --code-punct: #b3c1c1;
+  }
+}
+
+/* Same values as the media query above, so an explicit dark choice wins over a light OS
+   setting. test/styles.test.ts fails when the two blocks differ. light-dark() would remove the
+   copy once it is Baseline widely available; test/baseline-workarounds.test.ts reports when. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #050808;
+  --surface: #0b1011;
+  --sunk: #1a2223;
+  --chip: #501135;
+  --ink: #e7f1f1;
+  --muted: #b3c1c1;
+  --line: #5d6565;
+  --link: #14f4fe;
+  --accent: #ff05a9;
+  --chip-ink: var(--ink);
+  --focus: #14f4fe;
+  --wide: #8fe0a5;
+  --wide-bg: #11301c;
+  --new: #9cc4ff;
+  --new-bg: #10264a;
+  --limited: #ffbf85;
+  --limited-bg: #3a2210;
+  --bad: #ffaaa3;
+  --bad-bg: #3d1515;
+  --code-ink: #e7f1f1;
+  --code-tag: #14f4fe;
+  --code-attr: #ff8aca;
+  --code-string: #0dfd78;
+  --code-comment: #b3c1c1;
+  --code-punct: #b3c1c1;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-sunk: var(--sunk);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-link: var(--link);
+  --color-accent: var(--accent);
+  --color-wide: var(--wide);
+  --color-wide-bg: var(--wide-bg);
+  --color-new: var(--new);
+  --color-new-bg: var(--new-bg);
+  --color-limited: var(--limited);
+  --color-limited-bg: var(--limited-bg);
+  --color-bad: var(--bad);
+  --color-bad-bg: var(--bad-bg);
+  --font-sans: "Atkinson Hyperlegible Next Variable", "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  --font-mono: "Atkinson Hyperlegible Mono Variable", "Atkinson Hyperlegible Mono", ui-monospace, monospace;
+  --font-display: "Martian Mono Variable", "Martian Mono", ui-monospace, monospace;
+  /* Nothing on the page is smaller than 15px; running text is 18px. */
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.5;
+  --text-base: 1.125rem;
+  --text-base--line-height: 1.6;
+}
+
+@layer base {
+  /* Clears the sticky header, which takes two rows on a phone. */
+  html {
+    scroll-padding-top: 8rem;
+  }
+
+  @variant sm {
+    html {
+      scroll-padding-top: 5rem;
+    }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+
+  /* Links are underlined, so a link in a sentence never depends on color alone (WCAG 1.4.1).
+     Only links that stand apart as navigation or labels drop it, with the no-underline class. */
+  a {
+    color: var(--link);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+  }
+
+  a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  code,
+  kbd,
+  pre {
+    font-family: var(--font-mono);
+  }
+
+  /* Inline code inside prose. An inline chip's background covers only the letters, not the whole
+     line height, so chips on consecutive lines keep a gap. A chip longer than the line wraps, at a
+     space or anywhere, so a 320 pixel screen never scrolls sideways. The chip stands apart from
+     every surface it sits on, and its text keeps 7:1 on it. */
+  :where(p, li, dd, td, figcaption) code {
+    overflow-wrap: anywhere;
+  }
+
+  :where(p, li, dd, td) code {
+    background: var(--chip);
+    color: var(--chip-ink);
+    border-radius: 0.25rem;
+    padding: 0.05em 0.3em;
+  }
+
+  /* Inside a link, code keeps the link colour, which only reaches 7:1 on the plain background. */
+  :where(p, li, dd, td) a code {
+    background: none;
+    color: inherit;
+    padding: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}
+
+@layer components {
+  .gutter {
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+
+  /* A control big enough to hit: 44 by 44 CSS pixels (WCAG 2.5.5). */
+  .control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    padding-inline: 0.85rem;
+    border: 1px solid var(--line);
+    border-radius: 0.375rem;
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* An icon-only button, 44 by 44 CSS pixels, with its label shown as a tooltip on hover and on
+     keyboard focus. The tooltip opens to the left, so a button at the right edge never pushes the
+     page wider. */
+  .icon-button {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.5rem;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .icon-button svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  /* A neutral tint: the chip color is a strong accent, too loud behind every hovered icon. */
+  .icon-button:hover {
+    background: color-mix(in srgb, var(--ink) 10%, transparent);
+    color: var(--ink);
+  }
+
+  .icon-button::after {
+    content: attr(aria-label);
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    right: 0;
+    z-index: 40;
+    display: none;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.375rem;
+    background: var(--ink);
+    color: var(--bg);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .icon-button:focus-visible::after {
+    display: block;
+  }
+
+  /* Touch screens have no hover, and a tap would leave the tooltip stuck open. */
+  @media (hover: hover) {
+    .icon-button:hover::after {
+      display: block;
+    }
+  }
+
+  .icon-button[data-done] .when-idle,
+  .icon-button:not([data-done]) .when-done {
+    display: none;
+  }
+
+  /* The theme toggle shows the mode it switches to: a moon in light mode, a sun in dark mode. */
+  .when-dark {
+    display: none;
+  }
+
+  :root[data-theme="dark"] .when-dark {
+    display: block;
+  }
+
+  :root[data-theme="dark"] .when-light {
+    display: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .when-dark {
+      display: block;
+    }
+
+    :root:not([data-theme="light"]) .when-light {
+      display: none;
+    }
+  }
+
+  summary.control {
+    list-style: none;
+  }
+
+  summary.control::-webkit-details-marker {
+    display: none;
+  }
+
+  /* The marker sits in an aria-hidden span, so screen readers don't read the triangle. */
+  summary.control .marker::before {
+    content: "▸";
+  }
+
+  details[open] > summary.control .marker::before {
+    content: "▾";
+  }
+
+  .control:hover {
+    border-color: var(--ink);
+  }
+
+  .control[aria-pressed="true"],
+  .control[aria-checked="true"] {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  .astro-code,
+  .cm-editor {
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  /* Long lines wrap: a cheat sheet shows the whole example, never half a line. */
+  .astro-code {
+    margin: 0;
+    padding: 0.75rem;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  /* Each line is a block, and the newlines between lines collapse. A wrapped line continues 4ch
+     further in than the line's own indentation (--indent, set in src/lib/code-theme.ts), so it
+     never reads as a new line or as a child element. */
+  .astro-code code {
+    white-space: normal;
+  }
+
+  .astro-code .line {
+    display: block;
+    min-height: 1.6em;
+    white-space: pre-wrap;
+    padding-left: calc(var(--indent, 0ch) + 4ch);
+    text-indent: calc(-1 * (var(--indent, 0ch) + 4ch));
+  }
+
+  .astro-code :is(.lead, .attribute, .keep) {
+    white-space: pre;
+  }
+}

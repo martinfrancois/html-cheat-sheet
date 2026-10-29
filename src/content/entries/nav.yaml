@@ -1,0 +1,19 @@
+elements:
+  - name: nav
+    summary: A block of the main links for getting around, to other pages of the site or to parts of the same page.
+notes:
+  - Use it only for main blocks of links, because screen readers let people skip or jump to it. A few links in a footer don't need it.
+  - Name each `<nav>` with `aria-label` when a page has more than one, so screen readers can tell them apart.
+  - Mark the link to the page you're on with `aria-current="page"`, because screen readers can't tell it's styled differently.
+examples:
+  - title: The main menu of a site, with the current page marked
+    code: |
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="https://example.com/">Home</a></li>
+          <li>
+            <a href="https://example.com/menu" aria-current="page">Menu</a>
+          </li>
+          <li><a href="https://example.com/contact">Contact</a></li>
+        </ul>
+      </nav>

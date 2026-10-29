@@ -1,0 +1,14 @@
+attribute:
+  name: lang
+  summary: The language of the element's text, as a code such as `en`, `fr` or `pt-BR`. Elements inside inherit it.
+notes:
+  - Set it on `<html>`, because browsers use it to pick fonts, spell checking and how a screen reader pronounces the words.
+  - Mark each passage in another language too, such as a phrase in German, so it's pronounced in that language.
+  - "`lang=\"\"` says the language is unknown."
+examples:
+  - title: A German phrase inside English text
+    code: |
+      <p>
+        The sign on the door said <span lang="de">Bitte nicht stören</span>,
+        so we waited outside.
+      </p>

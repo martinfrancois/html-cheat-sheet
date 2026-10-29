@@ -1,0 +1,25 @@
+elements:
+  - name: keygen
+    summary: A form control that made a key pair for a certificate, kept the private key in the browser and sent the public key with the form. Browsers now treat it as an unknown element, so no control appears.
+replacement: >-
+  For certificates, the Web Cryptography API: make the key pair with `crypto.subtle.generateKey()`,
+  then let the user install the certificate and key themselves. For company devices, use the
+  device's own management tools.
+examples:
+  - title: A key pair made with the Web Cryptography API
+    code: |
+      <button type="button" id="make">Make a key pair</button>
+      <p id="result"></p>
+      <script>
+        const make = document.querySelector("#make");
+        const result = document.querySelector("#result");
+        make.addEventListener("click", async () => {
+          const keys = await crypto.subtle.generateKey(
+            { name: "ECDSA", namedCurve: "P-256" },
+            true,
+            ["sign", "verify"],
+          );
+          const key = await crypto.subtle.exportKey("spki", keys.publicKey);
+          result.textContent = `Public key: ${key.byteLength} bytes`;
+        });
+      </script>

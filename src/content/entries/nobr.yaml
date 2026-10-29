@@ -1,0 +1,11 @@
+elements:
+  - name: nobr
+    summary: Kept its text on one line, without wrapping. Browsers still do.
+replacement: "The CSS `white-space` property set to `nowrap`."
+examples:
+  - title: A phone number that never breaks across lines
+    code: |
+      <p>
+        Call us on <span style="white-space: nowrap">+41 44 123 45 67</span>
+        any weekday.
+      </p>
