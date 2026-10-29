@@ -55,7 +55,7 @@ with Astro and Tailwind and published at https://html.fmartin.ch.
   updating snapshots
 - [Accessibility](docs/agents/accessibility.md): the WCAG rule with its numbers
 - [Visual design](docs/agents/visual-design.md): grouping, icons and controls, the visual review
-- [Writing style](docs/agents/writing-style.md): page copy, docs, commit messages
+- [Writing style](docs/agents/writing-style.md): page copy, docs, commit messages, naming people
 - [Libraries](docs/agents/libraries.md): library over hand-written code, and the exceptions
 - [Dependencies](docs/agents/dependencies.md): pins, cooldown, Renovate automerge
 - [Specification](docs/agents/specification.md): what `SPEC.md` holds and when to update it

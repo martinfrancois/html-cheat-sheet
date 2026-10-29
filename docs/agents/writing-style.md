@@ -3,7 +3,7 @@
 ## Scope
 
 Wording for text on the page (summaries, usage notes, button labels, messages), for docs and ADRs,
-and for commit messages and pull requests.
+and for commit messages, pull requests, issues, and comments.
 
 ## Everywhere
 
@@ -46,15 +46,20 @@ and for commit messages and pull requests.
 - Before showing new or changed text, read it as a learner would and ask of each sentence: would
   someone who knows a little HTML know what to do, and why, without asking?
 
+## Naming people
+
+- Docs, ADRs, agent pages, `SPEC.md`, and code comments name martinfrancois, never "the owner" or a
+  first name. A fork keeps these files, and "the owner" would then mean whoever owns the fork.
+- Commit messages, pull requests, issues, and comments speak as the account that posts them, in
+  the first person, even when an agent wrote them for that person: "I turned off Cloudflare's Real
+  User Monitoring", not "the owner turned off". Readers take what an account posts as written by
+  that person.
+- Work someone else did is named with their handle: "@martinfrancois turned off Real User
+  Monitoring, so I measure it in PostHog".
+
 ## Docs, ADRs, and pull requests
 
 - Wrap Markdown at about 100 characters.
-- In docs, ADRs and agent pages, say "the owner" or "martinfrancois", never a first name.
-- Pull requests, issues, comments and commit messages posted under the owner's account speak as
-  the owner, in the first person: "I turned off Cloudflare's Real User Monitoring", not "the owner
-  turned off". Readers take what an account posts as written by that person.
-- Everyone else writes in their own first person and mentions the owner's work as
-  `@martinfrancois`: "@martinfrancois turned off Real User Monitoring, so I measure it in PostHog".
 - Link issues and pull requests with link text that names them, not a bare `#12` or a bare URL.
 - Commit subjects are plain imperative sentences without a prefix, see
   [Default workflow](default-workflow.md#commits-and-pull-requests).
