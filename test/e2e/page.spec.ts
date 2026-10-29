@@ -387,27 +387,37 @@ test.describe("search", () => {
   });
 });
 
-test.describe("scroll to top", () => {
+test.describe("back to top", () => {
+  const scrollDown = (page: Page) => page.evaluate(() => scrollTo(0, innerHeight * 3));
+
   test("appears after the first screen and jumps back to the top", async ({ page }) => {
     await page.goto("/");
-    const link = page.getByRole("link", { name: "Scroll to top" });
+    const link = page.getByRole("link", { name: "Back to top" });
     await expect(link).toBeHidden();
-    await page.evaluate(() => scrollTo(0, innerHeight * 3));
+    await scrollDown(page);
     await expect(link).toBeVisible();
     await link.click();
     await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
     await expect(link).toBeHidden();
   });
 
+  test("leaves keyboard focus on the site name, so the next Tab reaches the search box", async ({ page }) => {
+    await page.goto("/");
+    await scrollDown(page);
+    await page.getByRole("link", { name: "Back to top" }).focus();
+    await page.keyboard.press("Enter");
+    await expect(page.getByRole("link", { name: "html cheat sheet", exact: true })).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(page.getByLabel("Search elements and attributes")).toBeFocused();
+  });
+
   test("sits above the update notice instead of under it", async ({ page }) => {
     await page.goto("/");
-    await page.evaluate(() => {
-      scrollTo(0, innerHeight * 3);
-      document.getElementById("update-notice")!.hidden = false;
-    });
-    const link = page.getByRole("link", { name: "Scroll to top" });
+    await scrollDown(page);
+    await page.evaluate(() => (document.getElementById("update-notice")!.hidden = false));
+    const link = page.getByRole("link", { name: "Back to top" });
     await expect(link).toBeVisible();
-    const [linkBox, noticeBox] = [(await link.boundingBox())!, (await page.locator("#update-notice").boundingBox())!];
+    const [linkBox, noticeBox] = [(await link.boundingBox())!, (await page.getByText("A new version is ready.").locator("..").boundingBox())!];
     expect(linkBox.y + linkBox.height).toBeLessThanOrEqual(noticeBox.y);
   });
 });

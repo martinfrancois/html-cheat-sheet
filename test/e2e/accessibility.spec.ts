@@ -43,6 +43,18 @@ for (const colorScheme of ["light", "dark"] as const) {
   }
 }
 
+// The back-to-top link is hidden at the top, where the scans above run.
+test("the back-to-top link meets WCAG 2.2 AA in both themes", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => scrollTo(0, innerHeight * 3));
+  for (const colorScheme of ["light", "dark"] as const) {
+    await page.emulateMedia({ colorScheme });
+    await expect(page.getByRole("link", { name: "Back to top" })).toBeVisible();
+    const results = await new AxeBuilder({ page }).withTags(WCAG).include("#to-top").analyze();
+    expect(results.violations).toEqual([]);
+  }
+});
+
 test("no text is smaller than 15 pixels and running text has a line height of at least 1.5", async ({ page }) => {
   await page.goto("/");
   const problems = await page.evaluate(() => {

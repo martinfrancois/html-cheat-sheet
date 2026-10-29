@@ -21,6 +21,8 @@
   --ink: #1b1b1b;
   --muted: #4d4d4d;
   --line: #868686;
+  /* A neutral wash for hovered icons: the chip color is a strong accent, too loud behind every one. */
+  --tint: color-mix(in srgb, var(--ink) 10%, transparent);
   --link: #014ca7;
   --accent: #fe38ad;
   --chip-ink: #ffffff;
@@ -51,6 +53,7 @@
     --ink: #e7f1f1;
     --muted: #b3c1c1;
     --line: #5d6565;
+    --tint: color-mix(in srgb, var(--ink) 10%, transparent);
     --link: #14f4fe;
     --accent: #ff05a9;
     --chip-ink: var(--ink);
@@ -84,6 +87,7 @@
   --ink: #e7f1f1;
   --muted: #b3c1c1;
   --line: #5d6565;
+  --tint: color-mix(in srgb, var(--ink) 10%, transparent);
   --link: #14f4fe;
   --accent: #ff05a9;
   --chip-ink: var(--ink);
@@ -132,9 +136,11 @@
 }
 
 @layer base {
-  /* Clears the sticky header, which takes two rows on a phone. */
+  /* Clears the sticky header, which takes two rows on a phone, and at the bottom the back-to-top
+     link, so a control reached with Tab never sits under either (WCAG 2.4.11). */
   html {
     scroll-padding-top: 8rem;
+    scroll-padding-bottom: 5rem;
   }
 
   @variant sm {
@@ -252,9 +258,8 @@
     height: 1.25rem;
   }
 
-  /* A neutral tint: the chip color is a strong accent, too loud behind every hovered icon. */
   .icon-button:hover {
-    background: color-mix(in srgb, var(--ink) 10%, transparent);
+    background: var(--tint);
     color: var(--ink);
   }
 
@@ -286,16 +291,18 @@
     }
   }
 
-  /* The scroll-to-top link floats over the entries, so it has its own background and a border at
-     3:1, and its tooltip opens above it instead of below the screen's bottom edge. */
+  /* The back-to-top link floats over whatever is scrolled beneath it, chips and code blocks too.
+     A ring in the page color around its border keeps the border's neighbors fixed, so it holds
+     7:1 in every state. Its tooltip opens above it instead of below the screen's bottom edge. */
   .to-top {
-    border: 1px solid var(--line);
+    border: 1px solid var(--muted);
     border-radius: 9999px;
     background: var(--surface);
+    box-shadow: 0 0 0 2px var(--bg);
   }
 
   .to-top:hover {
-    background: color-mix(in srgb, var(--ink) 10%, var(--surface));
+    background: linear-gradient(var(--tint), var(--tint)) var(--surface);
   }
 
   .to-top::after {
