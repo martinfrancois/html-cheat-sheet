@@ -49,7 +49,12 @@ and for commit messages and pull requests.
 ## Docs, ADRs, and pull requests
 
 - Wrap Markdown at about 100 characters.
-- Say "the owner" or "martinfrancois", never a first name.
+- In docs, ADRs and agent pages, say "the owner" or "martinfrancois", never a first name.
+- Pull requests, issues, comments and commit messages posted under the owner's account speak as
+  the owner, in the first person: "I turned off Cloudflare's Real User Monitoring", not "the owner
+  turned off". Readers take what an account posts as written by that person.
+- Everyone else writes in their own first person and mentions the owner's work as
+  `@martinfrancois`: "@martinfrancois turned off Real User Monitoring, so I measure it in PostHog".
 - Link issues and pull requests with link text that names them, not a bare `#12` or a bare URL.
 - Commit subjects are plain imperative sentences without a prefix, see
   [Default workflow](default-workflow.md#commits-and-pull-requests).
