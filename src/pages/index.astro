@@ -70,7 +70,7 @@ const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
       </div>
     </header>
 
-    <div id="top" class="gutter mx-auto grid max-w-7xl gap-y-8 pt-8 pb-24">
+    <div id="top" class="gutter mx-auto grid max-w-7xl gap-y-8 pt-8 pb-36">
       <nav aria-label="Index">
         {/* Tailwind's sm breakpoint, where the summary below hides; test/styles.test.ts checks it. */}
         <details id="index" data-open-from="(min-width: 40rem)">
@@ -146,10 +146,11 @@ const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
       </footer>
     </div>
 
-    {/* One corner for both, so the update notice never covers the link back to the top. */}
+    {/* One corner for both, so the update notice never covers the link back to the top. The
+         page's bottom padding leaves room for the two stacked. */}
     <div class="fixed right-[max(16px,env(safe-area-inset-right,0px))] bottom-[max(16px,env(safe-area-inset-bottom,0px))] z-30 flex flex-col items-end gap-3">
       {/* Appears once the first screen is scrolled away; src/scripts/to-top.ts shows it. */}
-      <a id="to-top" href="#top" class="icon-button to-top" aria-label="Scroll to top" hidden>
+      <a id="to-top" href="#top" class="icon-button to-top" aria-label="Back to top" hidden>
         <ArrowUp aria-hidden="true" />
       </a>
       <div id="update-notice" class="flex items-center gap-3 rounded-md bg-ink px-4 py-2 text-bg shadow-lg" hidden>

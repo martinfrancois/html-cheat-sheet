@@ -106,6 +106,10 @@ reads as one without hovering.
 - The theme control is one button showing the mode it switches to: a moon in light mode, a sun in
   dark mode. The page follows the system setting until the reader clicks it; only that click stores
   a choice. There is no "System" option.
+- The back-to-top link is the one round icon button, after the one on fmartin.ch, because it floats
+  over the entries instead of sitting in a row. It has its own fill, a `--muted` border and a ring
+  in the page color, so the border keeps 7:1 over chips and code blocks. It jumps without a smooth
+  scroll, which the owner asked for: on a page this long, an animation takes seconds.
 - Never show a hint that most readers can't decode, such as a bare `/` next to the search box.
   Declare keyboard shortcuts with `aria-keyshortcuts` instead.
 - Visible text must fit the narrowest screen it appears on. A placeholder such as "Search elements"
