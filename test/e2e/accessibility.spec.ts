@@ -44,6 +44,21 @@ for (const colorScheme of ["light", "dark"] as const) {
   }
 }
 
+// Lighthouse checks contrast as the page loads, before the entries below the screen are drawn.
+// Their contents are laid out then but their box keeps its estimated height, so a taller entry
+// spills into the next one and axe reads a code chip as the next entry's background.
+for (const [device, viewport] of [
+  ["desktop", { width: 1350, height: 940 }],
+  ["phone", { width: 412, height: 823 }],
+] as const) {
+  test(`text contrast holds before the entries are drawn, on a ${device}`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await page.goto("/");
+    const results = await new AxeBuilder({ page }).withRules(["color-contrast", "color-contrast-enhanced"]).exclude("iframe").analyze();
+    expect(withLargeTextAtAA(results.violations)).toEqual([]);
+  });
+}
+
 // The back-to-top link is hidden at the top, where the scans above run.
 test("the back-to-top link meets WCAG 2.2 AA in both themes", async ({ page }) => {
   await page.goto("/");

@@ -81,11 +81,13 @@ you measured; [ADR 0012](../adr/0012-create-live-output-frames-near-the-screen.m
 [ADR 0018](../adr/0018-skip-rendering-entries-off-screen.md) have the current numbers and the
 changes that were tried and dropped.
 
-- Measure the built page (`pnpm run build`), served with gzip like GitHub Pages, never the dev
+- Measure the built page (`pnpm run build`), served compressed like the live site, never the dev
   server. Run Lighthouse's mobile and desktop presets at least three times each: single runs vary
   by a point or two.
-- On mobile, first and largest contentful paint follow the compressed size of the HTML, so watch
-  what a change adds to every entry.
+- Lighthouse's mobile preset simulates a slow connection and counts a whole round trip at a time,
+  about 150 ms. A text largest paint waits there for every request that starts before the page is
+  first drawn: the HTML, the three preloaded fonts and the page's script. Removing 9.4 KB of the
+  compressed HTML changed nothing; the fonts change most. ADR 0017 has the numbers.
 
 ## Updating snapshots
 

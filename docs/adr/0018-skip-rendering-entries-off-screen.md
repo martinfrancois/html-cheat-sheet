@@ -67,6 +67,12 @@ the old offset.
 * Bad, because a test that measures or checks every entry has to draw them all first, with
   `layOutEveryEntry` in `test/e2e/helpers.ts`, or it passes without looking at them. The axe
   check does so too, so it checks the page with every entry drawn.
+* Bad, because Lighthouse runs axe before the entries below the screen are drawn. An entry taller
+  than its estimate then reaches past its box into the next one, and axe read a code chip there as
+  the next entry's background, which cost 4 points of the accessibility score. Each entry has
+  `overflow: hidden`, which changes nothing on screen, since `content-visibility` already clips an
+  entry to its box, but is the clipping axe knows. The test "text contrast holds before the
+  entries are drawn" in `test/e2e/accessibility.spec.ts` runs axe that way.
 * Bad, because Playwright's WebKit answers each test call about 200 ms slower on this page, while
   the page itself runs at 60 frames a second there as before. Tests that made one call per entry
   now make one call in all.
