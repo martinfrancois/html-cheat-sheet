@@ -1,17 +1,19 @@
 // Each workaround here exists only because a web feature hasn't been Baseline long enough for the
 // page to use it, see docs/adr/0016-use-web-features-six-months-after-they-become-baseline.md.
-// The test fails once the feature qualifies, so the workaround gets removed in the Renovate update
-// that brings the news.
+// A workaround's test fails on the day its feature qualifies, with or without a code change, and
+// the fix is to remove the workaround as its entry says. Use the date of the most specific compat
+// key the code relies on, such as css.selectors.popover-open rather than the whole popover feature.
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { features } from "web-features";
+import type { CompatStatus } from "../src/lib/baseline.ts";
 import { usableSince } from "./page-features.ts";
 
 const workarounds: { compatKey: string; where: string; remove: string }[] = [];
 
-function status(compatKey: string) {
+function status(compatKey: string): CompatStatus | undefined {
   for (const feature of Object.values(features)) {
-    const byKey = "status" in feature ? feature.status?.by_compat_key : undefined;
+    const byKey = "status" in feature ? (feature.status?.by_compat_key as Record<string, CompatStatus> | undefined) : undefined;
     if (byKey?.[compatKey]) return byKey[compatKey];
   }
   return undefined;
@@ -26,9 +28,13 @@ for (const { compatKey, where, remove } of workarounds) {
   });
 }
 
-test("a feature can be used six months after it became Baseline, and never before", () => {
+test("the page may use a feature six months after it became Baseline", () => {
   assert.deepEqual(usableSince({ baseline: "low", baseline_low_date: "2025-09-15" }), new Date("2026-03-15"));
-  assert.equal(usableSince({ baseline: false }), undefined);
+  assert.deepEqual(usableSince({ baseline: "low", baseline_low_date: "2025-08-31" }), new Date("2026-02-28"));
   // web-features writes "≤2020-01-29" when it only knows an upper bound.
   assert.deepEqual(usableSince({ baseline: "high", baseline_low_date: "≤2020-01-29" }), new Date("2020-07-29"));
+});
+
+test("the page may not use a feature that isn't Baseline", () => {
+  assert.equal(usableSince({ baseline: false }), undefined);
 });
