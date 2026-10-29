@@ -8,7 +8,7 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   retries: 0,
   // Each page holds dozens of live output frames, so every browser is heavy. Four workers
-  // pushed a 24-core machine to a load of 48 and crashed WebKit; two keep it usable.
+  // pushed a 24-core machine to a load of 48; two keep it usable.
   workers: Number(process.env.PLAYWRIGHT_WORKERS) || 2,
   reporter: process.env.CI ? [["list"], ["html", { open: "never" }]] : "list",
   use: {

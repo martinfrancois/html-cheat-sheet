@@ -16,10 +16,11 @@ image="mcr.microsoft.com/playwright:v${version}-noble"
 engine=$(command -v docker || command -v podman)
 root=$(pwd)
 
-# :Z gives the container access on SELinux hosts; it is ignored elsewhere. Podman limits a container
-# to 2048 processes and threads by default, and four WebKit workers need about 2000, so WebKit
-# aborted with "Resource temporarily unavailable" partway through a run; --pids-limit=-1 lifts it.
+# :Z gives the container access on SELinux hosts; it is ignored elsewhere. Podman's default limit
+# of 2048 processes and threads per container is below what more than two WebKit workers use, and
+# WebKit aborts when it can't start a thread; --pids-limit=-1 lifts the limit. DEBUG=pw:browser
+# prints the browsers' own output.
 exec nice -n 19 "$engine" run --rm --init --ipc=host --pids-limit=-1 \
   --volume "$root:/work:Z" --workdir /work \
-  --env CI="${CI:-}" --env PLAYWRIGHT_WORKERS="${PLAYWRIGHT_WORKERS:-}" \
+  --env CI="${CI:-}" --env PLAYWRIGHT_WORKERS="${PLAYWRIGHT_WORKERS:-}" --env DEBUG="${DEBUG:-}" \
   "$image" ./node_modules/.bin/playwright test "$@"

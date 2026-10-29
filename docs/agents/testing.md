@@ -43,10 +43,10 @@ image will not match.
   reports layout shifts. They measure with the image's system fonts, Liberation Sans and Liberation
   Mono, so they check the sized fallback for those two fonts only.
 - WebKit tests failing with "Target page, context or browser has been closed" or "Page crashed"
-  mean the browser aborted, not that the page broke. Podman's default limit of 2048 processes and
-  threads per container caused it once: four WebKit workers need about 2000, and WebKit aborts
-  when it can't start a thread. `scripts/playwright.sh` lifts the limit. To see why WebKit aborted,
-  run the image by hand with `--env DEBUG=pw:browser`, which prints the browser's own errors.
+  mean the browser aborted, not that the page broke. `DEBUG=pw:browser pnpm run test:e2e
+  --project=webkit` prints the browser's own errors. "Resource temporarily unavailable" means it
+  couldn't start a thread: Podman limits a container to 2048 processes and threads by default,
+  which more than two WebKit workers can reach, so `scripts/playwright.sh` lifts the limit.
 - Renovate updates the image tag and the npm package together. Never change one without the other.
 - Running `pnpm exec playwright test` directly on your machine is fine for a quick check of behavior, but
   ignore its snapshot results.
