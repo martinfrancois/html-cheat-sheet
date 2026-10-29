@@ -1,3 +1,4 @@
+import { gunzipSync } from "node:zlib";
 import { expect, type Page, test } from "@playwright/test";
 import { CHIP_ROW } from "../../src/lib/chips.ts";
 import { THEME_KEY } from "../../src/lib/theme-key.ts";
@@ -486,7 +487,7 @@ test.describe("editing an example", () => {
   });
 });
 
-// docs/adr/0005: PostHog, cookieless, is the page's only third-party request. Test builds have
+// docs/adr/0013: PostHog, cookieless, is the page's only third-party request. Test builds have
 // no key, so the test hands the page one, and PostHog's host answers from the test.
 test.describe("analytics", () => {
   const posthog = "https://eu.i.posthog.com/**";
@@ -522,6 +523,32 @@ test.describe("analytics", () => {
     expect([...hosts].sort()).toEqual([new URL(baseURL!).origin, "https://eu.i.posthog.com"].sort());
     expect(await context.cookies()).toEqual([]);
     expect(await page.evaluate(() => Object.keys(localStorage))).toEqual([]);
+  });
+
+  test("reports the reader's web vitals once the page is hidden", async ({ page, browserName }) => {
+    test.skip(browserName === "webkit", "Playwright's WebKit passes none of the requests PostHog sends on its own to page.route, not even the page view");
+    const vitals: string[] = [];
+    await withKey(page);
+    await page.route(posthog, async (route) => {
+      const body = route.request().postDataBuffer();
+      if (body) {
+        const text = (body[0] === 0x1f && body[1] === 0x8b ? gunzipSync(body) : body).toString();
+        for (const event of [JSON.parse(text)].flat().flatMap((data) => data.batch ?? [data])) {
+          if (event.event === "$web_vitals") vitals.push(...Object.keys(event.properties).filter((key) => key.endsWith("_value")));
+        }
+      }
+      await route.fulfill({ json: { status: 1 } });
+    });
+    await useThePage(page);
+    // Leaving the page hides it, which is when the browser settles CLS and INP.
+    await page.evaluate(() => {
+      Object.defineProperty(document, "visibilityState", { get: () => "hidden", configurable: true });
+      document.dispatchEvent(new Event("visibilitychange"));
+    });
+    // Only Chromium measures layout shifts, so Firefox readers send no CLS.
+    const expected = ["$web_vitals_FCP_value", "$web_vitals_INP_value", "$web_vitals_LCP_value"];
+    if (browserName === "chromium") expected.unshift("$web_vitals_CLS_value");
+    await expect.poll(() => vitals.sort(), { timeout: 15_000 }).toEqual(expected);
   });
 
   test("leaves the page working when PostHog can't be reached", async ({ page }) => {

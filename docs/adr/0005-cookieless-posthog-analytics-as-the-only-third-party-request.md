@@ -1,5 +1,5 @@
 ---
-status: accepted
+status: superseded by [ADR 0013](0013-measure-usage-and-web-vitals-with-cookieless-posthog.md)
 date: 2026-10-28
 decision-makers: [martinfrancois]
 consulted: [implementing coding agent]
