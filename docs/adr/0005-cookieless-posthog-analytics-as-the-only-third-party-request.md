@@ -10,10 +10,10 @@ informed: [Future maintainers and agents working on this repository]
 
 ## Context and Problem Statement
 
-The owner wants to know how the cheat sheet is used: how many people visit, what they search for
-and don't find, and whether anyone uses Edit and Copy. GitHub Pages, which hosts the site, gives the
-owner no access logs. Collecting usage data must not cost readers their privacy or put a consent
-banner between them and the page. How should the page measure usage?
+martinfrancois wants to know how the cheat sheet is used: how many people visit, what they search
+for and don't find, and whether anyone uses Edit and Copy. GitHub Pages, which hosts the site, gives
+martinfrancois no access logs. Collecting usage data must not cost readers their privacy or put a
+consent banner between them and the page. How should the page measure usage?
 
 ## Decision Drivers
 
@@ -21,7 +21,7 @@ banner between them and the page. How should the page measure usage?
 * Store nothing on the reader's device, so no consent banner is needed.
 * Keep the data in the EU.
 * Make no other third-party request: fonts, scripts, and styles all come from the site itself.
-* Use a service the owner already uses for other sites, rather than a new account and tool.
+* Use a service martinfrancois already uses for other sites, rather than a new account and tool.
 
 ## Considered Options
 
@@ -33,13 +33,13 @@ banner between them and the page. How should the page measure usage?
 
 Chosen option: "Cookieless PostHog in its own EU project", because it answers the three questions
 without storing anything on the reader's device, keeps the data in PostHog's EU region, and uses a
-tool the owner already knows.
+tool martinfrancois already knows.
 
 The page sends three kinds of events: page views, searches with no results (with the search text),
 and clicks on Edit and Copy. It sends no other events, records no session replays, and sets no
 cookies.
-The project is separate from the owner's other PostHog projects, so the cheat sheet's numbers stand
-alone.
+The project is separate from martinfrancois's other PostHog projects, so the cheat sheet's numbers
+stand alone.
 
 ### Consequences
 
@@ -86,9 +86,9 @@ The same client with its default cookie persistence, behind a banner that asks f
 The page sends no usage data.
 
 * Good, because the page makes no third-party request and needs no account.
-* Bad, because the owner can't learn which elements readers look for and don't find, which is the
-  main input for improving the content.
+* Bad, because martinfrancois can't learn which elements readers look for and don't find, which is
+  the main input for improving the content.
 
 ## More Information
 
-The owner chose this option in the design interview on 2026-10-28.
+martinfrancois chose this option in the design interview on 2026-10-28.

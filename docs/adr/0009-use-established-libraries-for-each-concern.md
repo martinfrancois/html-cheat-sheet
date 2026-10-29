@@ -13,20 +13,20 @@ informed: [Future maintainers and agents working on this repository]
 The rebuilt cheat sheet needs a list of every HTML element, spec and MDN links, accessibility roles,
 Baseline status, search, syntax highlighting, an editor, offline caching, analytics, and Markdown in
 entry text. Each of these looks small enough to write by hand, and each hand-written version would
-need its own fixes and updates. The owner set the rule on 2026-10-28: "please follow best practices
-and dont hand roll things for which there are well maintained and popular libraries". Which library
-covers each concern, and when is code written here allowed?
+need its own fixes and updates. martinfrancois set the rule on 2026-10-28: "please follow best
+practices and dont hand roll things for which there are well maintained and popular libraries".
+Which library covers each concern, and when is code written here allowed?
 
 ## Decision Drivers
 
-* The owner's rule: no hand-written code where a well-maintained, popular library exists.
+* martinfrancois's rule: no hand-written code where a well-maintained, popular library exists.
 * Data about HTML must track the specs, so it must come from a source that updates when they do.
 * Renovate merges updates on its own, so a library update reaches the page without extra work
   ([ADR 0008](0008-automerge-every-dependency-update-that-passes-ci.md)).
 * A library must allow bundling into this MIT project and support the Astro version in use.
-* Where the owner's other projects already solved a concern, the same library keeps his projects
-  alike.
-* The owner's selection bar: at least 100 GitHub stars and a release within the last 12 months,
+* Where martinfrancois's other projects already solved a concern, the same library keeps his
+  projects alike.
+* martinfrancois's selection bar: at least 100 GitHub stars and a release within the last 12 months,
   with exceptions where worth it, each recorded with its reason.
 
 ## Considered Options
@@ -100,8 +100,8 @@ Two parts are written here on purpose:
 ### Consequences
 
 * Good, because spec changes reach the page through package updates, not edits by hand.
-* Good, because search behaves like the search on the owner's website, with the same library and
-  setting.
+* Good, because search behaves like the search on martinfrancois's website, with the same library
+  and setting.
 * Bad, because the project has more dependencies, and each one can break on update. The test suite
   is the gate for that ([ADR 0008](0008-automerge-every-dependency-update-that-passes-ci.md)).
 * Bad, because three facts still come from scraping the standard's HTML, which breaks if its layout
@@ -140,7 +140,7 @@ repository.
 
 ## More Information
 
-The owner stated the rule on 2026-10-28 during the rebuild. Peer ranges, release dates, and licenses
-above were read from the npm registry on 2026-10-28. Revisit the `iframe-resizer` exception if it
-changes its license, and the `@vite-pwa/astro` rejection if its peer range reaches the Astro major in
-use.
+martinfrancois stated the rule on 2026-10-28 during the rebuild. Peer ranges, release dates, and
+licenses above were read from the npm registry on 2026-10-28. Revisit the `iframe-resizer` exception
+if it changes its license, and the `@vite-pwa/astro` rejection if its peer range reaches the Astro
+major in use.

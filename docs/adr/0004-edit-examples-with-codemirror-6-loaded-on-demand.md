@@ -92,5 +92,5 @@ such editor.
 
 ## More Information
 
-The coding agent proposed CodeMirror 6 in the design interview on 2026-10-28 and the owner approved
-it. Package sizes and download counts are from the npm registry on 2026-10-28.
+The coding agent proposed CodeMirror 6 in the design interview on 2026-10-28 and martinfrancois
+approved it. Package sizes and download counts are from the npm registry on 2026-10-28.

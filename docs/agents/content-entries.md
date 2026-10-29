@@ -58,7 +58,7 @@ phrase.
 - Link only to `https://example.com` or to pages inside the example, so the live output works offline.
 - The live output grows by itself when an example opens a modal `<dialog>` or a popover, so an
   example needs no fixed height.
-- Format example code the way Prettier formats HTML at 70 characters, and no tighter. The owner
+- Format example code the way Prettier formats HTML at 70 characters, and no tighter. martinfrancois
   found a short `<img>` split over four lines wasteful.
   - Keep every line at 70 characters or fewer, so no line wraps on a foldable (752 px) or a desktop.
   - A tag that fits on its line stays on one line. Only a tag that doesn't fit puts each attribute
@@ -79,7 +79,7 @@ phrase.
 - An attribute that has a value when it's left out gets a `default` field, such as `default: text`
   for `<input type>`. The page shows it as *Default: `text`.* at the start of the description, in
   the same form on every attribute. Never write the default into the summary ("without it you get
-  `text`"): the owner found that clumsy. Leave `default` out for a boolean attribute, which is
+  `text`"): martinfrancois found that clumsy. Leave `default` out for a boolean attribute, which is
   simply off when absent, and where the value depends on other things; say that in the summary.
   Start the summary after a default with a word, not a code chip: "Default: `1`. `1`, `a` ..."
   reads like a stutter.
@@ -100,8 +100,8 @@ point is longer than 140 characters. Write the point a reader acts on, such as "
 
 Advice always says why, in the same point: "Put a visible close button inside, because touch
 screens have no Esc key", never only "Put a visible close button inside". When the reason doesn't
-fit, link the source that explains it. The owner asked for this: advice without a reason doesn't
-say when it applies.
+fit, link the source that explains it. martinfrancois asked for this: advice without a reason
+doesn't say when it applies.
 
 ## Comparisons
 

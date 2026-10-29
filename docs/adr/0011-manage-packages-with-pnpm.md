@@ -10,13 +10,14 @@ informed: [Future maintainers and agents working on this repository]
 
 ## Context and Problem Statement
 
-The makeover added a build step and a few dozen packages, first installed with npm. The owner uses
-pnpm on his other JavaScript repositories and wants it wherever it can work. Which package manager
-should install the dependencies and run the scripts?
+The makeover added a build step and a few dozen packages, first installed with npm. martinfrancois
+uses pnpm on his other JavaScript repositories and wants it wherever it can work. Which package
+manager should install the dependencies and run the scripts?
 
 ## Decision Drivers
 
-* The same package manager as the owner's other repositories, so commands and settings carry over.
+* The same package manager as martinfrancois's other repositories, so commands and settings carry
+  over.
 * The 7-day wait for new releases ([ADR 0008](0008-automerge-every-dependency-update-that-passes-ci.md))
   must hold when Renovate regenerates the lockfile, not only when it proposes an update.
 * Install scripts of dependencies must not run unless someone allowed them.
@@ -30,8 +31,8 @@ should install the dependencies and run the scripts?
 
 ## Decision Outcome
 
-Chosen option: "pnpm", because it is the owner's choice for his repositories, and the settings his
-other repositories already use for the release wait and install scripts carry over unchanged.
+Chosen option: "pnpm", because it is martinfrancois's choice for his repositories, and the settings
+his other repositories already use for the release wait and install scripts carry over unchanged.
 
 `package.json` pins the version in `packageManager`. `pnpm-workspace.yaml` sets `minimumReleaseAge`
 to 7 days, refuses versions without a publish time, and lists in `allowBuilds` each dependency that
@@ -66,7 +67,7 @@ line of `pnpm-lock.yaml` is `lockfileVersion`, not `---`.
 A package manager that keeps one copy of each package version in a shared store and links it into
 `node_modules`.
 
-* Good, because the owner's other JavaScript repositories use it.
+* Good, because martinfrancois's other JavaScript repositories use it.
 * Good, because `minimumReleaseAge` and `allowBuilds` are package manager settings, enforced on
   every install.
 * Neutral, because its strict `node_modules` layout fails a build that imports a package it does
@@ -79,17 +80,17 @@ The package manager that ships with Node.
 * Good, because it ships with Node and every container image.
 * Neutral, because npm 11 has comparable settings, `min-release-age` and `allow-scripts`, so either
   manager can enforce the same rules.
-* Bad, because the owner's other repositories moved from npm to pnpm, so its settings and commands
-  would differ from theirs.
+* Bad, because martinfrancois's other repositories moved from npm to pnpm, so its settings and
+  commands would differ from theirs.
 
 ### Yarn
 
 A package manager from Meta, now maintained by its own team, at version 4.
 
 * Neutral, because Yarn 4 also has a release-age setting.
-* Bad, because none of the owner's repositories use it.
+* Bad, because none of martinfrancois's repositories use it.
 
 ## More Information
 
-The owner asked on 2026-10-28 to use pnpm here and on his repositories in general, after the
+martinfrancois asked on 2026-10-28 to use pnpm here and on his repositories in general, after the
 makeover had started with npm.

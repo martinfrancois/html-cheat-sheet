@@ -104,5 +104,5 @@ don't match the example.
 
 ## More Information
 
-The coding agent proposed the iframe approach in the design interview on 2026-10-28 and the owner
-approved it. The old `<button>` row is in the git history before the rebuild.
+The coding agent proposed the iframe approach in the design interview on 2026-10-28 and
+martinfrancois approved it. The old `<button>` row is in the git history before the rebuild.

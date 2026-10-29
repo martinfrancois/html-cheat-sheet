@@ -187,8 +187,8 @@ test.describe("the cheat sheet", () => {
   });
 
   // Example code lines are at most 70 characters (src/lib/format-example.ts), and the code column
-  // holds that many at the foldable width the owner reads at and on a desktop. The owner reported a
-  // short <img> line that wrapped there.
+  // holds that many at the foldable width martinfrancois reads at and on a desktop. martinfrancois
+  // reported a short <img> line that wrapped there.
   for (const width of [752, 1440]) {
     test(`no code line wraps at ${width} pixels`, async ({ page }) => {
       await page.setViewportSize({ width, height: 800 });

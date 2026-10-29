@@ -9,13 +9,13 @@ The current choice for each concern is in
 
 ## Rules
 
-This is a standing rule from the owner: "please follow best practices and dont hand roll things for
-which there are well maintained and popular libraries".
+This is a standing rule from martinfrancois: "please follow best practices and dont hand roll things
+for which there are well maintained and popular libraries".
 
 - For a solved problem, use a well-maintained, popular library instead of writing it here. Check
   recent releases, open issues, weekly downloads, and the license.
-- Before picking one, check what the owner's other projects use for the same concern, where you
-  can see them. The owner's website, fmartin.ch, is the model for search. Prefer the library he
+- Before picking one, check what martinfrancois's other projects use for the same concern, where you
+  can see them. martinfrancois's website, fmartin.ch, is the model for search. Prefer the library he
   already uses unless it doesn't fit here, and say why when it doesn't. Never name a private
   repository in this public one.
 - The license must allow bundling into this MIT project. GPL code can't be bundled.
@@ -31,7 +31,7 @@ which there are well maintained and popular libraries".
 
 ## Selection bar
 
-The owner's bar for any library, direct or dev dependency: "at least 100 stars on github and a
+martinfrancois's bar for any library, direct or dev dependency: "at least 100 stars on github and a
 release within the last year". Exceptions are allowed "where it's worth it".
 
 - Check the stars with `gh api repos/<owner>/<repo> -q .stargazers_count`.
@@ -48,7 +48,7 @@ release within the last year". Exceptions are allowed "where it's worth it".
 Current exceptions, checked on 2026-10-28:
 
 - `@leeoniya/ufuzzy`: 3040 stars, but its latest release, 1.0.19, is from 2025-08-22. Kept because
-  the owner chose it, it is small and stable, and the owner's website uses it. See
+  martinfrancois chose it, it is small and stable, and martinfrancois's website uses it. See
   [ADR 0010](../adr/0010-search-with-ufuzzy.md).
 - Hand-written: the live output frame's height (`iframe-resizer` is GPL-3.0) and the layout of
   example code (Prettier either hangs `>` on the next line or changes what renders). See

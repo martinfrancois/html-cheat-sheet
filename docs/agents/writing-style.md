@@ -20,8 +20,8 @@ and for commit messages, pull requests, issues, and comments.
 ## Text on the page
 
 - Use contractions everywhere, consistently: "doesn't", "don't", "isn't", "it's", "you'll". The page
-  talks to the reader in a friendly, conversational tone. This is a standing rule from the owner,
-  and `test/entries.test.ts` rejects the long forms in entries.
+  talks to the reader in a friendly, conversational tone. This is a standing rule from
+  martinfrancois, and `test/entries.test.ts` rejects the long forms in entries.
 - Name things the way users know them. Say "element", "attribute", and "Edit", not internal names
   such as entry IDs or component names. Use the HTML standard's wording for HTML concepts.
 - Use the terms in `CONTEXT.md` and avoid the words it lists under "Avoid". For example, "tag" means
@@ -31,7 +31,7 @@ and for commit messages, pull requests, issues, and comments.
 - Write summaries and usage notes for someone who knows a little HTML. Explain a term the first time
   an entry uses it, or link to MDN.
 - Say what happens or what to do in concrete words, never as an abstract rule that the reader has
-  to unpack. The owner found these confusing, and each now has a concrete version:
+  to unpack. martinfrancois found these confusing, and each now has a concrete version:
   - "bold is never the only sign of a warning": instead, "say a warning in words too, such as
     'Warning:', not just in bold";
   - "the outline gains a level that isn't one": instead, "people who jump between headings would

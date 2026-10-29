@@ -16,8 +16,8 @@ Records live in `docs/adr/` as [MADR 4](https://adr.github.io/madr/) files, one 
 Write a record when:
 
 - a choice can't be recovered from the code, and the obvious cleanup of a line would undo it;
-- the owner and an agent weigh several options and pick one. A decision must not live only in chat,
-  a pull request, or a commit message;
+- martinfrancois and an agent weigh several options and pick one. A decision must not live only in
+  chat, a pull request, or a commit message;
 - an approach, library, or setting was tried or seriously considered and rejected for a reason that
   isn't obvious, so the next person doesn't try it again;
 - a measured or verified fact decided the choice, such as a library's size or a feature's Baseline
@@ -26,8 +26,8 @@ Write a record when:
 - a session settled several durable decisions. Review the conversation and the commits before
   finishing and capture each one.
 
-If the owner has to ask for a record after a decision was made, add it and sharpen the trigger above
-that should have fired.
+If martinfrancois has to ask for a record after a decision was made, add it and sharpen the trigger
+above that should have fired.
 
 Don't write one for a choice the code already explains, or for routine use of a pattern the project
 already has.
@@ -38,10 +38,10 @@ already has.
   `Context and Problem Statement`, `Decision Drivers`, `Considered Options`, `Decision Outcome` with
   `Consequences` and `Confirmation`, `Pros and Cons of the Options`, and `More Information` when
   there is more to say.
-- `decision-makers` is `[martinfrancois]` for a choice the owner made. For a choice the coding agent
-  made, write `implementing coding agent`, plus how the owner approved it when he did, such as
-  `implementing coding agent, approved by martinfrancois in the design interview`. `consulted` names
-  only people or parties who gave input, and may be `[]`.
+- `decision-makers` is `[martinfrancois]` for a choice martinfrancois made. For a choice the coding
+  agent made, write `implementing coding agent`, plus how martinfrancois approved it when he did,
+  such as `implementing coding agent, approved by martinfrancois in the design interview`.
+  `consulted` names only people or parties who gave input, and may be `[]`.
 - Write the chosen option as `Chosen option: "<title>", because <reason>.`, with the title copied
   exactly from `Considered Options`.
 - Open every option under `Pros and Cons of the Options` with one or two sentences that say what the

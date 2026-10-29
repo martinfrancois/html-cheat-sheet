@@ -33,7 +33,7 @@ with Astro and Tailwind and published at https://html.fmartin.ch.
 - Group the layout by the Gestalt laws: related things close, same things alike. Look at every
   screen before showing a change. See [Visual design](docs/agents/visual-design.md).
 - Take every fact about HTML from the spec, HTML-AAM, `web-features`, or MDN, never from memory.
-- Read the `SPEC.md` sections a change touches. When the owner adds or changes a requirement,
+- Read the `SPEC.md` sections a change touches. When martinfrancois adds or changes a requirement,
   update `SPEC.md` in the same change; list what isn't built yet under "Not done yet". Before
   finishing, check that every changed requirement is built and tested or listed there, and that
   every changed behavior is in `SPEC.md`. See [Specification](docs/agents/specification.md).

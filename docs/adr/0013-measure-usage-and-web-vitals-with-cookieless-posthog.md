@@ -14,7 +14,7 @@ informed: [Future maintainers and agents working on this repository]
 PostHog to learn how the cheat sheet is used: page views, searches that find nothing, and clicks on
 Edit and Copy. Lighthouse runs show how fast the page is on one machine. They don't show how fast it
 is for the people who read it, on their phones and connections. Cloudflare, in front of the site,
-offered that through its Real User Monitoring beacon, which the owner turned off for the whole
+offered that through its Real User Monitoring beacon, which martinfrancois turned off for the whole
 fmartin.ch zone. How should the page measure how fast it is for its readers?
 
 ## Decision Drivers
@@ -48,7 +48,7 @@ tell which element caused a slow metric, for more code than a reference page nee
 
 ### Consequences
 
-* Good, because the owner sees the speed readers actually get, next to the usage data, in one
+* Good, because martinfrancois sees the speed readers actually get, next to the usage data, in one
   project.
 * Good, because readers see no consent banner and nothing is written to cookies or local storage.
 * Good, because searches with no results show which elements or words readers expect and don't
@@ -106,7 +106,7 @@ Cloudflare dashboard.
 
 * Good, because it measures from the first moment and needs no code in the page.
 * Bad, because it adds a request to another host, which the page promises it doesn't make.
-* Bad, because it is switched for the whole zone, not per site, and the owner turned it off.
+* Bad, because it is switched for the whole zone, not per site, and martinfrancois turned it off.
 * Bad, because the speed data sits in a different tool from the usage data.
 
 ### No speed measurement from readers
@@ -120,7 +120,7 @@ The page relies on Lighthouse runs and the tests.
 
 ## More Information
 
-The owner chose PostHog for web vitals on 2026-10-29, after turning off Cloudflare's Real User
+martinfrancois chose PostHog for web vitals on 2026-10-29, after turning off Cloudflare's Real User
 Monitoring for the zone. This record supersedes
 [ADR 0005](0005-cookieless-posthog-analytics-as-the-only-third-party-request.md), whose choice of
 cookieless PostHog it keeps. The PostHog project itself is set up in

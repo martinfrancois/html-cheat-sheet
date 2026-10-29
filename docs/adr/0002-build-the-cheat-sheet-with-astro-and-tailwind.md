@@ -102,6 +102,6 @@ Eleventy reads YAML data files and renders templates to static HTML. Tailwind ru
 
 ## More Information
 
-The owner chose this option in the design interview on 2026-10-28, over keeping the hand-edited
+martinfrancois chose this option in the design interview on 2026-10-28, over keeping the hand-edited
 file. The old page is in the git history before this change; its `<pre>` row is the drift example
 above.

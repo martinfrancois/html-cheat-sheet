@@ -13,9 +13,9 @@ informed: [Future maintainers and agents working on this repository]
 A cheat sheet is read in long stretches of small, dense text: code, attribute names, short notes.
 Readers include people with low vision, people on phones, and people who navigate by keyboard or
 screen reader. The old page was about 1550 pixels wide and scrolled sideways on narrower windows.
-The owner gave a standing rule on 2026-10-28 for this and future work: follow WCAG 2.2 AA everywhere,
-and AAA for colors and font sizes. Which success criteria and numbers does that mean here, and how
-are they checked?
+martinfrancois gave a standing rule on 2026-10-28 for this and future work: follow WCAG 2.2 AA
+everywhere, and AAA for colors and font sizes. Which success criteria and numbers does that mean
+here, and how are they checked?
 
 ## Decision Drivers
 
@@ -40,9 +40,9 @@ of, and each of them has a number the page can meet in full.
 The numbers:
 
 * Text contrast at least 7:1 (1.4.6, AAA). Large text (24px, or 18.66px bold) at least 3:1
-  (1.4.3, AA), the owner's choice, so headings can carry a bright accent color.
+  (1.4.3, AA), martinfrancois's choice, so headings can carry a bright accent color.
 * Non-text UI parts and focus indicators at least 3:1 (1.4.11, AA).
-* Body text at least 16px and no text under 14px. WCAG sets no font size; these are the owner's
+* Body text at least 16px and no text under 14px. WCAG sets no font size; these are martinfrancois's
   numbers.
 * Line height at least 1.5, paragraph spacing at least 1.5 times the line height, lines at most 80
   characters, no justified text (1.4.8, AAA).
@@ -74,7 +74,7 @@ lists the numbers and the manual checks for what axe-core can't measure.
 ### WCAG 2.2 AA, plus AAA for contrast and text presentation
 
 Meet every level A and AA criterion, plus 1.4.6 Contrast (Enhanced), 1.4.8 Visual Presentation, and
-2.5.5 Target Size (Enhanced) where the layout allows, and the owner's font size minimums.
+2.5.5 Target Size (Enhanced) where the layout allows, and martinfrancois's font size minimums.
 
 * Good, because the stricter criteria are the ones that matter most for dense reference text.
 * Good, because axe-core can check enhanced contrast automatically.
@@ -101,6 +101,6 @@ Meet every level AAA criterion as well.
 
 ## More Information
 
-The owner stated the rule on 2026-10-28 as a standing preference for this repository. WCAG 2.2 is at
-[w3.org/TR/WCAG22](https://www.w3.org/TR/WCAG22/). The W3C's note on AAA is in
+martinfrancois stated the rule on 2026-10-28 as a standing preference for this repository. WCAG 2.2
+is at [w3.org/TR/WCAG22](https://www.w3.org/TR/WCAG22/). The W3C's note on AAA is in
 [Understanding Conformance](https://www.w3.org/WAI/WCAG22/Understanding/conformance).
