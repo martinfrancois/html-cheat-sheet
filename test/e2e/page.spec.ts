@@ -490,6 +490,9 @@ test.describe("editing an example", () => {
 // docs/adr/0013: PostHog, cookieless, is the page's only third-party request. Test builds have
 // no key, so the test hands the page one, and PostHog's host answers from the test.
 test.describe("analytics", () => {
+  // In WebKit the page's requests go through the service worker, where page.route doesn't see them,
+  // so PostHog's host would get real requests and a blocked one would still go out.
+  test.use({ serviceWorkers: "block" });
   const posthog = "https://eu.i.posthog.com/**";
   // PostHog drops events from a browser that says it's automated, through navigator.webdriver or,
   // in headless Chromium, a "HeadlessChrome" brand.
@@ -526,29 +529,38 @@ test.describe("analytics", () => {
   });
 
   test("reports the reader's web vitals once the page is hidden", async ({ page, browserName }) => {
-    test.skip(browserName === "webkit", "Playwright's WebKit passes none of the requests PostHog sends on its own to page.route, not even the page view");
-    const vitals: string[] = [];
+    // https://github.com/martinfrancois/html-cheat-sheet/issues/13
+    test.skip(browserName === "webkit", "PostHog sends the page view but no $web_vitals in Playwright's WebKit, cause not found yet");
+    const events: { event: string; properties: Record<string, unknown> }[] = [];
     await withKey(page);
     await page.route(posthog, async (route) => {
       const body = route.request().postDataBuffer();
-      if (body) {
-        const text = (body[0] === 0x1f && body[1] === 0x8b ? gunzipSync(body) : body).toString();
-        for (const event of [JSON.parse(text)].flat().flatMap((data) => data.batch ?? [data])) {
-          if (event.event === "$web_vitals") vitals.push(...Object.keys(event.properties).filter((key) => key.endsWith("_value")));
+      try {
+        if (body) {
+          const text = (body[0] === 0x1f && body[1] === 0x8b ? gunzipSync(body) : body).toString();
+          events.push(...[JSON.parse(text)].flat().flatMap((data) => data.batch ?? [data]));
         }
+      } finally {
+        await route.fulfill({ json: { status: 1 } });
       }
-      await route.fulfill({ json: { status: 1 } });
     });
     await useThePage(page);
+    // PostHog has to be running before the page hides, or nothing is listening.
+    await expect.poll(() => events.some((event) => event.event === "$pageview")).toBe(true);
     // Leaving the page hides it, which is when the browser settles CLS and INP.
     await page.evaluate(() => {
       Object.defineProperty(document, "visibilityState", { get: () => "hidden", configurable: true });
       document.dispatchEvent(new Event("visibilitychange"));
     });
+    const vitals = () =>
+      events
+        .filter((event) => event.event === "$web_vitals")
+        .flatMap((event) => Object.keys(event.properties).filter((key) => key.endsWith("_value")))
+        .sort();
     // Only Chromium measures layout shifts, so Firefox readers send no CLS.
     const expected = ["$web_vitals_FCP_value", "$web_vitals_INP_value", "$web_vitals_LCP_value"];
     if (browserName === "chromium") expected.unshift("$web_vitals_CLS_value");
-    await expect.poll(() => vitals.sort(), { timeout: 15_000 }).toEqual(expected);
+    await expect.poll(vitals, { timeout: 15_000 }).toEqual(expected);
   });
 
   test("leaves the page working when PostHog can't be reached", async ({ page }) => {
