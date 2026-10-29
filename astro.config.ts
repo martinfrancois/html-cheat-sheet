@@ -1,4 +1,4 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { readdir, readFile, writeFile } from "node:fs/promises";
 import tailwindcss from "@tailwindcss/vite";
 import type { AstroIntegration } from "astro";
 import { defineConfig } from "astro/config";
@@ -7,16 +7,25 @@ import { defineConfig } from "astro/config";
 // the first paint. The two inline scripts must run before it, or a saved dark theme flashes light
 // and the index pushes the entries down. Rocket Loader leaves a script with data-cfasync="false"
 // alone: the inline ones carry it in src/pages/index.astro, and this adds it to the module script
-// Astro writes, which would stop being bundled if the attribute were in its source.
+// Astro writes, which would stop being bundled if the attribute were in its source. No library adds
+// an attribute to Astro's script tags, and Astro has no setting for it: docs/adr/0014.
 const skipRocketLoader: AstroIntegration = {
   name: "skip-rocket-loader",
   hooks: {
     "astro:build:done": async ({ dir }) => {
-      const page = new URL("index.html", dir);
-      const html = await readFile(page, "utf8");
-      const marked = html.replaceAll('<script type="module" src=', '<script type="module" data-cfasync="false" src=');
-      if (marked === html) throw new Error("skip-rocket-loader: no module script found in index.html");
-      await writeFile(page, marked);
+      const pages = (await readdir(dir, { recursive: true })).filter((path) => path.endsWith(".html"));
+      let marked = 0;
+      for (const path of pages) {
+        const page = new URL(path, dir);
+        const html = await readFile(page, "utf8");
+        // Cloudflare reads the attribute only when it comes before src.
+        const changed = html.replaceAll('<script type="module" src=', '<script type="module" data-cfasync="false" src=');
+        if (changed === html) continue;
+        await writeFile(page, changed);
+        marked++;
+      }
+      // Astro changing how it writes the tag would otherwise leave every script unmarked.
+      if (marked === 0) throw new Error("skip-rocket-loader: no module script found in any page");
     },
   },
 };
