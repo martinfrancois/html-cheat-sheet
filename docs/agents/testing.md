@@ -36,7 +36,9 @@ image will not match.
   workers; check the load (`uptime`) before starting a run, run one suite at a time on a shared
   machine, and set `PLAYWRIGHT_WORKERS` higher only when it is idle.
 - Every change runs in Chromium, Firefox and WebKit. `pnpm run test:e2e --project=chromium` is
-  fine for quick feedback while you work, but run all three before a pull request.
+  fine for quick feedback while you work, but run all three before a pull request. CI runs one job
+  per browser, side by side, and a job named `e2e` that passes only when all three do; the merge
+  rules require that one.
 - The examples spec and the visual snapshots run in Chromium only: the example markup is the same
   in every browser, and snapshots of three engines would triple the images to review.
 - The layout shift tests in `test/e2e/page.spec.ts` run in Chromium only, the one engine that
