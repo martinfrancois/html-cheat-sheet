@@ -1,5 +1,5 @@
 import { gunzipSync } from "node:zlib";
-import { expect, type Locator, type Page, test } from "@playwright/test";
+import { expect, type Locator, type Page, type Request, test } from "@playwright/test";
 import { CHIP_ROW } from "../../src/lib/chips.ts";
 import { THEME_KEY } from "../../src/lib/theme-key.ts";
 import { entry, layOutEveryEntry, liveOutput } from "./helpers.ts";
@@ -651,7 +651,8 @@ test.describe("analytics", () => {
   // In WebKit the page's requests go through the service worker, where page.route doesn't see them,
   // so PostHog's host would get real requests and a blocked one would still go out.
   test.use({ serviceWorkers: "block" });
-  const posthog = "https://eu.i.posthog.com/**";
+  const posthogHost = "https://eu.i.posthog.com";
+  const posthog = `${posthogHost}/**`;
   // PostHog drops events from a browser that says it's automated, through navigator.webdriver or,
   // in headless Chromium, a "HeadlessChrome" brand.
   // The key goes on <body> as soon as it exists, before the page's script runs, as a real build has it.
@@ -666,24 +667,32 @@ test.describe("analytics", () => {
       }).observe(document, { childList: true, subtree: true });
     });
 
-  // Runs in the page. Hands sendBeacon the bytes of a Blob instead of the Blob, see collectEvents.
+  // Runs in the page. Hands sendBeacon the bytes of a Blob instead of the Blob, because Playwright's
+  // WebKit gives a route no body for a Blob: https://github.com/microsoft/playwright/issues/6479.
+  // Recheck that issue on each Playwright update; the test "Playwright's WebKit still hides Blob
+  // request bodies" fails once this can go.
   function sendBeaconBlobsAsBytes(): void {
     const send = navigator.sendBeacon.bind(navigator);
     navigator.sendBeacon = (url, data) => {
       if (!(data instanceof Blob)) return send(url, data);
-      void data.arrayBuffer().then((bytes) => send(url, new Uint8Array(bytes)));
+      // Unlike the real call, this returns true at once and sends a moment later.
+      data.arrayBuffer().then(
+        (bytes) => send(url, new Uint8Array(bytes)),
+        () => send(url, data),
+      );
       return true;
     };
+  }
+
+  // PostHog sends what it holds when the page is hidden with sendBeacon and a Blob body.
+  async function readBeaconBodiesInWebKit(page: Page, browserName: string): Promise<void> {
+    if (browserName === "webkit") await page.addInitScript(sendBeaconBlobsAsBytes);
   }
 
   type Sent = { event: string; properties: Record<string, unknown> };
   // Every event the page sends PostHog, unpacked from its gzipped batches; PostHog itself isn't reached.
   async function collectEvents(page: Page): Promise<Sent[]> {
     const events: Sent[] = [];
-    // PostHog sends what it holds when the page is hidden with sendBeacon and a Blob, and Playwright's
-    // WebKit gives the test no body for a Blob: https://github.com/microsoft/playwright/issues/6479.
-    // The test "Playwright's WebKit still hides Blob request bodies" fails once this can go.
-    if (page.context().browser()?.browserType().name() === "webkit") await page.addInitScript(sendBeaconBlobsAsBytes);
     await page.route(posthog, async (route) => {
       const body = route.request().postDataBuffer();
       try {
@@ -725,6 +734,7 @@ test.describe("analytics", () => {
 
   test("reports the reader's web vitals once the page is hidden", async ({ page, browserName }) => {
     await withKey(page);
+    await readBeaconBodiesInWebKit(page, browserName);
     const events = await collectEvents(page);
     await page.goto("/");
     // web-vitals reports LCP at the first click or key press after PostHog starts, or when the page
@@ -742,7 +752,7 @@ test.describe("analytics", () => {
         .filter((event) => event.event === "$web_vitals")
         .flatMap((event) => Object.keys(event.properties).filter((key) => key.endsWith("_value")))
         .sort();
-    // Only Chromium measures layout shifts, so Firefox readers send no CLS.
+    // Only Chromium measures layout shifts, so Firefox and WebKit readers send no CLS.
     const expected = ["$web_vitals_FCP_value", "$web_vitals_INP_value", "$web_vitals_LCP_value"];
     if (browserName === "chromium") expected.unshift("$web_vitals_CLS_value");
     await expect.poll(vitals, { timeout: 15_000 }).toEqual(expected);
@@ -772,19 +782,40 @@ test.describe("analytics", () => {
     await expect.poll(lcp, { timeout: 15_000 }).toBe(true);
   });
 
-  // collectEvents hands WebKit's sendBeacon bytes instead of a Blob. Once this fails, Playwright shows
-  // a Blob body in WebKit too, and that workaround can go: https://github.com/microsoft/playwright/issues/6479
+  // Every body Playwright lets a route read: the three getters 1.64.1 has, and any body getter a later
+  // version adds, as the closed pull requests microsoft/playwright#38718 and microsoft/playwright#41888
+  // proposed.
+  async function readableBodies(request: Request): Promise<string[]> {
+    const getters = request as unknown as Record<string, () => unknown>;
+    const later = Object.getOwnPropertyNames(Object.getPrototypeOf(request)).filter((name) => name.startsWith("body"));
+    const bodies = [request.postData(), request.postDataBuffer(), request.postDataJSON(), ...(await Promise.all(later.map((name) => getters[name]())))];
+    return bodies.filter((body) => body != null).map(asText);
+  }
+
+  function asText(body: unknown): string {
+    if (typeof body === "string") return body;
+    if (Buffer.isBuffer(body)) return body.toString();
+    return JSON.stringify(body);
+  }
+
+  // sendBeaconBlobsAsBytes exists only because of https://github.com/microsoft/playwright/issues/6479.
+  // Once this fails, a route can read a Blob body in WebKit, and the workaround can go.
   test("Playwright's WebKit still hides Blob request bodies", async ({ page, browserName }) => {
     test.skip(browserName !== "webkit", "only Playwright's WebKit hides a Blob body from the test");
-    const bodies: (Buffer | null)[] = [];
-    await page.route(posthog, (route) => {
-      bodies.push(route.request().postDataBuffer());
-      return route.fulfill({ json: { status: 1 } });
+    const bodies = new Map<string, string[]>();
+    await page.route(posthog, async (route) => {
+      bodies.set(new URL(route.request().url()).search, await readableBodies(route.request()));
+      await route.fulfill({ json: { status: 1 } });
     });
     await page.goto("/");
-    await page.evaluate(() => navigator.sendBeacon("https://eu.i.posthog.com/e/", new Blob(["{}"], { type: "text/plain" })));
-    await expect.poll(() => bodies.length).toBe(1);
-    expect(bodies).toEqual([null]);
+    const beacon = (url: string) => page.evaluate((target) => navigator.sendBeacon(target, new Blob(['{"sent":true}'], { type: "text/plain" })), url);
+    await beacon(`${posthogHost}/e/?blob`);
+    await page.evaluate(sendBeaconBlobsAsBytes);
+    await beacon(`${posthogHost}/e/?bytes`);
+    await expect.poll(() => bodies.size).toBe(2);
+    expect(bodies.get("?blob")).toEqual([]);
+    // The same beacon through the workaround, so the check above can't pass by losing the beacon.
+    expect(bodies.get("?bytes")).toContain('{"sent":true}');
   });
 
   // docs/adr/0021: a reader whose browser lacks a feature the page needs learns which browsers work,
