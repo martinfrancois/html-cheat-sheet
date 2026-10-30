@@ -217,6 +217,10 @@ A sentence that only says there is a difference is not enough.
   sight, the page scrolls the frame into view. Browsers don't when nothing inside the frame can
   take focus. A key pressed inside a frame goes to the frame's document, which the page can't see.
   [ADR 0025](docs/adr/0025-scroll-a-live-output-frame-that-tab-focuses-into-view.md) records why.
+- A frame that Tab focuses shows the page's focus ring around it, while no element inside it has
+  focus. A click into a frame shows none. No selector matches a frame that has focus, so the page
+  draws the ring from what it and the frame see.
+  [ADR 0026](docs/adr/0026-draw-the-focus-ring-of-a-live-output-frame.md) records why.
 
 ### 9.4 Code, copy and edit
 

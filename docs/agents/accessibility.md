@@ -55,7 +55,8 @@ spacing 0.12 times, and word spacing 0.16 times.
   frames. A second contrast check runs before the entries below the screen are drawn, the way
   Lighthouse checks the page, and another test checks that nothing in an entry, focus rings
   included, reaches past its edge, where it would be cut off. One more presses Tab 40 times at
-  phone size and checks that focus never lands out of sight (2.4.11).
+  phone size and checks that focus never lands out of sight (2.4.11), and four check that a live
+  output frame Tab focuses shows a focus ring when it should (2.4.7).
 - Playwright tests cover what axe cannot see: no sideways scrolling at 320 px, and visual snapshots
   in both themes at phone and desktop widths. See [Testing](testing.md).
 - Check the rest by hand when a change touches layout or styles: 200% zoom, a text spacing

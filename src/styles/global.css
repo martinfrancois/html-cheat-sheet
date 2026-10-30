@@ -123,7 +123,10 @@
     text-decoration-thickness: 2px;
   }
 
-  :focus-visible {
+  /* No selector matches a frame that has focus, so src/scripts/live-output.ts marks the box of one
+     that Tab focuses: docs/adr/0026-draw-the-focus-ring-of-a-live-output-frame.md */
+  :focus-visible,
+  [data-focus-ring] {
     outline: var(--focus-width) solid var(--focus);
     outline-offset: var(--focus-offset);
   }
