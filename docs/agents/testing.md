@@ -47,6 +47,9 @@ image will not match.
   --project=webkit` prints the browser's own errors. "Resource temporarily unavailable" means it
   couldn't start a thread: Podman limits a container to 2048 processes and threads by default,
   which more than two WebKit workers can reach, so `scripts/playwright.sh` lifts the limit.
+- Playwright's WebKit gives a route no body for a request whose body is a Blob, such as PostHog's
+  `sendBeacon` when the page is hidden. The analytics tests turn those Blobs into bytes, see
+  [ADR 0013](../adr/0013-measure-usage-and-web-vitals-with-cookieless-posthog.md).
 - Renovate updates the image tag and the npm package together. Never change one without the other.
 - Running `pnpm exec playwright test` directly on your machine is fine for a quick check of behavior, but
   ignore its snapshot results.
