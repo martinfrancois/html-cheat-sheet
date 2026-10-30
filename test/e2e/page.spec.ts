@@ -758,14 +758,13 @@ test.describe("analytics", () => {
     await page.addInitScript(() => delete (Set.prototype as { intersection?: unknown }).intersection);
     await page.goto("/");
     await expect(page.getByText(/is too old for parts of this page/)).toBeVisible();
-    const loaded = scripts.length;
-    // Past the two seconds at which PostHog would start. With a key, the PostHog scripts are
-    // requested before a request the page makes after that. networkidle can't tell: once the page
-    // has made a request after going idle, a new live output frame keeps it from ever firing again
-    // (https://github.com/microsoft/playwright/issues/43243).
+    const scriptsBeforeStart = scripts.length;
+    // Past the two seconds at which PostHog would start. With a key, the page requests PostHog's
+    // scripts before this marker; networkidle can hang here: docs/adr/0023.
     await page.clock.runFor(2_000);
-    await Promise.all([page.waitForRequest("**/?after-start"), page.evaluate(() => void fetch("/?after-start"))]);
-    expect(scripts.slice(loaded)).toEqual([]);
+    const marker = "/?after-start";
+    await Promise.all([page.waitForRequest(`**${marker}`), page.evaluate((url) => void fetch(url), marker)]);
+    expect(scripts.slice(scriptsBeforeStart)).toEqual([]);
     expect(sent).toEqual([]);
   });
 

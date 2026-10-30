@@ -56,6 +56,10 @@ image will not match.
 - Find elements by role and accessible name (`getByRole`, `getByLabel`), not by CSS class. A test
   that finds the search box by its label also checks that the label exists.
 - Wait for a condition, never for a fixed time.
+- Don't wait for `networkidle`: it never fires once the page makes a request after going idle and
+  then creates a live output frame. To check that a request doesn't come, have the page make a
+  marker request and wait for that, see
+  [ADR 0023](../adr/0023-bound-a-test-for-absent-requests-with-a-marker-request.md).
 - A new user-visible feature needs an end-to-end test of its main path.
 - A fixed bug needs a test that fails without the fix.
 - Entries off screen aren't drawn (`content-visibility: auto`, ADR 0018) and measure zero until
