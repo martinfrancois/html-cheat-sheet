@@ -8,7 +8,18 @@ import { test } from "node:test";
 import { compatStatus } from "../src/lib/baseline.ts";
 import { usableSince } from "./page-features.ts";
 
-const workarounds: { compatKey: string; where: string; remove: string }[] = [];
+const workarounds: { compatKey: string; where: string; remove: string }[] = [
+  {
+    compatKey: "css.properties.text-wrap.pretty",
+    where: "src/components/Example.astro",
+    remove: "drop keepLastWordsTogether and give the title text-wrap: pretty (Tailwind's text-pretty) instead, then check that a wrapping title still doesn't leave one word alone on its last line",
+  },
+  {
+    compatKey: "api.Window.requestIdleCallback",
+    where: "src/scripts/analytics.ts",
+    remove: "start analytics with requestIdleCallback instead of the two-second setTimeout in setupAnalytics, and update its comment and the two seconds in SPEC.md and ADR 0013",
+  },
+];
 
 
 for (const { compatKey, where, remove } of workarounds) {
