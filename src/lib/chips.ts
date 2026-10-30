@@ -2,7 +2,8 @@
 // margin-inline. Breaking one at its space, hyphen or question mark reads as two separate pieces
 // of code. A longer one may break, so it never sticks out of the text on a phone: in Firefox and WebKit a
 // 24-character chip fills a whole line of a list on a 320 px screen, and a full stop after it
-// stuck out. 22 keeps prefers-reduced-motion whole.
+// stuck out. 22 keeps prefers-reduced-motion whole. In a narrower column, such as beside a classic
+// scrollbar, chips wrap: docs/adr/0027-let-kept-together-pieces-wrap-in-a-narrower-column.md
 export const CHIP_ROW = 22;
 
 // The whole characters a code row holds on a 320 px screen: 264 px of code block at 9.48 px per

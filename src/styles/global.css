@@ -3,9 +3,10 @@
 @import "@fontsource-variable/atkinson-hyperlegible-mono";
 @import "@fontsource-variable/martian-mono";
 
-/* Below this width "display: table-column-group" no longer fits beside its label, nor the
-   prefers-reduced-motion chip inside a "Use instead" note's padding, and either was cut off. */
-@custom-variant narrow (@media (width < 22.5rem));
+/* In an entry column narrower than a 360 px screen leaves, "display: table-column-group" no longer
+   fits beside its label, nor the prefers-reduced-motion chip inside a "Use instead" note's padding,
+   and either was cut off. The column, not the screen, so a classic scrollbar counts: docs/adr/0027 */
+@custom-variant narrow (@container entries (width < 20.5rem));
 
 /*
  * Every text colour pair below reaches 7:1 contrast (WCAG 1.4.6 AAA) in its theme, and every
@@ -376,7 +377,33 @@
     text-indent: calc(-1 * (var(--indent, 0ch) + 4ch));
   }
 
-  .astro-code :is(.lead, .attribute, .keep) {
+  .astro-code .lead {
     white-space: pre;
+  }
+
+  .astro-code :is(.attribute, .keep) {
+    white-space: var(--kept-code, pre);
+  }
+}
+
+/* Code chips and names in code blocks are kept on one row as long as they fit the entry column a
+   320 px screen leaves, 18rem (src/lib/chips.ts). In a narrower column, such as one a classic
+   scrollbar takes 12 to 17 px from, they wrap, as does an entry's title, or the entry's clip would
+   cut them off: docs/adr/0027-let-kept-together-pieces-wrap-in-a-narrower-column.md
+   It overrides the whitespace-nowrap utility, so it sits in the utilities layer. */
+@layer utilities {
+  @container entries (width < 18rem) {
+    [data-entry] {
+      /* pre-wrap keeps the spaces inside an attribute value as written. */
+      --kept-code: pre-wrap;
+
+      :is(code.whitespace-nowrap, code .whitespace-nowrap) {
+        white-space: normal;
+      }
+
+      h3 {
+        overflow-wrap: anywhere;
+      }
+    }
   }
 }

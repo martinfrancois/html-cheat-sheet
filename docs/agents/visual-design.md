@@ -51,7 +51,10 @@ purpose, and check every screen for it.
   break at its hyphens. The 70-character limit is in
   [Content entries](content-entries.md).
 - A code chip of up to 22 characters, such as `(min-width: 30em)`, never breaks; a longer one
-  breaks only at its spaces or after a slash, never at a hyphen inside `z-index`. A support badge
+  breaks only at its spaces or after a slash, never at a hyphen inside `z-index`. Below the
+  column a 320 px screen leaves, such as beside a classic scrollbar, chips, names in code blocks
+  and entry titles may break anywhere
+  ([ADR 0027](../adr/0027-let-kept-together-pieces-wrap-in-a-narrower-column.md)). A support badge
   keeps its last two words together, like an example title, and its feature name follows the
   chip rule, so `<input type="datetime-local">` breaks after `<input`.
 - Elements of one entry that share their Default CSS and accessibility role, such as `<h1>` to

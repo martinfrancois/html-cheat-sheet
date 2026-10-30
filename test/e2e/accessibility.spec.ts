@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import type { Result } from "axe-core";
-import { layOutEveryEntry, liveOutput, outOfView, renderAllFrames } from "./helpers.ts";
+import { BESIDE_A_SCROLLBAR, layOutEveryEntry, liveOutput, outOfView, renderAllFrames } from "./helpers.ts";
 
 // The rules in docs/agents/accessibility.md: WCAG 2.2 AA everywhere, AAA for contrast (7:1) and
 // text size, in both themes, at desktop and phone width.
@@ -71,7 +71,7 @@ for (const colorScheme of ["light", "dark"] as const) {
 
 // An entry clips whatever reaches past its box (docs/adr/0018), so text there is lost, which WCAG
 // 1.4.10 rules out down to 320 pixels, and so is the part of a focus ring outside it.
-for (const width of [320, 390, 1280]) {
+for (const width of [BESIDE_A_SCROLLBAR, 320, 390, 1280]) {
   test(`nothing in an entry, focus rings included, reaches past its edge at ${width} pixels`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
@@ -95,6 +95,20 @@ for (const width of [320, 390, 1280]) {
     expect(cut).toEqual([]);
   });
 }
+
+// Code chips are sized for the column a 320 pixel screen leaves, and wrap in a narrower one, also
+// when a scrollbar narrows it: docs/adr/0027-let-kept-together-pieces-wrap-in-a-narrower-column.md
+test("code chips start to wrap just below the column a 320 pixel screen leaves", async ({ page }) => {
+  await page.goto("/");
+  const chip = page.locator("article#marquee code.whitespace-nowrap").first();
+  for (const [width, whiteSpace] of [
+    [320, "nowrap"],
+    [319, "normal"],
+  ] as const) {
+    await page.setViewportSize({ width, height: 800 });
+    await expect(chip).toHaveCSS("white-space", whiteSpace);
+  }
+});
 
 // The back-to-top link is hidden at the top, where the scans above run.
 test("the back-to-top link meets WCAG 2.2 AA in both themes", async ({ page }) => {

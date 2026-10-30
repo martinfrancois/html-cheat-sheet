@@ -29,7 +29,7 @@ export default defineConfig({
   },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-    { name: "firefox", use: { ...devices["Desktop Firefox"] }, testIgnore: /(visual|examples)\.spec\.ts/ },
-    { name: "webkit", use: { ...devices["Desktop Safari"] }, testIgnore: /(visual|examples)\.spec\.ts/ },
+    { name: "firefox", use: { ...devices["Desktop Firefox"] }, testIgnore: /(visual|examples|scrollbar)\.spec\.ts/ },
+    { name: "webkit", use: { ...devices["Desktop Safari"] }, testIgnore: /(visual|examples|scrollbar)\.spec\.ts/ },
   ],
 });

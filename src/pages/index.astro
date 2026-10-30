@@ -119,7 +119,7 @@ const supported = listOf(supportedBrowsers());
            WebKit lays out a whole grid again when one item changes height, which made every
            keystroke in an example's editor take 600 ms on the full page. Each entry's margin leaves
            out the room it keeps below for a focus ring, so entries stay 3.5rem apart. */}
-      <main id="entries" class="min-w-0 space-y-24">
+      <main id="entries" class="@container/entries min-w-0 space-y-24">
         {
           chapters.map((chapter) => (
             <section id={chapter.id} class="space-y-6" data-chapter aria-labelledby={`${chapter.id}-heading`}>
