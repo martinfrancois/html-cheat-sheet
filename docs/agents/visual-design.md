@@ -46,9 +46,16 @@ purpose, and check every screen for it.
   Narrower screens wrap a long line, and the rest of it continues further indented than the line
   started. It wraps at a seam of the code (before or after a tag, after a slash in a path, before
   `.member` in a script), never inside a word, a closing tag, or a name such as `aria-labelledby`.
-  A name stays whole only when it fits a wrapped row on a 320 px screen, 27 characters less the
-  line's indentation and the 4 of the wrap, so a deeply indented `prefers-reduced-motion` may
-  break at its hyphens. The 70-character limit is in
+  An attribute too long for a wrapped row on a 320 px screen, such as
+  `aria-labelledby="confirm-title"`, may also wrap after its `=`, on wider screens too; a shorter
+  one stays whole. Only a piece with no seam that is wider than a whole row breaks inside, such as
+  a 22-character nonce on a 320 px screen, or a deeply indented `</selectedcontent>` in a column
+  narrower than 18rem.
+  A name stays whole when it fits a wrapped row on a 320 px screen, 27 characters less the line's
+  indentation and the 4 of the wrap. A longer one, such as an indented `prefers-reduced-motion`,
+  stays whole from the column a 360 px screen leaves, 32 characters a row, and may break at its
+  hyphens below it ([ADR 0028](../adr/0028-wrap-code-lines-at-seams-of-the-code.md)). The
+  70-character limit is in
   [Content entries](content-entries.md).
 - A code chip of up to 22 characters, such as `(min-width: 30em)`, never breaks; a longer one
   breaks only at its spaces or after a slash, never at a hyphen inside `z-index`. Below the

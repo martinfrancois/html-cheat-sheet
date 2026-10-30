@@ -11,7 +11,7 @@ a gap in what reaches the live site unreviewed.
 
 | Layer | Catches | Run |
 | --- | --- | --- |
-| Unit tests (`test/*.test.ts`) | Broken data files, a spec element with no entry, ADR records that leave the MADR shape | `pnpm test` |
+| Unit tests (`test/*.test.ts`) | Broken data files, a spec element with no entry, ADR records that leave the MADR shape, a code seam that's missing | `pnpm test` |
 | Type check | Type errors in `.astro`, `.ts`, and test files | `pnpm run check` |
 | Build with content schema | An entry with a missing or empty field | `pnpm run build` |
 | Playwright end-to-end | Search, theme toggle, Edit and Reset, live output, offline use, and the service worker replacing an old copy | Playwright container, see below |

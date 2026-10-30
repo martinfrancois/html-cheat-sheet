@@ -174,7 +174,10 @@ A sentence that only says there is a difference is not enough.
 - The layout MUST work at every width from 320 CSS px up without sideways scrolling, also when a
   classic scrollbar takes part of it. Code chips, names in code blocks and entry titles may break
   anywhere in a column narrower than the one a 320 px screen leaves
-  ([ADR 0027](docs/adr/0027-let-kept-together-pieces-wrap-in-a-narrower-column.md)). Phones (about
+  ([ADR 0027](docs/adr/0027-let-kept-together-pieces-wrap-in-a-narrower-column.md)). A long code
+  line wraps at a seam of the code, such as before a tag or after a long attribute's `=`, and
+  breaks inside a word, a closing tag or a name only where that piece is wider than a whole row
+  ([ADR 0028](docs/adr/0028-wrap-code-lines-at-seams-of-the-code.md)). Phones (about
   390 px), the inner screen of a foldable (about 884 px) and desktops (about 1440 px) are the widths
   to review.
 - A footer names the data sources, links the source code and gives the license and author.
