@@ -28,10 +28,16 @@ jobs:
       - run: pnpm test
       - run: pnpm run build
 
-  e2e:
-    name: e2e
+  # One job per browser, side by side: the whole suite in one job takes 13 to 20 minutes on a
+  # runner, so a slow runner hit the time limit.
+  e2e-browser:
+    name: e2e (${{ matrix.browser }})
     runs-on: ubuntu-24.04
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -46,14 +52,27 @@ jobs:
       - run: pnpm run build
       # Runs in the Playwright image that matches @playwright/test, the same as locally, so
       # the committed screenshots compare pixel for pixel.
-      - run: pnpm run test:e2e
+      - run: pnpm run test:e2e --project=${{ matrix.browser }}
         env:
           CI: "true"
       - if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.browser }}
           path: |
             playwright-report/
             test-results/
           retention-days: 14
+
+  # The merge rules require a check named e2e. A job skipped because one it needs failed would count
+  # as passing, so this one runs always and fails unless every browser passed.
+  e2e:
+    name: e2e
+    needs: e2e-browser
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - run: test "$RESULT" = success
+        env:
+          RESULT: ${{ needs.e2e-browser.result }}
