@@ -758,18 +758,19 @@ test.describe("analytics", () => {
     await expect.poll(vitals, { timeout: 15_000 }).toEqual(expected);
   });
 
-  // Loads the page and clicks the search box before PostHog starts: the page's later scripts,
-  // PostHog's among them, wait until the click is done.
+  // Loads the page and clicks the search box before PostHog starts: PostHog's scripts wait until the
+  // click is done. The hold is in place before the page loads, so a slow runner can't let them
+  // through before the click.
   async function clickBeforePostHogStarts(page: Page): Promise<void> {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
     let clickDone = () => {};
     const clicked = new Promise<void>((resolve) => (clickDone = resolve));
     const held: string[] = [];
-    await page.route("**/_astro/*.js", async (route) => {
+    await page.route(/\/_astro\/(module|web-vitals|exception-autocapture)\.[\w-]+\.js$/, async (route) => {
       held.push(new URL(route.request().url()).pathname.split("/").at(-1)!.split(".")[0]);
       await clicked;
       await route.continue();
     });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByLabel("Search elements and attributes").click();
     clickDone();
     // PostHog's client and its web-vitals code went through the hold, so the click came first.
