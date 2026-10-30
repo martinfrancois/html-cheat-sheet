@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import type { Result } from "axe-core";
-import { layOutEveryEntry, renderAllFrames } from "./helpers.ts";
+import { liveOutput, layOutEveryEntry, renderAllFrames } from "./helpers.ts";
 
 // The rules in docs/agents/accessibility.md: WCAG 2.2 AA everywhere, AAA for contrast (7:1) and
 // text size, in both themes, at desktop and phone width.
@@ -136,4 +136,69 @@ test("no text is smaller than 15 pixels and running text has a line height of at
     return found;
   });
   expect(problems).toEqual([]);
+});
+
+// Firefox focused the live output of bdi and br below the screen, out of sight (WCAG 2.4.11):
+// https://github.com/martinfrancois/html-cheat-sheet/issues/21
+test("Tab never moves focus to a place out of sight", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.locator("article#mark a").last().focus();
+  const hidden: string[] = [];
+  for (let press = 1; press <= 40; press++) {
+    await page.keyboard.press("Tab");
+    // Below the sticky header and above the bottom of the screen.
+    const place = await page.evaluate(() => {
+      const focused = document.activeElement!;
+      const { top, bottom } = focused.getBoundingClientRect();
+      const shown = bottom > document.querySelector("body > header")!.getBoundingClientRect().bottom && top < innerHeight;
+      return shown ? undefined : `${focused.closest("article")?.id}: <${focused.tagName.toLowerCase()}> from ${Math.round(top)} to ${Math.round(bottom)}`;
+    });
+    if (place) hidden.push(`Tab ${press}, ${place}`);
+  }
+  expect(hidden).toEqual([]);
+});
+
+// A frame with nothing focusable inside, just past either edge of the screen, the case every
+// browser leaves out of sight.
+test("Tab and Shift+Tab bring a live output frame into view", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  const example = page.locator("#bdi [data-example]").first();
+  await liveOutput(page, (await example.getAttribute("id"))!);
+  const frame = example.locator("[data-live-output] > iframe");
+  const inView = () =>
+    frame.evaluate((element) => {
+      const { top, bottom } = element.getBoundingClientRect();
+      return bottom > document.querySelector("body > header")!.getBoundingClientRect().bottom && top < innerHeight;
+    });
+
+  await frame.evaluate((element) => scrollBy(0, element.getBoundingClientRect().top - innerHeight - 10));
+  await example.locator("[data-code-view] pre").evaluate((code: HTMLElement) => code.focus({ preventScroll: true }));
+  expect(await inView()).toBe(false);
+  await page.keyboard.press("Tab");
+  await expect.poll(inView).toBe(true);
+
+  // Firefox stops twice in a frame in Playwright's build, once in the stock one.
+  while (await frame.evaluate((element) => document.activeElement === element)) await page.keyboard.press("Tab");
+  // With the frame scrolled up under the sticky header.
+  await frame.evaluate((element) => scrollBy(0, element.getBoundingClientRect().bottom - 10));
+  expect(await inView()).toBe(false);
+  await page.keyboard.press("Shift+Tab");
+  await expect.poll(inView).toBe(true);
+});
+
+// src/scripts/live-output.ts scrolls a live output frame into view when Tab focuses it, because
+// the browsers don't when the frame has nothing focusable inside. This page has none of the
+// site's styles or scripts. When the test fails, the browser scrolls on its own; once it fails in
+// all three, drop showFocusedFrame and this test.
+test("browsers still leave a frame that Tab focuses below the screen", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.setContent(`<button>Before</button><iframe title="Text only" srcdoc="<p>Text</p>" style="display: block; margin-top: 2000px"></iframe>`);
+  await expect(page.frameLocator("iframe").locator("p")).toHaveText("Text");
+  await page.getByRole("button", { name: "Before" }).focus();
+  await page.keyboard.press("Tab");
+  await expect.poll(() => page.evaluate(() => document.activeElement?.tagName)).toBe("IFRAME");
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  expect(await page.evaluate(() => scrollY)).toBe(0);
 });
