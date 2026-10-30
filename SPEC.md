@@ -378,12 +378,9 @@ Renovate keeps these packages current, so badges and links follow the data witho
 
 ### 16.1 Not done yet
 
-Checked on 2026-10-29. Remove a line in the change that does it.
+Checked on 2026-10-30. Remove a line in the change that does it.
 
-- Hosting: GitHub Pages still publishes from a branch, not from the deploy workflow, and has no
-  custom domain set. The DNS record for `html.fmartin.ch` exists and goes through the Cloudflare
-  proxy. If GitHub can't issue its HTTPS certificate behind the proxy, martinfrancois has to switch
-  that record to DNS only.
+Nothing at the moment.
 
 ## 17. Open decisions
 
