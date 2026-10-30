@@ -93,7 +93,10 @@ Playwright tests in `test/e2e/page.spec.ts`:
   [Playwright issue #6479, no post data for a Blob](https://github.com/microsoft/playwright/issues/6479)
   and [html-cheat-sheet issue #13, no web vitals in WebKit](https://github.com/martinfrancois/html-cheat-sheet/issues/13).
   The test "Playwright's WebKit still hides Blob request bodies" fails once Playwright shows them,
-  and the workaround can go.
+  and the workaround can go. Waiting for PostHog's batch instead isn't enough. PostHog sends it with
+  `fetch` five seconds after the first metric, and the test can read it in WebKit, but it holds only
+  FCP and LCP. INP and CLS go only in the beacon when the page is hidden, so the test would no longer
+  check that send in WebKit.
 * One clicks the page before PostHog starts and checks that LCP still arrives.
 * One blocks the PostHog host and checks that the page still works.
 
