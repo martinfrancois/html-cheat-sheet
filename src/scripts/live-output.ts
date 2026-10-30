@@ -58,18 +58,14 @@ export function setupLiveOutput(): void {
   });
 }
 
-// Tab into a frame with nothing focusable inside leaves the frame where it is, even below the
-// screen (WCAG 2.4.11), in Chromium 156, Firefox 159 and WebKit 27.2. Firefox scrolled to it up
-// to version 125; https://bugzilla.mozilla.org/show_bug.cgi?id=1886182 ended that. A frame with a
-// link inside is in view already, because the browser scrolls to the link. The test "browsers
-// still leave a frame that Tab focuses below the screen" fails once a browser scrolls on its own:
-// docs/adr/0025-scroll-a-live-output-frame-that-tab-focuses-into-view.md.
+// Without it, Tab can focus a frame out of sight (WCAG 2.4.11):
+// docs/adr/0025-scroll-a-live-output-frame-that-tab-focuses-into-view.md
 function showFocusedFrame(): void {
-  const frame = document.activeElement;
-  if (!(frame instanceof HTMLIFrameElement) || !frame.parentElement?.matches("[data-live-output]")) return;
+  const focused = document.activeElement;
+  if (!(focused instanceof HTMLIFrameElement) || !focused.parentElement?.matches("[data-live-output]")) return;
   // The sticky header and the back-to-top link take these margins (src/styles/global.css).
   const root = getComputedStyle(document.documentElement);
-  const { top, bottom } = frame.getBoundingClientRect();
+  const { top, bottom } = focused.getBoundingClientRect();
   if (bottom > parseFloat(root.scrollPaddingTop) && top < innerHeight - parseFloat(root.scrollPaddingBottom)) return;
-  frame.scrollIntoView({ block: "nearest" });
+  focused.scrollIntoView({ block: "nearest" });
 }

@@ -1,11 +1,13 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import type { Result } from "axe-core";
-import { liveOutput, layOutEveryEntry, renderAllFrames } from "./helpers.ts";
+import { layOutEveryEntry, liveOutput, outOfView, renderAllFrames } from "./helpers.ts";
 
 // The rules in docs/agents/accessibility.md: WCAG 2.2 AA everywhere, AAA for contrast (7:1) and
 // text size, in both themes, at desktop and phone width.
 const WCAG = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "wcag2aaa"];
+const DESKTOP = { width: 1280, height: 900 };
+const PHONE = { width: 390, height: 844 };
 
 // martinfrancois's rule holds large text to AA (3:1) and small text to AAA (7:1). axe's enhanced
 // check wants 4.5:1 for large text, so its large-text findings are dropped here; the AA rule
@@ -22,8 +24,8 @@ function withLargeTextAtAA(violations: Result[]): Result[] {
 
 for (const colorScheme of ["light", "dark"] as const) {
   for (const [device, viewport] of [
-    ["desktop", { width: 1280, height: 900 }],
-    ["phone", { width: 390, height: 844 }],
+    ["desktop", DESKTOP],
+    ["phone", PHONE],
   ] as const) {
     test.describe(`${colorScheme} theme on a ${device}`, () => {
       test.use({ colorScheme, viewport });
@@ -138,67 +140,68 @@ test("no text is smaller than 15 pixels and running text has a line height of at
   expect(problems).toEqual([]);
 });
 
-// Firefox focused the live output of bdi and br below the screen, out of sight (WCAG 2.4.11):
-// https://github.com/martinfrancois/html-cheat-sheet/issues/21
+// The probe from html-cheat-sheet issue 21, where Firefox focused the live output of bdi and br
+// below the screen: docs/adr/0025-scroll-a-live-output-frame-that-tab-focuses-into-view.md
 test("Tab never moves focus to a place out of sight", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
+  // 40 presses and checks, each about 200 ms slower in WebKit on this page (docs/adr/0018).
+  test.slow();
+  await page.setViewportSize(PHONE);
   await page.goto("/");
   await page.locator("article#mark a").last().focus();
-  const hidden: string[] = [];
   for (let press = 1; press <= 40; press++) {
     await page.keyboard.press("Tab");
-    // Below the sticky header and above the bottom of the screen.
-    const place = await page.evaluate(() => {
-      const focused = document.activeElement!;
-      const { top, bottom } = focused.getBoundingClientRect();
-      const shown = bottom > document.querySelector("body > header")!.getBoundingClientRect().bottom && top < innerHeight;
-      return shown ? undefined : `${focused.closest("article")?.id}: <${focused.tagName.toLowerCase()}> from ${Math.round(top)} to ${Math.round(bottom)}`;
-    });
-    if (place) hidden.push(`Tab ${press}, ${place}`);
+    // The page scrolls a focused frame a task after the key.
+    await expect.poll(() => page.evaluate(outOfView, null), { message: `Tab ${press}` }).toBeUndefined();
   }
-  expect(hidden).toEqual([]);
 });
 
 // A frame with nothing focusable inside, just past either edge of the screen, the case every
 // browser leaves out of sight.
-test("Tab and Shift+Tab bring a live output frame into view", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
-  const example = page.locator("#bdi [data-example]").first();
-  await liveOutput(page, (await example.getAttribute("id"))!);
-  const frame = example.locator("[data-live-output] > iframe");
-  const inView = () =>
-    frame.evaluate((element) => {
-      const { top, bottom } = element.getBoundingClientRect();
-      return bottom > document.querySelector("body > header")!.getBoundingClientRect().bottom && top < innerHeight;
-    });
+for (const [device, viewport] of [
+  ["desktop", DESKTOP],
+  ["phone", PHONE],
+] as const) {
+  test(`Tab and Shift+Tab bring a live output frame into view on a ${device}`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await page.goto("/");
+    const example = page.locator("#bdi [data-example]").first();
+    await liveOutput(page, (await example.getAttribute("id"))!);
+    const frame = example.locator("[data-live-output] > iframe");
+    const frameOutOfView = () => frame.evaluate(outOfView);
 
-  await frame.evaluate((element) => scrollBy(0, element.getBoundingClientRect().top - innerHeight - 10));
-  await example.locator("[data-code-view] pre").evaluate((code: HTMLElement) => code.focus({ preventScroll: true }));
-  expect(await inView()).toBe(false);
-  await page.keyboard.press("Tab");
-  await expect.poll(inView).toBe(true);
+    await frame.evaluate((element) => scrollBy(0, element.getBoundingClientRect().top - innerHeight + 10));
+    await example.locator("[data-code-view] pre").evaluate((code: HTMLElement) => code.focus({ preventScroll: true }));
+    expect(await frameOutOfView()).toBeDefined();
+    await page.keyboard.press("Tab");
+    await expect.poll(frameOutOfView).toBeUndefined();
 
-  // Firefox stops twice in a frame in Playwright's build, once in the stock one.
-  while (await frame.evaluate((element) => document.activeElement === element)) await page.keyboard.press("Tab");
-  // With the frame scrolled up under the sticky header.
-  await frame.evaluate((element) => scrollBy(0, element.getBoundingClientRect().bottom - 10));
-  expect(await inView()).toBe(false);
-  await page.keyboard.press("Shift+Tab");
-  await expect.poll(inView).toBe(true);
-});
+    // Firefox stops twice in a frame in Playwright's build, once in Mozilla's.
+    while (await frame.evaluate((element) => document.activeElement === element)) await page.keyboard.press("Tab");
+    // With the frame scrolled up under the sticky header.
+    await frame.evaluate((element) => scrollBy(0, element.getBoundingClientRect().bottom - 10));
+    expect(await frameOutOfView()).toBeDefined();
+    await page.keyboard.press("Shift+Tab");
+    await expect.poll(frameOutOfView).toBeUndefined();
+  });
+}
+
+// The browsers that scroll to a frame Tab focuses, when it has nothing focusable inside.
+const SCROLLS_ON_ITS_OWN: string[] = [];
 
 // src/scripts/live-output.ts scrolls a live output frame into view when Tab focuses it, because
-// the browsers don't when the frame has nothing focusable inside. This page has none of the
-// site's styles or scripts. When the test fails, the browser scrolls on its own; once it fails in
-// all three, drop showFocusedFrame and this test.
-test("browsers still leave a frame that Tab focuses below the screen", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
+// the browsers don't. This page has none of the site's styles or scripts. When the test fails in
+// one browser, that browser now scrolls on its own: add it to SCROLLS_ON_ITS_OWN and keep
+// showFocusedFrame. Once all three are in the list, remove showFocusedFrame, this test and the list.
+test("browsers still leave a frame that Tab focuses below the screen", async ({ page, browserName }) => {
+  await page.setViewportSize(PHONE);
   await page.setContent(`<button>Before</button><iframe title="Text only" srcdoc="<p>Text</p>" style="display: block; margin-top: 2000px"></iframe>`);
   await expect(page.frameLocator("iframe").locator("p")).toHaveText("Text");
   await page.getByRole("button", { name: "Before" }).focus();
   await page.keyboard.press("Tab");
   await expect.poll(() => page.evaluate(() => document.activeElement?.tagName)).toBe("IFRAME");
+  // A scroll that doesn't come needs a point to stop waiting. A browser scrolls to what it
+  // focuses before it draws the next frame, so two frames are enough.
   await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-  expect(await page.evaluate(() => scrollY)).toBe(0);
+  const scrolled = await page.evaluate(() => scrollY > 0);
+  expect(scrolled).toBe(SCROLLS_ON_ITS_OWN.includes(browserName));
 });
