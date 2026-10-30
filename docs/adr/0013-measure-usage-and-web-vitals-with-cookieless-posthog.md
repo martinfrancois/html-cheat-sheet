@@ -78,11 +78,16 @@ Playwright tests in `test/e2e/page.spec.ts`:
   checks that every request goes to the site's own origin or to PostHog's EU host, and that the page
   sets no cookies and writes no analytics keys to local storage.
 * One hides the page, as leaving it does, and checks that `$web_vitals` events reach PostHog's EU
-  host with LCP, INP, CLS and FCP in Chromium, and without CLS in Firefox. In Playwright's WebKit,
-  PostHog sends no web vitals for a reason not found yet, so the test skips it there, see
-  [html-cheat-sheet issue #13](https://github.com/martinfrancois/html-cheat-sheet/issues/13). The
-  analytics tests block the service worker, because in WebKit the page's requests go through it,
-  where the test can't answer them.
+  host with LCP, INP, CLS and FCP in Chromium, and without CLS in Firefox and WebKit. The analytics
+  tests block the service worker, because in WebKit the page's requests go through it, where the
+  test can't answer them.
+* In WebKit, the analytics tests hand `navigator.sendBeacon` bytes instead of a Blob. PostHog sends
+  the events of a page being hidden that way, and Playwright's WebKit gives the test no body for a
+  Blob, see
+  [Playwright issue #6479, no post data for a Blob](https://github.com/microsoft/playwright/issues/6479)
+  and [html-cheat-sheet issue #13, no web vitals in WebKit](https://github.com/martinfrancois/html-cheat-sheet/issues/13).
+  The test "Playwright's WebKit still hides Blob request bodies" fails once Playwright shows them,
+  and the workaround can go.
 * One blocks the PostHog host and checks that the page still works.
 
 ## Pros and Cons of the Options
