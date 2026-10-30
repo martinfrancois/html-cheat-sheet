@@ -41,6 +41,8 @@ image will not match.
   rules require that one.
 - The examples spec and the visual snapshots run in Chromium only: the example markup is the same
   in every browser, and snapshots of three engines would triple the images to review.
+- `test/e2e/scrollbar.spec.ts` runs in Chromium only, the one engine that draws a scrollbar that
+  takes width once Playwright's `--hide-scrollbars` is dropped.
 - The layout shift tests in `test/e2e/page.spec.ts` run in Chromium only, the one engine that
   reports layout shifts. They measure with the image's system fonts, Liberation Sans and Liberation
   Mono, so they check the sized fallback for those two fonts only.

@@ -1,5 +1,9 @@
 import { expect, type FrameLocator, type Locator, type Page } from "@playwright/test";
 
+// The width a 320 pixel screen leaves the page beside a classic scrollbar, which Windows draws 17
+// pixels wide: the narrowest the layout has to work at (docs/adr/0027).
+export const BESIDE_A_SCROLLBAR = 320 - 17;
+
 // Live output frames render only near the screen; scroll one into view and wait until its
 // document has loaded and reported its height.
 export async function liveOutput(page: Page, exampleId: string): Promise<FrameLocator> {

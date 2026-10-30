@@ -2,7 +2,7 @@ import { gunzipSync } from "node:zlib";
 import { expect, type Locator, type Page, type Request, test } from "@playwright/test";
 import { CHIP_ROW } from "../../src/lib/chips.ts";
 import { THEME_KEY } from "../../src/lib/theme-key.ts";
-import { entry, layOutEveryEntry, liveOutput } from "./helpers.ts";
+import { BESIDE_A_SCROLLBAR, entry, layOutEveryEntry, liveOutput } from "./helpers.ts";
 
 const topOf = (locator: Locator) => locator.evaluate((element) => element.getBoundingClientRect().top);
 // The place src/scripts/keep-place.ts saved in the history entry, once a scroll has ended.
@@ -195,29 +195,31 @@ test.describe("the cheat sheet", () => {
     await expect.poll(async () => (await frame.boundingBox())!.height).toBe(resting);
   });
 
-  test("a wrapped code line never starts with a row of only indentation", async ({ page }) => {
-    await page.setViewportSize({ width: 320, height: 800 });
-    await page.goto("/");
-    await layOutEveryEntry(page);
-    // The first character that isn't a space sits in the line's first row.
-    const split = await page.evaluate(() =>
-      [...document.querySelectorAll(".astro-code .line")]
-        .filter((line) => {
-          const walker = document.createTreeWalker(line, NodeFilter.SHOW_TEXT);
-          for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-            const at = node.textContent!.search(/\S/);
-            if (at < 0) continue;
-            const range = document.createRange();
-            range.setStart(node, at);
-            range.setEnd(node, at + 1);
-            return range.getBoundingClientRect().top >= line.getBoundingClientRect().top + parseFloat(getComputedStyle(line).lineHeight);
-          }
-          return false;
-        })
-        .map((line) => line.textContent),
-    );
-    expect(split).toEqual([]);
-  });
+  for (const width of [BESIDE_A_SCROLLBAR, 320]) {
+    test(`a wrapped code line never starts with a row of only indentation at ${width} pixels`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto("/");
+      await layOutEveryEntry(page);
+      // The first character that isn't a space sits in the line's first row.
+      const split = await page.evaluate(() =>
+        [...document.querySelectorAll(".astro-code .line")]
+          .filter((line) => {
+            const walker = document.createTreeWalker(line, NodeFilter.SHOW_TEXT);
+            for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+              const at = node.textContent!.search(/\S/);
+              if (at < 0) continue;
+              const range = document.createRange();
+              range.setStart(node, at);
+              range.setEnd(node, at + 1);
+              return range.getBoundingClientRect().top >= line.getBoundingClientRect().top + parseFloat(getComputedStyle(line).lineHeight);
+            }
+            return false;
+          })
+          .map((line) => line.textContent),
+      );
+      expect(split).toEqual([]);
+    });
+  }
 
   test("underlines every link inside running text", async ({ page }) => {
     await page.goto("/");
@@ -423,14 +425,42 @@ test.describe("the cheat sheet", () => {
 
   // Text kept on one row, such as an indented line of text glued to its indentation, would stick
   // out of the code block and be cut off.
-  test("every code line fits inside its block on a narrow phone", async ({ page }) => {
-    await page.setViewportSize({ width: 320, height: 800 });
+  for (const width of [BESIDE_A_SCROLLBAR, 320]) {
+    test(`every code line fits inside its block at ${width} pixels`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto("/");
+      await layOutEveryEntry(page);
+      const overflowing = await page.evaluate(() =>
+        [...document.querySelectorAll<HTMLElement>(".astro-code")].filter((code) => code.scrollWidth > code.clientWidth).map((code) => code.textContent!.slice(0, 80)),
+      );
+      expect(overflowing).toEqual([]);
+    });
+  }
+
+  // A column narrower than 18rem lets the kept-together pieces wrap, and they would lose the
+  // indentation with it: docs/adr/0027-let-kept-together-pieces-wrap-in-a-narrower-column.md
+  test("an indented code line keeps its indentation beside a scrollbar", async ({ page }) => {
+    await page.setViewportSize({ width: BESIDE_A_SCROLLBAR, height: 800 });
     await page.goto("/");
     await layOutEveryEntry(page);
-    const overflowing = await page.evaluate(() =>
-      [...document.querySelectorAll<HTMLElement>(".astro-code")].filter((code) => code.scrollWidth > code.clientWidth).map((code) => code.textContent!.slice(0, 80)),
+    const flush = await page.evaluate(() =>
+      [...document.querySelectorAll<HTMLElement>(".astro-code .line")]
+        .filter((line) => /^ +\S/.test(line.textContent!))
+        .filter((line) => {
+          const walker = document.createTreeWalker(line, NodeFilter.SHOW_TEXT);
+          for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+            const index = node.textContent!.search(/\S/);
+            if (index === -1) continue;
+            const range = document.createRange();
+            range.setStart(node, index);
+            range.setEnd(node, index + 1);
+            return range.getBoundingClientRect().left - line.getBoundingClientRect().left < 1;
+          }
+          return false;
+        })
+        .map((line) => line.textContent),
     );
-    expect(overflowing).toEqual([]);
+    expect(flush).toEqual([]);
   });
 
   // Lighthouse counts every shift during load. Two caused them: fonts swapping in after the
@@ -491,13 +521,15 @@ test.describe("the cheat sheet", () => {
     });
   }
 
-  test("never scrolls sideways on a 320 pixel wide screen", async ({ page }) => {
-    await page.setViewportSize({ width: 320, height: 800 });
-    await page.goto("/");
-    await layOutEveryEntry(page);
-    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-    expect(overflow).toBe(0);
-  });
+  for (const width of [BESIDE_A_SCROLLBAR, 320]) {
+    test(`never scrolls sideways at ${width} pixels`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto("/");
+      await layOutEveryEntry(page);
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+      expect(overflow).toBe(0);
+    });
+  }
 });
 
 test.describe("search", () => {

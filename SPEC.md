@@ -171,7 +171,10 @@ A sentence that only says there is a difference is not enough.
 - The chapters follow, each with its heading and its entries.
 - Every entry has an anchor: the element name, or `attr-<name>` for a global attribute. Each element
   in an entry about several elements has its own anchor too, such as `#strong`.
-- The layout MUST work at every width from 320 CSS px up without sideways scrolling. Phones (about
+- The layout MUST work at every width from 320 CSS px up without sideways scrolling, also when a
+  classic scrollbar takes part of it. Code chips, names in code blocks and entry titles may break
+  anywhere in a column narrower than the one a 320 px screen leaves
+  ([ADR 0027](docs/adr/0027-let-kept-together-pieces-wrap-in-a-narrower-column.md)). Phones (about
   390 px), the inner screen of a foldable (about 884 px) and desktops (about 1440 px) are the widths
   to review.
 - A footer names the data sources, links the source code and gives the license and author.
