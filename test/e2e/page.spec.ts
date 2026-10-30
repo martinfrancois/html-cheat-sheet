@@ -758,28 +758,47 @@ test.describe("analytics", () => {
     await expect.poll(vitals, { timeout: 15_000 }).toEqual(expected);
   });
 
+  // Loads the page and clicks the search box before PostHog starts: the page's later scripts,
+  // PostHog's among them, wait until the click is done.
+  async function clickBeforePostHogStarts(page: Page): Promise<void> {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    let clickDone = () => {};
+    const clicked = new Promise<void>((resolve) => (clickDone = resolve));
+    const held: string[] = [];
+    await page.route("**/_astro/*.js", async (route) => {
+      held.push(new URL(route.request().url()).pathname.split("/").at(-1)!.split(".")[0]);
+      await clicked;
+      await route.continue();
+    });
+    await page.getByLabel("Search elements and attributes").click();
+    clickDone();
+    // PostHog's client and its web-vitals code went through the hold, so the click came first.
+    await expect.poll(() => held).toEqual(expect.arrayContaining(["module", "web-vitals"]));
+  }
+
+  const hasLCP = (events: Sent[]) => events.some((event) => event.event === "$web_vitals" && "$web_vitals_LCP_value" in event.properties);
+
   // https://github.com/martinfrancois/html-cheat-sheet/issues/24: the browser stops recording LCP at
   // the reader's first click, and PostHog still gets the LCP it recorded before.
   test("reports LCP when the reader clicks before PostHog starts", async ({ page }) => {
     await withKey(page);
     const events = await collectEvents(page);
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    // Holds the scripts the page loads from now on, PostHog's among them, until the click is done.
-    let clickDone = () => {};
-    const clicked = new Promise<void>((resolve) => (clickDone = resolve));
-    await page.route("**/_astro/*.js", async (route) => {
-      await clicked;
-      await route.continue();
-    });
-    const search = page.getByLabel("Search elements and attributes");
-    await search.click();
-    clickDone();
+    await clickBeforePostHogStarts(page);
     await expect.poll(() => events.some((event) => event.event === "$pageview")).toBe(true);
-    // Typing, a further click, or leaving the page tells web-vitals that LCP is final. The test types:
-    // Playwright misses the requests a closing page sends in Chromium and WebKit.
-    await search.pressSequentially("dialog");
-    const lcp = () => events.some((event) => event.event === "$web_vitals" && "$web_vitals_LCP_value" in event.properties);
-    await expect.poll(lcp, { timeout: 15_000 }).toBe(true);
+    // Typing, a further click, or leaving the page tells web-vitals that LCP is final.
+    await page.getByLabel("Search elements and attributes").pressSequentially("dialog");
+    await expect.poll(() => hasLCP(events), { timeout: 15_000 }).toBe(true);
+  });
+
+  test("reports LCP when the reader clicks before PostHog starts and then leaves", async ({ page, browserName }) => {
+    test.skip(browserName !== "firefox", "Playwright doesn't see the requests a closing page sends in Chromium and WebKit");
+    await withKey(page);
+    const events = await collectEvents(page);
+    await clickBeforePostHogStarts(page);
+    await expect.poll(() => events.some((event) => event.event === "$pageview")).toBe(true);
+    // Leaving hides the page for real, an event from the reader, unlike a dispatched visibilitychange.
+    await page.goto("about:blank");
+    await expect.poll(() => hasLCP(events), { timeout: 15_000 }).toBe(true);
   });
 
   // Every body Playwright lets a route read: the three getters 1.64.1 has, and any body getter a later

@@ -62,13 +62,9 @@ tell which element caused a slow metric, for more code than a reference page nee
   web vitals. Those are the slowest loads on the slowest phones, so the numbers lean fast.
 * Neutral, because PostHog reads LCP, CLS and FCP from the browser's buffer once it starts, and INP
   from buffered event timings, which keep every interaction of 104 ms or more. A quick interaction
-  in the first two seconds is missed, a slow one isn't. A click in those two seconds loses no LCP:
-  the browser keeps the LCP it recorded before the click, and web-vitals hands it to PostHog at the
-  reader's next click or key press, or when the page is hidden. Only events from the reader count,
-  so a test that hides the page by dispatching its own `visibilitychange` gets no LCP after an early
-  click, see
-  [web-vitals pull request #635, only finalize LCP on user events](https://github.com/GoogleChrome/web-vitals/pull/635)
-  and [html-cheat-sheet issue #24, no LCP after an early click](https://github.com/martinfrancois/html-cheat-sheet/issues/24).
+  in the first two seconds is missed, a slow one isn't. A click in those two seconds loses no LCP.
+  The browser keeps the LCP it recorded before the click. web-vitals hands it to PostHog at the
+  reader's next click or key press, or when the page is hidden.
 * Bad, because without a stored identifier, PostHog can't tell a returning visitor from a new one,
   so visitor counts are approximate.
 * Bad, because PostHog is the one request to another host. A reader who blocks it is not counted,
@@ -97,7 +93,13 @@ Playwright tests in `test/e2e/page.spec.ts`:
   `fetch` five seconds after the first metric, and the test can read it in WebKit, but it holds only
   FCP and LCP. INP and CLS go only in the beacon when the page is hidden, so the test would no longer
   check that send in WebKit.
-* One clicks the page before PostHog starts and checks that LCP still arrives.
+* Two click the page before PostHog starts and check that LCP still arrives, one after the reader
+  types and one in Firefox after the reader leaves the page. In Chromium and WebKit, Playwright
+  doesn't see the requests a closing page sends. web-vitals ends the LCP measurement only on events
+  from the reader. A test that hides the page by dispatching its own `visibilitychange` gets no LCP
+  after an early click, see
+  [web-vitals pull request #635, only finalize LCP on user events](https://github.com/GoogleChrome/web-vitals/pull/635)
+  and [html-cheat-sheet issue #24, no LCP after an early click](https://github.com/martinfrancois/html-cheat-sheet/issues/24).
 * One blocks the PostHog host and checks that the page still works.
 
 ## Pros and Cons of the Options
