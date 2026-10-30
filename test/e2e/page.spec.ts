@@ -727,7 +727,9 @@ test.describe("analytics", () => {
     await withKey(page);
     const events = await collectEvents(page);
     await page.goto("/");
-    // A click before PostHog starts loses LCP: https://github.com/martinfrancois/html-cheat-sheet/issues/24
+    // web-vitals reports LCP at the first click or key press after PostHog starts, or when the page
+    // is hidden. The hiding below is the test's own event, which web-vitals ignores for LCP, so the
+    // clicks wait for PostHog.
     await expect.poll(() => events.some((event) => event.event === "$pageview")).toBe(true);
     await useThePage(page, { reload: false });
     // Leaving the page hides it, which is when the browser settles CLS and INP.
@@ -744,6 +746,30 @@ test.describe("analytics", () => {
     const expected = ["$web_vitals_FCP_value", "$web_vitals_INP_value", "$web_vitals_LCP_value"];
     if (browserName === "chromium") expected.unshift("$web_vitals_CLS_value");
     await expect.poll(vitals, { timeout: 15_000 }).toEqual(expected);
+  });
+
+  // https://github.com/martinfrancois/html-cheat-sheet/issues/24: the browser stops recording LCP at
+  // the reader's first click, and PostHog still gets the LCP it recorded before.
+  test("reports LCP when the reader clicks before PostHog starts", async ({ page }) => {
+    await withKey(page);
+    const events = await collectEvents(page);
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    // Holds the scripts the page loads from now on, PostHog's among them, until the click is done.
+    let clickDone = () => {};
+    const clicked = new Promise<void>((resolve) => (clickDone = resolve));
+    await page.route("**/_astro/*.js", async (route) => {
+      await clicked;
+      await route.continue();
+    });
+    const search = page.getByLabel("Search elements and attributes");
+    await search.click();
+    clickDone();
+    await expect.poll(() => events.some((event) => event.event === "$pageview")).toBe(true);
+    // Typing, a further click, or leaving the page tells web-vitals that LCP is final. The test types:
+    // Playwright misses the requests a closing page sends in Chromium and WebKit.
+    await search.pressSequentially("dialog");
+    const lcp = () => events.some((event) => event.event === "$web_vitals" && "$web_vitals_LCP_value" in event.properties);
+    await expect.poll(lcp, { timeout: 15_000 }).toBe(true);
   });
 
   // collectEvents hands WebKit's sendBeacon bytes instead of a Blob. Once this fails, Playwright shows
