@@ -47,18 +47,21 @@ for (const colorScheme of ["light", "dark"] as const) {
 // Lighthouse checks contrast as the page loads, before the entries below the screen are drawn.
 // Their contents are laid out then but their box keeps its estimated height, so a taller entry
 // spills into the next one and axe reads a code chip as the next entry's background.
-// One theme per test: a scan of the whole page takes up to 18 seconds on a CI runner.
+// One scan per test: each scans the whole page, and two in one test outlast the test timeout on a
+// slow CI runner.
 for (const colorScheme of ["light", "dark"] as const) {
   for (const [device, viewport] of [
     ["desktop", { width: 1350, height: 940 }],
     ["phone", { width: 412, height: 823 }],
   ] as const) {
-    test(`text contrast holds before the entries are drawn, ${colorScheme} theme on a ${device}`, async ({ page }) => {
-      await page.setViewportSize(viewport);
-      await page.emulateMedia({ colorScheme });
-      await page.goto("/");
-      const results = await new AxeBuilder({ page }).withRules(["color-contrast", "color-contrast-enhanced"]).exclude("iframe").analyze();
-      expect(withLargeTextAtAA(results.violations)).toEqual([]);
+    test.describe(`${colorScheme} theme at Lighthouse's ${device} size`, () => {
+      test.use({ colorScheme, viewport });
+
+      test("text contrast holds before the entries are drawn", async ({ page }) => {
+        await page.goto("/");
+        const results = await new AxeBuilder({ page }).withRules(["color-contrast", "color-contrast-enhanced"]).exclude("iframe").analyze();
+        expect(withLargeTextAtAA(results.violations)).toEqual([]);
+      });
     });
   }
 }
