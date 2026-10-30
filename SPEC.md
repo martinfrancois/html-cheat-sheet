@@ -213,8 +213,9 @@ A sentence that only says there is a difference is not enough.
 - A frame's height follows its content. It grows to show an open modal dialog or popover whole and
   shrinks again after it closes.
 - Each frame has a title: "Live output: " and the example's title.
-- When Tab or Shift+Tab moves focus to a frame that is out of sight, the page scrolls the frame
-  into view. Browsers don't when nothing inside the frame can take focus.
+- When the reader presses Tab or Shift+Tab on the page and focus moves to a frame that is out of
+  sight, the page scrolls the frame into view. Browsers don't when nothing inside the frame can
+  take focus. A key pressed inside a frame goes to the frame's document, which the page can't see.
   [ADR 0025](docs/adr/0025-scroll-a-live-output-frame-that-tab-focuses-into-view.md) records why.
 
 ### 9.4 Code, copy and edit

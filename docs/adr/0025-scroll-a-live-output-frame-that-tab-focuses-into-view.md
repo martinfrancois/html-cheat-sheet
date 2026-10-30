@@ -18,7 +18,8 @@ rules out
 
 The cause is in the browsers, not in this page. On a page with none of its styles or scripts, a
 button and an `<iframe srcdoc="<p>Text</p>">` below the screen, Tab focuses the frame and none of
-Chromium 156, Firefox 159 or WebKit 27.2 scrolls. A frame with a link inside is different: the
+Chromium 156, Firefox 159 or WebKit 27.2 scrolls. Playwright's own Firefox 157 build doesn't
+scroll either. A frame with a link inside is different: the
 browser scrolls to the link. Chromium and WebKit hid the gap on this page by chance. Tab reaches
 the example's code block just before the frame, they scroll the whole code block into view above
 the bottom scroll padding, and the frame's top edge comes along. Firefox scrolls only to an
@@ -64,8 +65,10 @@ padding.
 * Good, because the tab order stays the browser's own, so every link and control in live output is
   reached as before.
 * Neutral, because the keydown of a Tab pressed inside a frame goes to the frame's document, not
-  the page. That needs nothing: Tab from inside a frame reaches the page's own elements, which the
-  browser scrolls to.
+  the page, so the page acts only on a key pressed on the page itself. That needs nothing: each
+  frame is followed by the next example's Copy button or the next entry's links, and before it by
+  its own code block, so Tab or Shift+Tab from inside a frame reaches one of the page's own
+  elements, which the browser scrolls to.
 * Bad, because a frame with nothing focusable stays a tab stop that does nothing. Taking it out
   needs the second option.
 
@@ -75,12 +78,16 @@ Three tests in `test/e2e/accessibility.spec.ts` run in Chromium, Firefox and Web
 
 * "Tab never moves focus to a place out of sight" repeats the probe from the issue: 40 presses of
   Tab from the last link of the `mark` entry at 390 by 844 pixels.
-* "Tab and Shift+Tab bring a live output frame into view" starts with the `bdi` frame just below
-  the screen, then just under the sticky header. It fails in all three browsers without the
-  workaround.
+* "Tab and Shift+Tab bring a live output frame into view", on a desktop and on a phone, starts with
+  the `bdi` frame just below the screen, then just under the sticky header. It fails in all three
+  browsers at both sizes without the workaround.
+
+Both judge "in view" by the page's scroll padding, through `outOfView` in `test/e2e/helpers.ts`,
+the same rule `showFocusedFrame` uses, so a change to the padding moves both together.
 * "browsers still leave a frame that Tab focuses below the screen" checks the browser gap on a page
-  without the site's styles and scripts. When it fails, that browser scrolls on its own; once it
-  fails in all three, remove `showFocusedFrame` and the test.
+  without the site's styles and scripts. When it fails in one browser, that browser now scrolls on
+  its own: add it to `SCROLLS_ON_ITS_OWN` in the test and keep `showFocusedFrame`. Once all three
+  are in the list, remove `showFocusedFrame`, the test and the list.
 
 ## Pros and Cons of the Options
 
@@ -121,6 +128,7 @@ Playwright's Chromium 156, Firefox 157 and WebKit 27.2, and with release builds 
 [Mozilla bug 1328043](https://bugzilla.mozilla.org/show_bug.cgi?id=1328043), a button and an empty
 `<iframe>` 10,000 pixels down, Firefox 125.0.3 scrolled to the frame and 126.0 didn't. Setting
 `dom.disable_tab_focus_to_root_element` to `false` made 126.0 scroll again, and setting it to `true`
-stopped 125.0.3. Firefox 159 has no such setting any more. Playwright's own Firefox build stops
-twice in each frame, the stock build once. Mozilla's Bugzilla had no open report of this on
+stopped 125.0.3. Firefox 159 has no such setting any more. Playwright's Firefox 157 build is a
+patched Firefox and differs from Mozilla's here: it stops twice in each frame, Mozilla's 159.0 once.
+Both leave the frame below the screen, and the tests pass in both with the workaround. Mozilla's Bugzilla had no open report of this on
 2026-10-30.

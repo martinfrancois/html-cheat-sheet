@@ -45,3 +45,16 @@ export async function fontsReady(page: Page): Promise<void> {
 export function entry(page: Page, id: string): Locator {
   return page.locator(`article#${id}`);
 }
+
+// Where an element, by default the focused one, sits when none of it is between the page's scroll
+// padding at the top and at the bottom, the part of the screen the sticky header and the
+// back-to-top link leave free. The page scrolls a focused live output frame by the same rule
+// (src/scripts/live-output.ts). Runs in the page: pass it to evaluate.
+export function outOfView(node?: Element | null): string | undefined {
+  const element = node ?? document.activeElement;
+  if (!element) return "nothing focused";
+  const root = getComputedStyle(document.documentElement);
+  const { top, bottom } = element.getBoundingClientRect();
+  if (bottom > parseFloat(root.scrollPaddingTop) && top < innerHeight - parseFloat(root.scrollPaddingBottom)) return undefined;
+  return `${element.closest("article")?.id}: <${element.tagName.toLowerCase()}> from ${Math.round(top)} to ${Math.round(bottom)}`;
+}
