@@ -749,14 +749,23 @@ test.describe("analytics", () => {
 
   test("sends nothing without a PostHog key, also for a browser that's too old", async ({ page }) => {
     const sent: string[] = [];
-    page.on("request", (request) => request.url().startsWith("https://eu.i.posthog.com/") && sent.push(request.url()));
+    const scripts: string[] = [];
+    page.on("request", (request) => {
+      if (request.url().startsWith("https://eu.i.posthog.com/")) sent.push(request.url());
+      if (request.resourceType() === "script") scripts.push(request.url());
+    });
     await page.clock.install();
     await page.addInitScript(() => delete (Set.prototype as { intersection?: unknown }).intersection);
     await page.goto("/");
     await expect(page.getByText(/is too old for parts of this page/)).toBeVisible();
-    // Past the two seconds at which PostHog would start.
+    const loaded = scripts.length;
+    // Past the two seconds at which PostHog would start. With a key, the PostHog scripts are
+    // requested before a request the page makes after that. networkidle can't tell: once the page
+    // has made a request after going idle, a new live output frame keeps it from ever firing again
+    // (https://github.com/microsoft/playwright/issues/43243).
     await page.clock.runFor(2_000);
-    await page.waitForLoadState("networkidle");
+    await Promise.all([page.waitForRequest("**/?after-start"), page.evaluate(() => void fetch("/?after-start"))]);
+    expect(scripts.slice(loaded)).toEqual([]);
     expect(sent).toEqual([]);
   });
 
