@@ -47,7 +47,7 @@ for (const colorScheme of ["light", "dark"] as const) {
 // Lighthouse checks contrast as the page loads, before the entries below the screen are drawn.
 // Their contents are laid out then but their box keeps its estimated height, so a taller entry
 // spills into the next one and axe reads a code chip as the next entry's background.
-// One scan per test: each scans the whole page, and two in one test outlast the test timeout on a
+// One scan per test: each scans the whole page, which alone takes most of the default timeout on a
 // slow CI runner.
 for (const colorScheme of ["light", "dark"] as const) {
   for (const [device, viewport] of [
@@ -56,6 +56,7 @@ for (const colorScheme of ["light", "dark"] as const) {
   ] as const) {
     test.describe(`${colorScheme} theme at Lighthouse's ${device} size`, () => {
       test.use({ colorScheme, viewport });
+      test.slow();
 
       test("text contrast holds before the entries are drawn", async ({ page }) => {
         await page.goto("/");
