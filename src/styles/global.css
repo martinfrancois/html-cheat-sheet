@@ -393,6 +393,14 @@
   .astro-code :is(.attribute, .keep) {
     white-space: var(--kept-code, pre);
   }
+
+  /* A name too long for a row on a 320 px screen, such as an indented prefers-reduced-motion,
+     stays whole from the column a 360 px screen leaves (src/lib/code-theme.ts). */
+  .astro-code .keep.wide {
+    @variant narrow {
+      white-space: pre-wrap;
+    }
+  }
 }
 
 /* Code chips and names in code blocks are kept on one row as long as they fit the entry column a

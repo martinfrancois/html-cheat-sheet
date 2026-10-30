@@ -350,11 +350,11 @@ test.describe("the cheat sheet", () => {
     expect(split).toEqual([]);
   });
 
-  // A word breaks only when the piece around it, from one break opportunity (a space or a <wbr>)
-  // to the next, is wider than a row, such as a 22-character nonce on a 320 pixel screen. A name
-  // such as prefers-reduced-motion stays whole only when it fits a row on a 320 pixel screen
-  // (src/lib/code-theme.ts), and in a column of at least 18rem (docs/adr/0027), so only one kept
-  // on one row counts at its hyphens.
+  // A word breaks only when the piece around it is wider than a row, such as a 22-character nonce
+  // on a 320 pixel screen. A piece runs from one break opportunity, a space or a <wbr>, or a place
+  // the code should have one, before a tag or after "=", to the next. A name such as
+  // prefers-reduced-motion stays whole only where it fits a row (src/lib/code-theme.ts), and in a
+  // column of at least 18rem (docs/adr/0027), so only one kept on one row counts at its hyphens.
   for (const width of [BESIDE_A_SCROLLBAR, 320, 360, 390]) {
     test(`a code line never wraps inside a word, a kept name or a closing tag at ${width} pixels`, async ({ page }) => {
       await page.setViewportSize({ width, height: 800 });
@@ -371,7 +371,8 @@ test.describe("the cheat sheet", () => {
             if (node.nodeType !== Node.TEXT_NODE) continue;
             for (let at = 0; at < node.textContent!.length; at++) {
               const character = node.textContent![at]!;
-              if (/\s/.test(character)) piece++;
+              // A piece also ends where the code should have a seam: before a tag and after "=".
+              if (/[\s<]/.test(character) || characters.at(-1)?.character === "=") piece++;
               const range = document.createRange();
               range.setStart(node, at);
               range.setEnd(node, at + 1);
@@ -444,7 +445,7 @@ test.describe("the cheat sheet", () => {
 
   // Text kept on one row, such as an indented line of text glued to its indentation, would stick
   // out of the code block and be cut off.
-  for (const width of [BESIDE_A_SCROLLBAR, 320]) {
+  for (const width of [BESIDE_A_SCROLLBAR, 320, 360]) {
     test(`every code line fits inside its block at ${width} pixels`, async ({ page }) => {
       await page.setViewportSize({ width, height: 800 });
       await page.goto("/");

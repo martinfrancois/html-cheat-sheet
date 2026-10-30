@@ -1,5 +1,5 @@
 import type { ShikiTransformer, ThemeRegistration } from "shiki";
-import { CHIP_ROW, CODE_ROW } from "./chips.ts";
+import { CHIP_ROW, CODE_ROW, WIDE_CODE_ROW } from "./chips.ts";
 
 // Colours come from the --code-* tokens in src/styles/global.css, so the static highlighting
 // and the CodeMirror editor (src/scripts/editor.ts) share one palette, checked for 7:1 contrast
@@ -27,29 +27,43 @@ type Node = { type: string; value?: string; children?: Node[] };
 const textOf = (node: Node): string => (node.type === "text" ? (node.value ?? "") : (node.children ?? []).map(textOf).join(""));
 
 // Lets a long line wrap where code has a seam instead of in the middle of a word: before a tag,
-// after one (">Home"), between an attribute's name and its quoted value when the attribute is too
-// long for a narrow phone's row ('aria-labelledby=' '"comments">'), after each slash of a path ("example.com/" "menu"), and in a script before
-// ".textContent", also after a call ("Date()" ".toLocaleTimeString"), and after "(". <wbr> adds no character, so selecting and copying the code
-// is unchanged. A comment's "<!--" and "-->" and a short hyphenated name stay whole.
+// after one (">Home"), after each slash of a path ("example.com/" "menu"), and in a script after
+// "(" and before ".textContent", also before a member that follows a call or an index
+// ("Date()" ".toLocaleTimeString"). An attribute too long for a narrow phone's row also wraps
+// between its name and its quoted value ('aria-labelledby=' '"comments">'). <wbr> adds no
+// character, so selecting and copying the code is unchanged. A comment's "<!--" and "-->", a
+// short hyphenated name, and a quote at either end of a value stay whole.
 export const breakAtSeams: ShikiTransformer = {
   name: "break-at-seams",
   line(line) {
-    const tokens = keepClosingTags(line.children.flatMap(splitPath));
-    // A wrapped row starts 4ch further in than the line (see global.css), and a name kept whole
-    // must fit the rest of a narrow phone's row.
-    const room = CODE_ROW - textOf(line.children[0] ?? { type: "text" }).match(/^\s*/)![0].length - 4;
-    const starts = tokens.map((_, index) => tokens.slice(0, index).map(textOf).join("").length);
+    // A wrapped row starts 4ch further in than the line (see global.css). A name kept whole, and
+    // an attribute kept on one row, must fit the rest of a narrow phone's row; a name marked
+    // "wide" fits only the row of the column a 360 px screen leaves.
+    const indent = textOf(line.children[0] ?? { type: "text" }).match(/^\s*/)![0].length + 4;
+    const room = CODE_ROW - indent;
+    const wideRoom = WIDE_CODE_ROW - indent;
+    const tokens = keepClosingTags(line.children.flatMap((token) => splitPath(token, Math.min(CHIP_ROW, room))));
+    const starts = startsOf(tokens);
     const lineText = tokens.map(textOf).join("");
+    const quote = /^["']$/;
     line.children = tokens.flatMap((token, index) => {
       const text = textOf(token);
       // A name such as aria-labelledby stays whole; only a longer run of text may break at a hyphen.
-      if (token.type === "element" && (/^(<!--|-->)$/.test(text) || (text.includes("-") && text.length <= Math.min(CHIP_ROW, room)))) token.properties.class = "keep";
+      if (token.type === "element" && token.properties.class !== "closing-tag") {
+        const name = text.includes("-") ? text.length : Infinity;
+        if (/^(<!--|-->)$/.test(text) || name <= Math.min(CHIP_ROW, room)) token.properties.class = "keep";
+        else if (name <= Math.min(CHIP_ROW, wideRoom)) token.properties.class = "keep wide";
+      }
       const previous = index > 0 ? textOf(tokens[index - 1]!) : "";
       const member = /^\.\w/.test(text) || (text === "." && /[\w)\]]$/.test(previous));
-      // A shorter attribute stays whole, so a wider screen wraps before it instead of at its "=".
-      const quoted = previous === "=" && index > 1 ? lineText.slice(starts[index]).match(/^(["'])[^"']*\1\/?>?/) : null;
-      const value = !!quoted && textOf(tokens[index - 2]!).length + 1 + quoted[0].length > room;
-      const seam = index > 0 && (text.startsWith("<") || member || value || /[>(]$/.test(previous) || (/\/$/.test(previous) && !/</.test(previous)));
+      // The attribute from its name to the end of its value, or of its tag, such as
+      // aria-labelledby="comments">. A shorter one stays whole, so a wider screen wraps before it.
+      const quoted = previous === "=" && index > 1 ? lineText.slice(starts[index]).match(/^("[^"]*"|'[^']*')\/?>?/) : null;
+      const longAttribute = !!quoted && textOf(tokens[index - 2]!).length + 1 + quoted[0].length > room;
+      const seam =
+        index > 0 &&
+        !quote.test(previous) &&
+        (text.startsWith("<") || member || longAttribute || /\($/.test(previous) || (/>$/.test(previous) && !quote.test(text)) || (/\/$/.test(previous) && !/</.test(previous)));
       return seam ? [{ type: "element" as const, tagName: "wbr", properties: {}, children: [] }, token] : [token];
     });
   },
@@ -77,13 +91,13 @@ function keepClosingTags(tokens: ElementContent[]): ElementContent[] {
   return grouped;
 }
 
-// Splits a token such as https://example.com/menu after each slash, a long one such as a style
-// value around each short hyphenated word, and a value such as srcdoc's around each closing tag,
-// keeping its colour, so the word or the closing tag can stay whole.
-function splitPath(token: ElementContent): ElementContent[] {
+// Splits a token such as https://example.com/menu after each slash, one longer than "keep" such
+// as a style value around each hyphenated word, and a value such as srcdoc's around each closing
+// tag, keeping its colour, so the word or the closing tag can stay whole.
+function splitPath(token: ElementContent, keep: number): ElementContent[] {
   const text = textOf(token);
   if (token.type !== "element" || token.children.length !== 1 || token.children[0]!.type !== "text" || /^<\S*$/.test(text)) return [token];
-  const words = text.length > CHIP_ROW ? text.split(/(?<!\S)(\S*-\S*)(?!\S)/).filter(Boolean) : [text];
+  const words = text.length > keep ? text.split(/(?<!\S)(\S*-\S*)(?!\S)/).filter(Boolean) : [text];
   return words
     .flatMap((word) => word.split(/(<\/[\w-]+>)/).filter(Boolean))
     .flatMap((word) => (/^<\//.test(word) ? [word] : word.split(/(?<=\/)(?!\/)/)))
@@ -92,6 +106,17 @@ function splitPath(token: ElementContent): ElementContent[] {
       properties: /^<\/[\w-]+>$/.test(value) ? { ...token.properties, class: "closing-tag" } : { ...token.properties },
       children: [{ type: "text" as const, value }],
     }));
+}
+
+// Where each token's text starts in the text of the line.
+function startsOf(tokens: ElementContent[]): number[] {
+  const starts: number[] = [];
+  let offset = 0;
+  for (const token of tokens) {
+    starts.push(offset);
+    offset += textOf(token).length;
+  }
+  return starts;
 }
 
 // What a line holds, in the HTML syntax tree Shiki builds.
@@ -136,12 +161,7 @@ export const keepAttributesTogether: ShikiTransformer = {
       if (token.type !== "element" || !space) return [token];
       return [space, rest!].map((value) => ({ ...token, children: [{ type: "text" as const, value }] }));
     });
-    const starts: number[] = [];
-    let offset = 0;
-    for (const token of line.children) {
-      starts.push(offset);
-      offset += textOf(token).length;
-    }
+    const starts = startsOf(line.children);
     const text = line.children.map(textOf).join("");
     const ranges = [...text.matchAll(/(?<=\s)[\w:-]+=(?:"[^"]* [^"]*"|'[^']* [^']*')/g)]
       .filter((match) => match[0].length <= ATTRIBUTE_ROW)

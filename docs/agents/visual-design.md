@@ -51,9 +51,11 @@ purpose, and check every screen for it.
   one stays whole. Only a piece with no seam that is wider than a whole row breaks inside, such as
   a 22-character nonce on a 320 px screen, or a deeply indented `</selectedcontent>` in a column
   narrower than 18rem.
-  A name stays whole only when it fits a wrapped row on a 320 px screen, 27 characters less the
-  line's indentation and the 4 of the wrap, so a deeply indented `prefers-reduced-motion` may
-  break at its hyphens. The 70-character limit is in
+  A name stays whole when it fits a wrapped row on a 320 px screen, 27 characters less the line's
+  indentation and the 4 of the wrap. A longer one, such as an indented `prefers-reduced-motion`,
+  stays whole from the column a 360 px screen leaves, 32 characters a row, and may break at its
+  hyphens below it ([ADR 0028](../adr/0028-wrap-code-lines-at-seams-of-the-code.md)). The
+  70-character limit is in
   [Content entries](content-entries.md).
 - A code chip of up to 22 characters, such as `(min-width: 30em)`, never breaks; a longer one
   breaks only at its spaces or after a slash, never at a hyphen inside `z-index`. Below the
