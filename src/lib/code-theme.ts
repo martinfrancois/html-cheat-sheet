@@ -27,8 +27,9 @@ type Node = { type: string; value?: string; children?: Node[] };
 const textOf = (node: Node): string => (node.type === "text" ? (node.value ?? "") : (node.children ?? []).map(textOf).join(""));
 
 // Lets a long line wrap where code has a seam instead of in the middle of a word: before a tag,
-// after one (">Home"), after each slash of a path ("example.com/" "menu"), and in a script
-// before ".textContent" and after "(". <wbr> adds no character, so selecting and copying the code
+// after one (">Home"), between an attribute's name and its quoted value when the attribute is too
+// long for a narrow phone's row ('aria-labelledby=' '"comments">'), after each slash of a path ("example.com/" "menu"), and in a script before
+// ".textContent", also after a call ("Date()" ".toLocaleTimeString"), and after "(". <wbr> adds no character, so selecting and copying the code
 // is unchanged. A comment's "<!--" and "-->" and a short hyphenated name stay whole.
 export const breakAtSeams: ShikiTransformer = {
   name: "break-at-seams",
@@ -37,47 +38,60 @@ export const breakAtSeams: ShikiTransformer = {
     // A wrapped row starts 4ch further in than the line (see global.css), and a name kept whole
     // must fit the rest of a narrow phone's row.
     const room = CODE_ROW - textOf(line.children[0] ?? { type: "text" }).match(/^\s*/)![0].length - 4;
+    const starts = tokens.map((_, index) => tokens.slice(0, index).map(textOf).join("").length);
+    const lineText = tokens.map(textOf).join("");
     line.children = tokens.flatMap((token, index) => {
       const text = textOf(token);
       // A name such as aria-labelledby stays whole; only a longer run of text may break at a hyphen.
       if (token.type === "element" && (/^(<!--|-->)$/.test(text) || (text.includes("-") && text.length <= Math.min(CHIP_ROW, room)))) token.properties.class = "keep";
       const previous = index > 0 ? textOf(tokens[index - 1]!) : "";
-      const member = /^\.\w/.test(text) || (text === "." && /\w$/.test(previous));
-      const seam = index > 0 && (text.startsWith("<") || member || /[>(]$/.test(previous) || (/\/$/.test(previous) && !/</.test(previous)));
+      const member = /^\.\w/.test(text) || (text === "." && /[\w)\]]$/.test(previous));
+      // A shorter attribute stays whole, so a wider screen wraps before it instead of at its "=".
+      const quoted = previous === "=" && index > 1 ? lineText.slice(starts[index]).match(/^(["'])[^"']*\1\/?>?/) : null;
+      const value = !!quoted && textOf(tokens[index - 2]!).length + 1 + quoted[0].length > room;
+      const seam = index > 0 && (text.startsWith("<") || member || value || /[>(]$/.test(previous) || (/\/$/.test(previous) && !/</.test(previous)));
       return seam ? [{ type: "element" as const, tagName: "wbr", properties: {}, children: [] }, token] : [token];
     });
   },
 };
 
-// Groups each closing tag, "</" then the name then ">", into one unit kept on a row. Firefox
-// would otherwise break after the slash, as it does in a path, and leave "</" at a row's end.
-// Shiki writes "></" as one token where an element is empty, so that token is split first.
+// Groups each closing tag, "</" then the name then ">", into one unit kept on a row while it fits
+// one (global.css). Firefox would otherwise break after the slash, as it does in a path, and
+// leave "</" at a row's end.
+// Shiki writes "></" as one token where an element is empty, and "><" where a tag follows another,
+// so such a token is split before its "<" first.
 function keepClosingTags(tokens: ElementContent[]): ElementContent[] {
   const split = tokens.flatMap((token) => {
-    const [, before] = textOf(token).match(/^(.+)<\/$/s) ?? [];
-    if (token.type !== "element" || !before) return [token];
-    return [before, "</"].map((value) => ({ ...token, properties: { ...token.properties }, children: [{ type: "text" as const, value }] }));
+    const parts = textOf(token).split(/(?<=.)(?=<\/$)|(?<=>)(?=<)/s);
+    if (token.type !== "element" || token.children.length !== 1 || parts.length === 1) return [token];
+    return parts.map((value) => ({ ...token, properties: { ...token.properties }, children: [{ type: "text" as const, value }] }));
   });
   const grouped: ElementContent[] = [];
   for (let index = 0; index < split.length; index++) {
     const [opener, name, closer] = split.slice(index, index + 3).map(textOf);
     if (opener === "</" && name && /^[\w-]+$/.test(name) && closer === ">") {
-      grouped.push({ type: "element", tagName: "span", properties: { class: "keep" }, children: split.slice(index, index + 3) });
+      grouped.push({ type: "element", tagName: "span", properties: { class: "closing-tag" }, children: split.slice(index, index + 3) });
       index += 2;
     } else grouped.push(split[index]!);
   }
   return grouped;
 }
 
-// Splits a token such as https://example.com/menu after each slash, and a long one such as a
-// style value around each short hyphenated word, keeping its colour, so the word can stay whole.
+// Splits a token such as https://example.com/menu after each slash, a long one such as a style
+// value around each short hyphenated word, and a value such as srcdoc's around each closing tag,
+// keeping its colour, so the word or the closing tag can stay whole.
 function splitPath(token: ElementContent): ElementContent[] {
   const text = textOf(token);
-  if (token.type !== "element" || token.children.length !== 1 || token.children[0]!.type !== "text" || text.startsWith("<")) return [token];
+  if (token.type !== "element" || token.children.length !== 1 || token.children[0]!.type !== "text" || /^<\S*$/.test(text)) return [token];
   const words = text.length > CHIP_ROW ? text.split(/(?<!\S)(\S*-\S*)(?!\S)/).filter(Boolean) : [text];
   return words
-    .flatMap((word) => word.split(/(?<=\/)(?!\/)/))
-    .map((value) => ({ ...token, properties: { ...token.properties }, children: [{ type: "text" as const, value }] }));
+    .flatMap((word) => word.split(/(<\/[\w-]+>)/).filter(Boolean))
+    .flatMap((word) => (/^<\//.test(word) ? [word] : word.split(/(?<=\/)(?!\/)/)))
+    .map((value) => ({
+      ...token,
+      properties: /^<\/[\w-]+>$/.test(value) ? { ...token.properties, class: "closing-tag" } : { ...token.properties },
+      children: [{ type: "text" as const, value }],
+    }));
 }
 
 // What a line holds, in the HTML syntax tree Shiki builds.

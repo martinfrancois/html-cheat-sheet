@@ -350,33 +350,52 @@ test.describe("the cheat sheet", () => {
     expect(split).toEqual([]);
   });
 
-  test("a code line on a phone never wraps inside a word, a name or a closing tag", async ({ page }) => {
-    await page.setViewportSize({ width: 390, height: 800 });
-    await page.goto("/");
-    await layOutEveryEntry(page);
-    const split = await page.evaluate(() =>
-      [...document.querySelectorAll(".astro-code .line")].flatMap((line) => {
-        // Each character with the row it sits on, in reading order.
-        const characters: { character: string; row: number }[] = [];
-        const walker = document.createTreeWalker(line, NodeFilter.SHOW_TEXT);
-        for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-          for (let at = 0; at < node.textContent!.length; at++) {
-            const range = document.createRange();
-            range.setStart(node, at);
-            range.setEnd(node, at + 1);
-            characters.push({ character: node.textContent![at]!, row: Math.round(range.getBoundingClientRect().bottom) });
+  // A word breaks only when the piece around it, from one break opportunity (a space or a <wbr>)
+  // to the next, is wider than a row, such as a 22-character nonce on a 320 pixel screen. A name
+  // such as prefers-reduced-motion stays whole only when it fits a row on a 320 pixel screen
+  // (src/lib/code-theme.ts), and in a column of at least 18rem (docs/adr/0027), so only one kept
+  // on one row counts at its hyphens.
+  for (const width of [BESIDE_A_SCROLLBAR, 320, 360, 390]) {
+    test(`a code line never wraps inside a word, a kept name or a closing tag at ${width} pixels`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto("/");
+      await layOutEveryEntry(page);
+      const split = await page.evaluate(() =>
+        [...document.querySelectorAll<HTMLElement>(".astro-code .line")].flatMap((line) => {
+          // Each character with the row it sits on, its width, and the piece it belongs to.
+          const characters: { character: string; row: number; width: number; piece: number; kept: boolean }[] = [];
+          let piece = 0;
+          const walker = document.createTreeWalker(line, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
+          for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+            if (node.nodeName === "WBR") piece++;
+            if (node.nodeType !== Node.TEXT_NODE) continue;
+            for (let at = 0; at < node.textContent!.length; at++) {
+              const character = node.textContent![at]!;
+              if (/\s/.test(character)) piece++;
+              const range = document.createRange();
+              range.setStart(node, at);
+              range.setEnd(node, at + 1);
+              const box = range.getBoundingClientRect();
+              const name = node.parentElement!.closest(".keep");
+              characters.push({ character, row: Math.round(box.bottom), width: box.width, piece, kept: !!name && getComputedStyle(name).whiteSpace === "pre" });
+            }
           }
-        }
-        return characters.flatMap(({ character, row }, index) => {
-          const previous = characters[index - 1];
-          const inWord = /[\w-]/.test(previous?.character ?? "") && /\w/.test(character);
-          const inClosingTag = previous?.character === "/" && characters[index - 2]?.character === "<";
-          return previous && previous.row !== row && (inWord || inClosingTag) ? [line.textContent!.trim()] : [];
-        });
-      }),
-    );
-    expect(split).toEqual([]);
-  });
+          // A wrapped row starts at the line's padding (src/styles/global.css).
+          const row = line.clientWidth - parseFloat(getComputedStyle(line).paddingLeft);
+          const pieceWidth = (number: number) => characters.filter((character) => character.piece === number).reduce((sum, character) => sum + character.width, 0);
+          return characters.flatMap(({ character, row: at, piece, kept }, index) => {
+            const previous = characters[index - 1];
+            if (!previous || previous.row === at) return [];
+            const inWord = /\w/.test(previous.character) && /\w/.test(character) && pieceWidth(piece) <= row;
+            const inName = previous.character === "-" && /\w/.test(character) && kept;
+            const inClosingTag = previous.character === "/" && characters[index - 2]?.character === "<" && pieceWidth(piece) <= row;
+            return inWord || inName || inClosingTag ? [line.textContent!.trim()] : [];
+          });
+        }),
+      );
+      expect(split).toEqual([]);
+    });
+  }
 
   test("an attribute kept on one row keeps its syntax colours", async ({ page }) => {
     await page.goto("/");

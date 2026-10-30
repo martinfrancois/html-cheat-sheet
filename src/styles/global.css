@@ -381,6 +381,15 @@
     white-space: pre;
   }
 
+  /* A closing tag moves to the next row whole when it fits there, and wraps only when it's wider
+     than a row, where "white-space: pre" would stick out. A seam already sits before and after
+     it, so the block adds no place to wrap (src/lib/code-theme.ts). The line's negative indent
+     would otherwise apply to its first row. */
+  .astro-code .closing-tag {
+    display: inline-block;
+    text-indent: 0;
+  }
+
   .astro-code :is(.attribute, .keep) {
     white-space: var(--kept-code, pre);
   }
