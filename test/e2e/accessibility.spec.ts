@@ -85,7 +85,7 @@ for (const width of [320, 390, 1280]) {
         for (const element of entry.querySelectorAll("*")) {
           const rect = element.getBoundingClientRect();
           if (rect.width === 0 || rect.height === 0) continue;
-          const reach = element.matches("a[href], button, textarea, summary, [tabindex='0']") ? ring : 0;
+          const reach = element.matches("a[href], button, textarea, summary, [tabindex='0'], [data-live-output]") ? ring : 0;
           const outside = rect.left - reach < box.left - 0.5 || rect.right + reach > box.right + 0.5 || rect.top - reach < box.top - 0.5 || rect.bottom + reach > box.bottom + 0.5;
           if (outside) found.push(`${entry.id}: <${element.tagName.toLowerCase()}> ${element.textContent?.trim().slice(0, 30)}`);
         }
@@ -184,6 +184,100 @@ for (const [device, viewport] of [
     await expect.poll(frameOutOfView).toBeUndefined();
   });
 }
+
+// No selector matches a frame that has focus, so the page draws the ring on the frame's box:
+// docs/adr/0026-draw-the-focus-ring-of-a-live-output-frame.md
+test("a live output frame that Tab focuses shows a focus ring until focus moves on or a press lands in it", async ({ page }) => {
+  await page.goto("/");
+  const example = page.locator("#bdi [data-example]").first();
+  const output = await liveOutput(page, (await example.getAttribute("id"))!);
+  const box = example.locator("[data-live-output]");
+  const code = example.locator("[data-code-view] pre");
+  const frameFocused = () => box.locator("iframe").evaluate((frame) => document.activeElement === frame);
+
+  await code.focus();
+  await page.keyboard.press("Tab");
+  await expect(box).toHaveAttribute("data-focus-ring");
+  await expect(box).toHaveCSS("outline-style", "solid");
+  await expect(box).toHaveCSS("outline-width", "3px");
+  while (await frameFocused()) await page.keyboard.press("Tab");
+  await expect(box).not.toHaveAttribute("data-focus-ring");
+
+  // A press keeps focus in the frame, as a click on a button does, and shows no ring either.
+  await page.keyboard.press("Shift+Tab");
+  await expect(box).toHaveAttribute("data-focus-ring");
+  await output.locator("body").click();
+  await expect(box).not.toHaveAttribute("data-focus-ring");
+  expect(await frameFocused()).toBe(true);
+});
+
+test("a live output frame shows no ring while an element inside it shows its own", async ({ page, browserName }) => {
+  await page.goto("/");
+  const example = page.locator("#a [data-example]").first();
+  const output = await liveOutput(page, (await example.getAttribute("id"))!);
+  const box = example.locator("[data-live-output]");
+
+  await example.locator("[data-code-view] pre").focus();
+  await page.keyboard.press("Tab");
+  // Playwright's Firefox stops on the frame itself first, then on its first link.
+  if (browserName === "firefox") {
+    await expect(box).toHaveAttribute("data-focus-ring");
+    await page.keyboard.press("Tab");
+  }
+  await expect(output.getByRole("link").first()).toBeFocused();
+  // The page marks the frame a task after the key, so wait for that before looking.
+  await page.evaluate(() => new Promise((resolve) => setTimeout(resolve)));
+  await expect(box).not.toHaveAttribute("data-focus-ring");
+
+  // Not even for a moment while Tab moves to the next link.
+  await box.evaluate((element) => {
+    const marks = ((window as unknown as { marks: number }).marks = 0);
+    new MutationObserver(() => (window as unknown as { marks: number }).marks++).observe(element, { attributeFilter: ["data-focus-ring"] });
+    return marks;
+  });
+  await page.keyboard.press("Tab");
+  await expect(output.getByRole("link").nth(1)).toBeFocused();
+  // The frame reports both focus events before the key's task ends; one more task takes in both.
+  await page.evaluate(() => new Promise((resolve) => setTimeout(resolve)));
+  expect(await page.evaluate(() => (window as unknown as { marks: number }).marks)).toBe(0);
+});
+
+// A Tab pressed inside a frame goes to its document, so the frame reports it.
+test("a live output frame that the reader tabs within shows the ring once nothing inside has focus", async ({ page }) => {
+  await page.goto("/");
+  const example = page.locator("#a [data-example]").first();
+  const output = await liveOutput(page, (await example.getAttribute("id"))!);
+  const box = example.locator("[data-live-output]");
+  const firstLink = output.getByRole("link").first();
+
+  await output.locator("p").first().click({ position: { x: 1, y: 1 } });
+  await page.keyboard.press("Tab");
+  await expect(firstLink).toBeFocused();
+  await firstLink.evaluate((link: HTMLElement) => link.blur());
+  await expect(box).toHaveAttribute("data-focus-ring");
+});
+
+// Playwright's Firefox fires no focus or blur on a frame's window, which the page needs here.
+test("a click into a frame inside another example takes the ring away", async ({ page, browserName }) => {
+  test.skip(browserName === "firefox", "Playwright's Firefox fires no blur on a frame's window");
+  await page.goto("/");
+  const nested = page.locator("#iframe [data-example]").first();
+  const nestedOutput = await liveOutput(page, (await nested.getAttribute("id"))!);
+  const example = page.locator("#bdi [data-example]").first();
+  await liveOutput(page, (await example.getAttribute("id"))!);
+  const box = example.locator("[data-live-output]");
+
+  await example.locator("[data-code-view] pre").focus();
+  await page.keyboard.press("Tab");
+  await expect(box).toHaveAttribute("data-focus-ring");
+  // The nested frame is sandboxed without scripts, so Playwright's WebKit can't click into it by
+  // locator. A click on the page would take the ring away by itself, so it has to land in the frame.
+  await nested.locator("[data-live-output]").evaluate((box) => box.scrollIntoView({ block: "center" }));
+  const nestedFrame = (await nestedOutput.locator("iframe").boundingBox())!;
+  await page.mouse.click(nestedFrame.x + nestedFrame.width / 2, nestedFrame.y + nestedFrame.height / 2);
+  await expect.poll(() => page.evaluate(() => document.activeElement?.closest("[data-example]")?.id)).toBe(await nested.getAttribute("id"));
+  await expect(box).not.toHaveAttribute("data-focus-ring");
+});
 
 // The browsers that scroll to a frame Tab focuses, when it has nothing focusable inside.
 const SCROLLS_ON_ITS_OWN: string[] = [];

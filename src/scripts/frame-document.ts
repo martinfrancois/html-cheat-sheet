@@ -1,13 +1,15 @@
 // The document a live output frame shows. It has no other imports, so the end-to-end tests can
 // build the same document for an example (test/e2e/examples.spec.ts).
 
-// Messages from a live output frame carry this key, so other postMessage traffic is ignored.
+// Messages from a live output frame carry one of these keys, so other postMessage traffic is ignored.
 export const HEIGHT_MESSAGE = "html-cheat-sheet:height";
+// Its value is the type of an event in the frame that the page needs to draw the frame's focus ring.
+export const FOCUS_MESSAGE = "html-cheat-sheet:focus";
 
 // Appended to every example. It reports the height the example needs so the frame fits it,
-// keeps in-page links inside the example, and keeps a submitted form on the page instead of
-// navigating the frame away. A <form method="dialog"> still submits, because that only closes
-// its dialog.
+// keeps in-page links inside the example, keeps a submitted form on the page instead of
+// navigating the frame away, and reports Tab, presses and focus changes for the focus ring.
+// A <form method="dialog"> still submits, because that only closes its dialog.
 // An open modal dialog or popover sits in the top layer, outside the document's height, so the
 // frame grows to show it whole and shrinks back when it closes. Browsers center it, so the frame
 // leaves the example's own height free above and below it, and the button that opened it stays
@@ -38,6 +40,17 @@ const frameScript = `<script>(() => {
     event.preventDefault();
     location.hash = link.hash;
   });
+  // The page draws the frame's focus ring and sees none of these events in here:
+  // docs/adr/0026-draw-the-focus-ring-of-a-live-output-frame.md
+  const reportFocus = (event) => parent.postMessage({ "${FOCUS_MESSAGE}": event.type }, "*");
+  addEventListener("keydown", (event) => event.key === "Tab" && reportFocus(event), true);
+  addEventListener("pointerdown", reportFocus, true);
+  addEventListener("focusin", reportFocus);
+  // Only when focus leaves the elements, not when it moves between two, so the ring doesn't flash.
+  addEventListener("focusout", (event) => event.relatedTarget || reportFocus(event));
+  // The frame's own window: focus moving to another frame or window, and coming back.
+  addEventListener("focus", reportFocus);
+  addEventListener("blur", reportFocus);
 })();<\/script>`;
 
 // Builds the frame document: the example as written, plus the page's light or dark choice.
