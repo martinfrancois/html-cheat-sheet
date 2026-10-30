@@ -12,12 +12,17 @@ const workarounds: { compatKey: string; where: string; remove: string }[] = [
   {
     compatKey: "css.properties.text-wrap.pretty",
     where: "src/components/Example.astro",
-    remove: "drop keepLastWordsTogether and give the title text-wrap: pretty (Tailwind's text-pretty) instead, then check that a wrapping title still doesn't leave one word alone on its last line",
+    remove: "drop keepLastWordsTogether and give the title text-wrap: pretty (Tailwind's text-pretty) instead, update the last-word rule in docs/agents/visual-design.md, and check that a wrapping title still doesn't leave one word alone on its last line",
   },
   {
     compatKey: "api.Window.requestIdleCallback",
     where: "src/scripts/analytics.ts",
-    remove: "start analytics with requestIdleCallback instead of the two-second setTimeout in setupAnalytics, and update its comment and the two seconds in SPEC.md and ADR 0013",
+    remove: "start analytics with requestIdleCallback instead of the two-second setTimeout in setupAnalytics; update the two comments there, SPEC.md section 9.7, the analytics tests in test/e2e/page.spec.ts that run the clock past two seconds, and ADR 0023; and supersede ADR 0013 with a record of the new start",
+  },
+  {
+    compatKey: "css.properties.overflow-anchor",
+    where: "src/scripts/keep-place.ts",
+    remove: "scroll anchoring now holds the screen in WebKit too, so drop the ResizeObserver hold in scrollToPlace and its comment, and keep them only if the tests that keep the reader's place after a reload or Back fail in WebKit without them",
   },
 ];
 
